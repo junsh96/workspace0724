@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 권한 체크용 로그인 아이디 부서, 직급 재 조회 -->
+	<entry key="checkRole">
+		SELECT EMP_DEPT,
+				EMP_JOB
+		FROM T_EMP
+		WHERE EMP_ID = ?
+	</entry>
+</properties>

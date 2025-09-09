@@ -1,0 +1,9 @@
+package com.semi.cm.controller;
+
+import com.semi.cm.service.ExpenseService;
+
+public class ExpenseController {
+
+	private ExpenseService es = new ExpenseService();
+	
+}

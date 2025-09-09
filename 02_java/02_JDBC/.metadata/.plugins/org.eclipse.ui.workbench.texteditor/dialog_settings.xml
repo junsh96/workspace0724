@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="false"/>
+		<list key="findhistory">
+			<item value="selectJob"/>
+			<item value="loginEmp"/>
+			<item value="deleteItem"/>
+			<item value="selectItem"/>
+			<item value="삭제"/>
+			<item value="탈퇴"/>
+			<item value="insertItem"/>
+			<item value="insertDelEmp"/>
+			<item value="e,"/>
+			<item value="checkRole"/>
+			<item value="updateEmp"/>
+			<item value="deleteEmp"/>
+			<item value="empMenu"/>
+			<item value="D1"/>
+			<item value="selee"/>
+		</list>
+	</section>
+</section>

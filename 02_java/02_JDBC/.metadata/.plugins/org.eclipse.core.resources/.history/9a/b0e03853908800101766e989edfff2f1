@@ -1,0 +1,21 @@
+package com.semi.cm.controller;
+
+import com.semi.cm.service.ExpenseService;
+
+public class ExpenseController {
+
+	private ExpenseService es = new ExpenseService();
+
+	public ExpenseController() {
+		super();
+	}
+	
+	/**
+	 * 자금 조회
+	 */
+	public void selectExp() {
+		int result = es.selectExp();
+		
+	}
+	
+}

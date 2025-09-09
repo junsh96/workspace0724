@@ -1,0 +1,16 @@
+package com.semi.cm.service;
+
+import com.semi.cm.model.dao.CommonDao;
+
+public class CommonService {
+
+	private CommonDao cd;
+
+	public CommonService() {
+		super();
+		this.cd = new CommonDao();
+	}
+	
+	
+	
+}

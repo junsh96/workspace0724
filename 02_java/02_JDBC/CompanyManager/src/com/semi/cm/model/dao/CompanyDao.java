@@ -1,0 +1,584 @@
+package com.semi.cm.model.dao;
+
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import com.semi.cm.common.JdbcConnection;
+import com.semi.cm.model.vo.DeptVo;
+import com.semi.cm.model.vo.EmpVo;
+import com.semi.cm.model.vo.JobVo;
+import com.semi.cm.model.vo.MemberVo;
+/**
+ * DAO
+ */
+public class CompanyDao {
+
+	private Properties prop = new Properties();
+	
+	
+	
+	
+	public CompanyDao() {
+		super();
+		try {
+			prop.loadFromXML(new FileInputStream("resources/emp.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+
+
+
+	/**
+	 * 회원 가입(직원 추가)
+	 * @param m
+	 * @return
+	 */
+	public int signEmp(EmpVo em, Connection conn) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("signEmp");
+		//생일을 localDate에서 timeStamp로 형변환
+		LocalDateTime localDateTime = em.getBirtDate().atStartOfDay();
+		Timestamp birtDate = Timestamp.valueOf(localDateTime);
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, em.getEmpId());
+			pstmt.setString(2, em.getPassword());
+			pstmt.setString(3, em.getEmpDept());
+			pstmt.setString(4, em.getEmpJob());
+			pstmt.setInt(5, em.getSalary());
+			pstmt.setTimestamp(6, birtDate);
+			pstmt.setString(7, em.getEmpName());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception	
+		} finally {
+			JdbcConnection.close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 회원가입시 입력한 부서명이 존재하는지 체크
+	 * @param empDept
+	 * @return
+	 */
+	public int checkDept(String empDept,Connection conn) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("checkDept");
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, empDept);
+			
+			rset = pstmt.executeQuery();
+
+			rset.next();
+			result = rset.getInt("CNT");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+			
+		}
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 회원가입시 입력한 직급명이 존재하는지 체크
+	 * @param empJob
+	 * @return
+	 */
+	public int checkJob(String empJob,Connection conn) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("checkJob");
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, empJob);
+			
+			rset = pstmt.executeQuery();
+			
+			rset.next();
+			result = rset.getInt("CNT");
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+			
+		}
+		
+		
+		return result;
+	}
+	/**
+	 * 회원 가입시 입력한 부서 내 사원수 증가
+	 * @param empDept
+	 * @param conn
+	 * @return
+	 */ 
+	//사용 X 트리거로 대체
+//	public int updateDeptCnt(String empDept,Connection conn) {
+//		int result = 0;
+//		
+//		PreparedStatement pstmt = null;
+//		
+//		
+//		String sql = prop.getProperty("updateDeptCnt");
+//		
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			
+//			//pstmt.setInt(1, val);
+//			pstmt.setString(1, empDept);
+//
+//			result = pstmt.executeUpdate();
+//
+//		} catch (Exception e) {
+//		
+//			e.printStackTrace();
+//			// TODO: handle exception
+//		} finally {
+//			JdbcConnecntion.close(pstmt);
+//		}
+//		
+//		return result;
+//	}
+	
+	/**
+	 * 회원정보 수정시 이전 부서 사원수 차감
+	 * @param empDept
+	 * @param conn
+	 * @return
+	 */
+	//사용 X
+//	public int updateOldDeptCnt(String empDept,Connection conn) {
+//		int result = 0;
+//		
+//		PreparedStatement pstmt = null;
+//		
+//		
+//		String sql = prop.getProperty("updateOldDeptCnt");
+//		System.out.println("empDept"+empDept);
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			
+//			//pstmt.setInt(1, val);
+//			pstmt.setString(1, empDept);
+//
+//			result = pstmt.executeUpdate();
+//
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//			// TODO: handle exception
+//		} finally {
+//			JdbcConnecntion.close(pstmt);
+//		}
+//		
+//		return result;
+//	}
+	
+	
+	/**
+	 * 회원가입시 입력한 직급의 사원수 증가
+	 * @param empJob
+	 * @param conn
+	 * @return
+	 */
+	//사용 X
+//	public int updateJobCnt(String empJob, Connection conn) {
+//		int result = 0;
+//		
+//		PreparedStatement pstmt = null;
+//		
+//		
+//		String sql = prop.getProperty("updateJobCnt");
+//
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			//pstmt.setInt(1, val);
+//			pstmt.setString(1, empJob);
+//			
+//			result = pstmt.executeUpdate();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			// TODO: handle exception
+//		} finally {
+//			JdbcConnecntion.close(pstmt);
+//		}
+//		
+//		return result;
+//	}
+	
+	/**
+	 * 회원 정보 수정시 이전 직급 사원수 차감
+	 * @param empJob
+	 * @param conn
+	 * @return
+	 */
+	//사용 X
+//	public int updateOldJobCnt(String empJob, Connection conn) {
+//		int result = 0;
+//		
+//		PreparedStatement pstmt = null;
+//		
+//		
+//		String sql = prop.getProperty("updateOldJobCnt");
+//
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			//pstmt.setInt(1, val);
+//			pstmt.setString(1, empJob);
+//
+//			result = pstmt.executeUpdate();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			// TODO: handle exception
+//		} finally {
+//			JdbcConnecntion.close(pstmt);
+//		}
+//		
+//		return result;
+//	}
+	
+	/**
+	 * 로그인.
+	 * @param e
+	 * @param conn
+	 * @return
+	 */
+	//암호화 , 복호화는 마지막에 시도.
+	public List<EmpVo> loginEmp(EmpVo em, Connection conn) {
+		List<EmpVo> result = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("loginEmp");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, em.getEmpId());
+			pstmt.setString(2, em.getPassword());
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				EmpVo emp = new EmpVo();
+				emp.setEmpId(rset.getString("EMP_ID"));
+				emp.setEmpName(rset.getString("EMP_NAME"));
+				emp.setEmpDept(rset.getString("EMP_DEPT"));
+				emp.setEmpJob(rset.getString("EMP_JOB"));
+				
+				result.add(emp);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 회원 조회
+	 * @param ev
+	 * @param conn
+	 * @return
+	 */
+	public List<EmpVo> selectEmpList(EmpVo em, Connection conn) {
+		List<EmpVo> result = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectEmpList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, em.getEmpName());
+			pstmt.setString(2, em.getEmpId());
+			pstmt.setString(3, em.getEmpDept());
+			pstmt.setString(4, em.getEmpJob());
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				EmpVo emp = new EmpVo();
+				emp.setEmpId(rset.getString("EMP_ID"));
+				emp.setEmpName(rset.getString("EMP_NAME"));
+				emp.setEmpDept(rset.getString("EMP_DEPT"));
+				emp.setEmpJob(rset.getString("EMP_JOB"));
+				emp.setBirtDate(rset.getTimestamp("BIRT_DATE").toLocalDateTime().toLocalDate());
+				emp.setHireDate(rset.getTimestamp("HIRE_DATE").toLocalDateTime().toLocalDate());
+				emp.setSalary(rset.getInt("SALARY"));
+				
+				result.add(emp);
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+		}
+		
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 수정할 아이디의 정보 조회.
+	 * xml if문 대체
+	 * @param ev
+	 * @param conn
+	 * @return
+	 */
+	public List<EmpVo> selectUpdateEmp(EmpVo em, Connection conn) {
+		List<EmpVo> result = new ArrayList<>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectUpdateEmp");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, em.getEmpId());
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				EmpVo emp = new EmpVo();
+				emp.setEmpNo(rset.getInt("EMP_NO"));
+				emp.setEmpId(rset.getString("EMP_ID"));
+				emp.setEmpName(rset.getString("EMP_NAME"));
+				emp.setEmpDept(rset.getString("EMP_DEPT"));
+				emp.setEmpJob(rset.getString("EMP_JOB"));
+				emp.setBirtDate(rset.getTimestamp("BIRT_DATE").toLocalDateTime().toLocalDate());
+				emp.setSalary(rset.getInt("SALARY"));
+				
+				result.add(emp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 회원 정보 수정
+	 * @param ev
+	 * @param conn
+	 * @return
+	 */
+	public int updateEmp(EmpVo em,Connection conn) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("updateEmp");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, em.getEmpDept());
+			pstmt.setString(2, em.getEmpJob());
+			pstmt.setInt(3, em.getSalary());
+			pstmt.setString(4, em.getEmpId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 회원 정보 탈퇴
+	 * @param ev
+	 * @param conn
+	 * @return
+	 */
+	public int deleteEmp(EmpVo em,Connection conn) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("deleteEmp");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, em.getEmpId());
+			
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 부서 조회
+	 * @param conn
+	 * @return
+	 */
+	public List<DeptVo> selectDept(Connection conn) {
+		List<DeptVo> result = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectDept");
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				DeptVo d = new DeptVo();
+				d.setDeptCode(rset.getString("DEPT_CODE"));
+				d.setDeptName(rset.getString("DEPT_NAME"));
+				d.setDeptEmpCnt(rset.getInt("DEPT_EMP_CNT"));
+
+				
+				result.add(d);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 직급 조회
+	 * @param conn
+	 * @return
+	 */
+	public List<JobVo> selectJob(Connection conn) {
+		List<JobVo> result = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectJob");
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				JobVo j = new JobVo();
+				j.setJobCode(rset.getString("JOB_CODE"));
+				j.setJobName(rset.getString("JOB_NAME"));
+				j.setJobEmpCnt(rset.getInt("JOB_EMP_CNT"));
+
+				
+				result.add(j);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+		}
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 탈퇴 회원 정보 임시 저장
+	 * @param ev
+	 * @param conn
+	 * @return
+	 */
+	//사용 X
+//	public int insertDelEmp(EmpVo em, Connection conn) {
+//		int result = 0;
+//		PreparedStatement pstmt = null;
+//		String sql = prop.getProperty("insertDelEmp");
+//		//생일을 localDate에서 timeStamp로 형변환
+//		LocalDateTime localDateTime = em.getBirtDate().atStartOfDay();
+//		Timestamp birtDate = Timestamp.valueOf(localDateTime);
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			
+//			pstmt.setInt(1, em.getEmpNo());
+//			pstmt.setString(2, em.getEmpId());
+//			pstmt.setString(3, em.getEmpDept());	
+//			pstmt.setString(4, em.getEmpJob());
+//			pstmt.setTimestamp(5, birtDate);
+//			pstmt.setString(6, em.getEmpName());
+//			
+//			
+//			result = pstmt.executeUpdate();
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			// TODO: handle exception
+//		} finally {
+//			JdbcConnection.close(pstmt);
+//		}
+//		
+//		return result;
+//	}
+}

@@ -1,0 +1,8 @@
+package com.semi.cm.model.dao;
+
+import java.util.Properties;
+
+public class ExpenseDao {
+
+	private Properties prop = new Properties();
+}

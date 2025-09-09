@@ -1,0 +1,30 @@
+package com.semi.cm.model.dao;
+
+import java.io.FileInputStream;
+import java.util.List;
+import java.util.Properties;
+
+import com.semi.cm.model.vo.EmpVo;
+
+public class CommonDao {
+
+	private Properties prop = new Properties();
+
+	public CommonDao() {
+		super();
+		try {
+			prop.loadFromXML(new FileInputStream("resources/comm.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
+	public boolean checkRole(List<EmpVo> list) {
+		boolean result = false;
+		
+		return result;
+	}
+	
+	
+}

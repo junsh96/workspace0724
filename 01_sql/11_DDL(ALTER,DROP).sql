@@ -1,0 +1,98 @@
+/*
+    DDL : 데이터 정의
+    
+    <ALTER>
+    객체를 변경하는 구문
+    기존에 생성된 객체(테이블,컬럼 제약조건 등)의 구조를 변경(수정, 추가 , 제거, 이름등 )
+    
+    ALTER  변경할 객체 ,변경할 객체 이름 ,변경할 내용
+    ALTER TABLE 테이블명 변경할내용
+    
+    *변경할내용
+    1) 컬럼 추가/수정/삭제
+    2) 제약조건을 추가/삭제 ->수정 불가
+    3) 컬럼명/제약조건명/테이블명 변경
+*/
+
+-- 컬럼 추가 수정 삭제
+SELECT * FROM DEPARTMENT;
+
+ALTER TABLE DEPARTMENT ADD CNAME VARCHAR2(20);
+
+-- 컬럼 기본값 '한국'
+ALTER TABLE DEPARTMENT ADD LNAME VARCHAR2(20) DEFAULT '한국';
+
+-- 변경
+ALTER TABLE DEPARTMENT MODIFY LNAME VARCHAR2(20) DEFAULT '한국';
+
+ALTER TABLE DEPARTMENT MODIFY CNAME VARCHAR2(30);
+
+--다중 변경
+ALTER TABLE DEPARTMENT MODIFY LNAME DEFAULT '미국'
+                        MODIFY DEPT_TITLE VARCHAR2(40);
+                        
+-- 삭제 DROUP COLUMN 삭제하고자하는 컬럼
+CREATE TABLE DEPT_COPY
+AS (SELECT * FROM DEPARTMENT);
+
+ALTER TABLE DEPT_COPY DROP COLUMN DEPT_ID;
+
+
+
+
+/*
+    테이블이 생성된 후에 제약조건을 수정하는 법
+    
+    ALTER TABLE 테이블 명 변경할 내용
+    
+    제약조건 추가
+    -PRIMARY KEY : ALTER TABLE 테이블 명 ADD [CONSTRAINT 제약조건명]RPIMARY KEY (컬럼명);
+    -FOREIGN KEY : ALTER TABLE 테이블 명 ADD FOREIGN KEY (컬럼명); REFERENCES 참조할테이블명(컬럼명);
+    -UNIQUE : ALTER TABLE 테이블 명 ADD UNIQUE(컬럼명);
+    -CHECK : ALTER TABLE 테이블 명 ADD CHECK(컬럼에 대한 조건식);
+    위에 제약조건을 제거하려면
+    ALTER TABLE 테이블 명 DROP CONSTRAINT 제약조건 명;
+    
+    -NOT NULL : ALTER TABLE 테이블 명  MODIFY 컬럼명 NOT NULL;
+                 ALTER TABLE 테이블 명  MODIFY 컬럼명 NULL;
+*/
+--DEPARTMENT
+
+DROP TABLE DEPT_COPY;
+
+CREATE TABLE DEPT_COPY
+AS (SELECT * FROM DEPARTMENT);
+
+--DEPT_ID PRIMARY KEY 추가
+ALTER TABLE DEPT_COPY ADD CONSTRAINT DEPT_PK PRIMARY KEY(DEPT_ID);  
+--DEPT_ID UNIQUE 추가
+-- LNAMENOT NULL 추가
+ALTER TABLE DEPT_COPY ADD CONSTRAINT DEPT_TITLE_UNIQUE UNIQUE(DEPT_TITLE); --MODIFY LNAME CONSTRAINT DEPT_NM_NN NOT NULL;
+
+-- 위에서 만든 제약 조건 삭제
+ALTER TABLE DEPT_COPY DROP CONSTRAINT DEPT_PK;
+
+ALTER TABLE DEPT_COPY DROP CONSTRAINT DEPT_TITLE_UNIQUE; --MODIFY LNAME NULL;
+
+--테이블 삭제
+
+-- DROP TABLE 테이블명;
+-- 어딘가에 참조되고있는 부모테이블은 함부로 삭제되지 않는다.
+-- 만약 지우고자 한다면 자식 테이블을 삭제하던가 제약조건을 삭제 해야한다.
+-- CASCADE CONSTRAINT 
+
+SELECT * FROM DEPT_COPY;
+
+DROP TABLE DEPT_COPY;
+
+CREATE TABLE DEPT_COPY
+AS (SELECT * FROM DEPARTMENT);
+--컬럼명 변경
+RENAME COLUMN DEPT_TITLE TO DEPT_NAME;
+
+--제약조건명 변경
+RENAME CONSTRAINT SYS_C008544 TO DEPT_ID_NM;
+--테이블 명 변경
+
+    
+

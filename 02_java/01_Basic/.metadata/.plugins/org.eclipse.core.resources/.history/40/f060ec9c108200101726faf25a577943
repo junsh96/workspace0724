@@ -1,0 +1,85 @@
+package com.kh.example.gearrent;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+public class Loan {
+
+	private String itemId;
+	private String memberId;
+	private LocalDate loanDate;
+	private LocalDate dueDate;
+	private LocalDate returnedDate;
+	public Loan(String itemId, String memberId, LocalDate loanDate, LocalDate dueDate) {
+		super();
+		this.itemId = itemId;
+		this.memberId = memberId;
+		this.loanDate = loanDate;
+		this.dueDate = dueDate;
+	}
+	
+	
+	//???????????? 
+	public boolean isOverDue(LocalDate today) {
+		LocalDateTime now = LocalDateTime.now();
+		boolean result = false;
+		if (returnedDate == null) {
+			if (now.toLocalDate().isAfter(today)) {
+				result = false;
+			} else {
+				result = true;
+			}
+		} else {
+			if (returnedDate.isAfter(today)) {
+				result = false;
+			} else {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	//???
+	public int overdueDays(LocalDate today) {
+		LocalDateTime now = LocalDateTime.now();
+		int result = 0;
+		System.out.println("returnedDate"+returnedDate);
+		System.out.println(now.toLocalDate().isAfter(today));
+		if (returnedDate == null) {
+			System.out.println(now.toLocalDate().isAfter(today));
+			if (!now.toLocalDate().isAfter(today)) {
+				
+				result = 0;
+			} else {
+				System.out.println("WHY?");
+				long daysBetwwen = ChronoUnit.DAYS.between(today,now);
+				System.out.println("daysBetwwen!"+daysBetwwen);
+				result = (int)daysBetwwen;
+				System.out.println("test"+result);
+				
+			}
+			
+		} else {
+			
+			if (!returnedDate.isAfter(today)) {
+				result = 0;
+			} else {
+				long daysBetwwen = ChronoUnit.DAYS.between(today,returnedDate);
+				result = (int)daysBetwwen;
+			}
+			
+		}
+		
+		
+		return result;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Loan [itemId=" + itemId + ", memberId=" + memberId + ", loanDate=" + loanDate + ", dueDate=" + dueDate
+				+ ", returnedDate=" + returnedDate + "]";
+	}
+	
+}

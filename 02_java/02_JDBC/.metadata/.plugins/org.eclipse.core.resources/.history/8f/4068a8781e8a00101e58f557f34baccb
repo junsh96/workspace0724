@@ -1,0 +1,48 @@
+package com.semi.cm.service;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.semi.cm.common.JdbcConnection.*;
+import com.semi.cm.model.dao.CommonDao;
+import com.semi.cm.model.vo.EmpVo;
+
+public class CommonService {
+
+	private CommonDao cmd;
+
+	public CommonService() {
+		super();
+		this.cmd = new CommonDao();
+	}
+	
+	
+	/**
+	 * 권한 체크
+	 * @param list
+	 * @return
+	 */
+	public boolean checkRole(EmpVo em,String deptCode,String jobCode) {
+		Connection conn = getConnection();
+		boolean result = false;
+		
+		
+		List<EmpVo> empList = new ArrayList<>();
+		
+		empList = cmd.checkRole(em,conn);
+		String empDept = empList.get(0).getEmpDept();
+		String empJob = empList.get(0).getEmpJob();
+		if(!deptCode.equals("") && deptCode.equals(empDept)) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		
+		
+		
+		return result;
+	}
+	
+}

@@ -1,0 +1,23 @@
+package com.semi.cm.controller;
+
+import com.semi.cm.service.CommonService;
+
+public class CommonController {
+
+	private CommonService cs = new CommonService();
+
+	public CommonController() {
+		super();
+	}
+	
+	/**
+	 * 화면 권한 체크.
+	 * @return
+	 */
+	public boolean checkRole() {
+		boolean result = false;
+		
+		return result;
+	}
+	
+}

@@ -1,0 +1,28 @@
+package com.semi.cm.controller;
+
+import com.semi.cm.service.ExpenseService;
+import com.semi.cm.view.CompanyMenu;
+
+public class ExpenseController {
+
+	private ExpenseService es = new ExpenseService();
+
+	public ExpenseController() {
+		super();
+	}
+	
+	/**
+	 * 자금 조회
+	 */
+	public void selectExp() {
+		int result = es.selectExp();
+		
+		if (result > 0) {
+			new CompanyMenu().displaySuccess("퇴사 처리가 완료되었습니다.");
+		} else {
+			new CompanyMenu().displayFail("퇴사 처리가 실패하였습니다.");
+		}
+		
+	}
+	
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 비품 조회 -->
+	<entry key ="selectItem">
+		SELECT ITEM_CODE,
+				ITEM_NAME,
+				ITEM_PRICE,
+				ITEM_CNT,
+				ITEM_REQ_ID
+		FROM T_ITEM
+		WHERE ITEM_NAME LIKE '%'||?||'%'
+	</entry>
+	<!-- 비품 정보 등록 -->
+	<entry key="insertItem">
+		INSERT INTO T_ITEM
+		VALUES(
+			SEQ_ITEMEQ.NEXTVAL,
+			?,
+			?,
+			?,
+			0,
+			?
+		)
+	</entry>
+	<!-- 발주 요청 -->
+	<entry key="orderReq">
+		INSERT INTO T_ITEM_ORDER(
+			ORDER_NO,
+			ITEM_CODE,
+			ORDER_CNT,
+			ORDER_STATE,
+			REQ_DATE,
+			ORDER_REQ_ID
+		) VALUES (
+			SEQ_ORDEQ.NEXTVAL,
+			?,
+			?,
+			'R', -- 요청중
+			SYSDATE,
+			?	
+		)
+	</entry>
+	<!-- 발주 요청 처리 -->
+	<entry key="orderReqRespone">
+		UPDATE T_ITEM_ORDER
+		SET
+			ORDER_STATE = ?,
+			ORDER_CANCEL_REASON = ?,
+			ORDER_RES_ID = ?
+		WHERE ORDER_NO = ?
+	</entry>
+	<!-- 물품 입고 -->
+	<entry key="inputItem">
+		INSERT INTO T_ITEM_INPUT
+		VALUES (
+			SEQ_INEQ.NEXTVAL,
+			?,
+			SYSDATE,
+			?,
+			?
+		)
+	</entry>
+</properties>

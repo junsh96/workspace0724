@@ -1,0 +1,18 @@
+package com.semi.cm.controller;
+
+import com.semi.cm.service.CommonService;
+
+public class CommonController {
+
+	private CommonService cs = new CommonService();
+
+	public CommonController() {
+		super();
+	}
+	
+	
+	public boolean checkRole() {
+		
+	}
+	
+}

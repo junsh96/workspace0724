@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="false"/>
+		<list key="findhistory">
+			<item value="returnItem"/>
+			<item value="overdueDays"/>
+			<item value="calcLateFee"/>
+			<item value="addDevice"/>
+			<item value="hasTag"/>
+			<item value="getBorrowLimitDays"/>
+			<item value="getActiveLoans"/>
+			<item value="loa"/>
+			<item value="getAllDevices"/>
+			<item value="findByKeyword"/>
+			<item value="findByTag"/>
+			<item value="borrow"/>
+			<item value="joinMembership"/>
+			<item value="mainMenu"/>
+			<item value="setMusic"/>
+		</list>
+		<list key="replacehistory">
+			<item value="student"/>
+			<item value="nameArr"/>
+		</list>
+	</section>
+</section>

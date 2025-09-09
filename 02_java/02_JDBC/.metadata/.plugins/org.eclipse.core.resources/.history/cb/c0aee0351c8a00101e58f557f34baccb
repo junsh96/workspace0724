@@ -1,0 +1,21 @@
+package com.semi.cm.model.dao;
+
+import java.io.FileInputStream;
+import java.util.Properties;
+
+public class CommonDao {
+
+	private Properties prop = new Properties();
+
+	public CommonDao() {
+		super();
+		try {
+			prop.loadFromXML(new FileInputStream("resources/comm.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
+	
+}

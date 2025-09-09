@@ -1,0 +1,29 @@
+package com.semi.cm.controller;
+
+import java.util.List;
+
+import com.semi.cm.model.vo.EmpVo;
+import com.semi.cm.service.CommonService;
+
+public class CommonController {
+
+	private CommonService cs = new CommonService();
+
+	public CommonController() {
+		super();
+	}
+	
+	/**
+	 * 화면 권한 체크.
+	 * @return
+	 */
+	public boolean checkRole(List<EmpVo> list) {
+		boolean result = false;
+		
+		
+		
+		
+		return result;
+	}
+	
+}

@@ -1,0 +1,8 @@
+package com.semi.cm.service;
+
+import com.semi.cm.model.dao.ExpenseDao;
+
+public class ExpenseService {
+
+	private ExpenseDao ed;
+}

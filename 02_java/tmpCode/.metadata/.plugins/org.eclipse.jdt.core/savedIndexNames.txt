@@ -1,0 +1,7 @@
+INDEX VERSION 1.134+C:\workspace\02_java\tmpCode\.metadata\.plugins\org.eclipse.jdt.core
+3406229456.index
+3266557002.index
+2543689658.index
+1891858409.index
+3436557224.index
+1865797976.index

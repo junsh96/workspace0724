@@ -1,0 +1,23 @@
+package com.semi.cm.model.dao;
+
+import java.io.FileInputStream;
+import java.util.Properties;
+
+public class ExpenseDao {
+
+	private Properties prop = new Properties();
+
+	public ExpenseDao() {
+		super();
+		try {
+			prop.loadFromXML(new FileInputStream("resources/expense.xml"));;			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
+	
+	
+	
+}

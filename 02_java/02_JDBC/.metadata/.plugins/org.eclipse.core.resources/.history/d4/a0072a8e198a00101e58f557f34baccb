@@ -1,0 +1,5 @@
+package com.semi.cm.model.dao;
+
+public class CommonDao {
+
+}

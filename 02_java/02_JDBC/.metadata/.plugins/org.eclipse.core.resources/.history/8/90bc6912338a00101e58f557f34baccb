@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 자금 조회 -->
+	<entry key="selectExp">
+		SELECT SUM(DEPOSIT)-SUM(DEBIT) AS EXPENSE FROM T_BUY_EXP_MAN;
+	</entry>
+	<!-- 입금 -->
+	<entry key="insertExp">
+		INSERT INTO T_BUY_EXP_MAN (
+			EXPENSE_NO,
+			DEPOSIT
+		) VALUES (
+			SEQ_EXPSEQ.NEXTVAL,
+			?
+		)
+	</entry>
+</properties>

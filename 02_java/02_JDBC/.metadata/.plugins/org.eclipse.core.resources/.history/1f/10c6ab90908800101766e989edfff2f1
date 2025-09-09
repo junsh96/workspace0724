@@ -1,0 +1,30 @@
+package com.semi.cm.service;
+
+import static com.semi.cm.common.JdbcConnecntion.*;
+
+import java.sql.Connection;
+
+import com.semi.cm.model.dao.ExpenseDao;
+
+public class ExpenseService {
+
+	private ExpenseDao ed;
+
+	public ExpenseService() {
+		super();
+		this.ed = new ExpenseDao();
+	}
+	
+	/**
+	 * 자금 조회
+	 * @return
+	 */
+	public int selectExp() {
+		Connection conn = getConnection();
+		int result = 0;
+		
+		
+		return result;
+	}
+	
+}

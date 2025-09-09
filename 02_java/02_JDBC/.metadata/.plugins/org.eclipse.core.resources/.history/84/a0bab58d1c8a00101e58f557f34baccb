@@ -1,0 +1,33 @@
+package com.semi.cm.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.semi.cm.common.JdbcConnection.*;
+import com.semi.cm.model.dao.CommonDao;
+import com.semi.cm.model.vo.EmpVo;
+
+public class CommonService {
+
+	private CommonDao cd;
+
+	public CommonService() {
+		super();
+		this.cd = new CommonDao();
+	}
+	
+	
+	/**
+	 * 권한 체크
+	 * @param list
+	 * @return
+	 */
+	public boolean checkRole(List<EmpVo> list) {
+		boolean result = false;
+		
+		List<EmpVo> list = new ArrayList<>();
+		
+		return result;
+	}
+	
+}
