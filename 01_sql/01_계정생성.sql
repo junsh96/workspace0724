@@ -13,6 +13,7 @@ drop user c##server;
 
 
 
+
 -- 계정 생성
 CREATE USER c##JDBC IDENTIFIED BY JDBC;
 
