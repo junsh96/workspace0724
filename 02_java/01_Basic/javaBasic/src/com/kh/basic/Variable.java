@@ -23,6 +23,7 @@ public class Variable {
 		float num2;
 		num2 = 3.14159265358979323846f;
 		System.out.printf("%.6f",num2);
+		System.out.println("");
 		//-------------------------------------------
 		
 		//원시타입 : 가장 기본적인 데이터 타입, 값 자체를 저장하며 추가적인 속성이 없다.
@@ -43,6 +44,7 @@ public class Variable {
 		long lo = 10;
 		System.out.println("정수자료형");
 		System.out.printf("%d %d %d %d",in,by,sh,lo);
+		System.out.println("");
 		/*
 		 * 실수 자료형
 		 * float(4) double(8)
@@ -62,9 +64,9 @@ public class Variable {
 		 * 자바는 2바이트 유니코드를 사용
 		 */
 		
-		char ch1 = '전'; // 저장될때 2바이트의 유니코드로.
-		char ch2 = '수';
-		char ch3 = '환';
+		char ch1 = '홍'; // 저장될때 2바이트의 유니코드로.
+		char ch2 = '길';
+		char ch3 = '동';
 		System.out.println("문자자료형");
 		System.out.println(""+ch1+ch2+ch3); //기본적으로 char은 연산시 int로 변경됨
 		
@@ -98,9 +100,9 @@ public class Variable {
 		
 		String str2;
 		str2 = "??";
-		str2 = "전수환입니다.";
+		str2 = "홍길동입니다.";
 		str2 = null; //String 변수는 참조변수이기때문에 기본값이 null이고 빈값을 표현하기 위해 null을 대입할수있다.
-		
+		System.out.println(str2);
 		/*
 		 * 이스케이프 시퀀스
 		 * 문자열내에서 탭, 백슬러시, 작은 따옴표등을 사용하기 위한 방식
