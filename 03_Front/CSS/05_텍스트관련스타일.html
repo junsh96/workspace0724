@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>텍스트관련 스타일</title>
+    <style>
+        ul{
+            display: flex;
+            list-style: none;
+        }
+        ul li{
+            width: 50px;
+            height: 50px;
+            border: 1px solid gainsboro;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>텍스트 관련 스타일(text~)</h1>
+
+    <h2>color : 글자색</h2>
+    <pre>
+        선택자 {
+            color : 색상명 | #16진수 코드값 | rgb값 | rgba값
+        }
+
+    </pre>
+    <h2>text-decoration</h2>
+    <pre>
+        선택자 {
+            text-decoration : none | underline | ...
+        }
+    </pre>
+
+    <ul>
+        <li style="text-decoration: underline;"> 텍스트 아랫줄</li>
+        <li style="text-decoration: line-through;"> 텍스트 취소선</li>
+        <li style="text-decoration: overline;"> 텍스트 윗줄</li>
+    </ul>
+
+    <hr>
+
+    <h3>text-align : 텍스트를 정렬할 때 사용</h3>
+    <pre>
+        선택자{
+            text-align : left | right | center | justify
+        }
+    </pre>
+
+    <h4>기본정렬</h4>
+    <p>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+    </p>
+    <h4>양쪽정렬</h4>
+    <p style="text-align: justify;">
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+    </p>
+    <h4>오른쪽정렬</h4>
+    <p style="text-align: right;">
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+    </p>
+    <h4>중앙정렬</h4>
+    <p style="text-align: center;">
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+    </p>
+
+    <hr>
+
+    <h3>line-height : 글자의 높이 -> 행간을 조절할 때</h3>
+    <pre>
+        선택자{
+            line-height : normal | px | em ...
+        }
+    </pre>
+    <p style="line-height: 25x;">
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+        testtesttest<br>
+    </p>
+
+    <ul>
+        <li>메뉴1</li>
+        <li>메뉴2</li>
+        <li>메뉴3</li>
+        <li>메뉴4</li>
+    </ul>
+</body>
+</html>
