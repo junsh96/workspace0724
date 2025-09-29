@@ -245,7 +245,7 @@ function setFilter(filter) {
 }
 
 
-//할일 목록을 로컬스트리지 영역에 저장
+//목록을 로컬스트리지 영역에 저장
 function saveAccountDos() {
     localStorage.setItem('accountDos',JSON.stringify(accountDos));
 }
