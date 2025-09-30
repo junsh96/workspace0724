@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>practice3</title>
+    <style>
+        .inputDiv {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <h1>practice3</h1>
+    <div class="inputDiv">
+        <input type="number" id="num1">
+        <select name="calc" id="calc">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+            <option value="%">%</option>
+        </select>
+        <input type="number" id="num2">
+        <button id="result" onclick="calcResult();">=</button>
+        <input type="text" readonly id="resultNum">
+    </div>
+
+    <script>
+        function calcResult() {
+
+            let num1 = document.getElementById("num1");
+            
+            let num2 = document.getElementById("num2");
+            let calc = document.getElementById("calc");
+
+            let resultNum = document.getElementById("resultNum");
+            resultNum.style.background = 'white';
+            resultNum.style.color = 'black';
+            resultNum.value = '';
+            if (calc.value === '/' || calc.value === '%') {
+                if (num2.value == 0) {
+                    console.log(num2.value)
+                    resultNum.style.background = 'red';
+                    resultNum.style.color = 'white';
+                    resultNum.value = '연산불가';
+                    return;
+                }
+            }
+            
+            let result = eval(num1.value + calc.value + num2.value);
+            
+            resultNum.value = result;
+        }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+package com.semi.cm.model.dao;
+
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import com.semi.cm.common.JdbcConnection;
+import com.semi.cm.model.vo.EmpVo;
+
+public class CommonDao {
+
+	private Properties prop = new Properties();
+
+	public CommonDao() {
+		super();
+		try {
+			prop.loadFromXML(new FileInputStream("resources/comm.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
+	/**
+	 * 권한 체크용 
+	 * @param list
+	 * @return
+	 */
+	public List<EmpVo> checkRole(EmpVo emp, Connection conn) {
+		List<EmpVo> result = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("checkRole");
+		
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, emp.getEmpId());
+			
+			rset = pstmt.executeQuery();
+
+			while(rset.next()) {
+				emp.setEmpDept(rset.getString("EMP_DEPT"));
+				emp.setEmpJob(rset.getString("EMP_JOB"));
+				
+				result.add(emp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			JdbcConnection.close(pstmt);
+			JdbcConnection.close(rset);
+			
+		}
+		return result;
+	}
+	
+	
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>practice5</title>
+    <style>
+        .area {
+            border: 1px solid black;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Practice5</h1>
+
+    <form action="">
+        <fieldset>
+            <legend>구매 정보</legend>
+            <ul>
+                <li>
+                    구매자 : <input type="text" placeholder="구매자의 이름을 입력하세요." id="name">
+                </li>
+                <li>
+                    상품명 : <input type="text" placeholder="구매 상품 명을 입력하세요." id="itemNm">
+                </li>
+                <li>
+                    가격 : <input type="number" placeholder="구매 가격을 입력하세요." id="price">
+                </li>
+                <li>
+                     구매 수량 : <input type="number" placeholder="최소 10" min="10" max="100" step="10" id="itemCnt">
+                </li>
+                <li>
+                    납품 등급 : <input type="range" min="1" max="9" step="2" class="param" id="grade">
+                </li>
+                <li>
+                    기타 사항 : <textarea class="param" id="etc"></textarea>
+                </li>
+            </ul>
+        </fieldset>
+        <br>
+    <button onclick="return textPrint();">입력 값 출력하기</button>
+    </form>
+    
+    <br>
+    <br>
+    <div id="area1" class="area"></div>
+    <script>
+
+        function callById(id) {
+            
+            return document.getElementById(id);
+        }
+
+        function textPrint() {
+
+            let name = callById('name').value;
+            let itemName = callById('itemNm').value;
+            let price = callById('price').value;
+            let itemCnt = callById('itemCnt').value;
+            let etc = callById('etc').value;
+            let area = callById('area1');
+            
+            area.innerHTML = '';
+
+            area.innerHTML += "구매자 명 : " + name + "님<br>"
+                            + "상품 명 : " + itemName + "<br>"
+                            + "가격 : " + price + "만원<br>" 
+                            + "구매 수량 : " + itemCnt + "개<br>"
+                            + "기타사항 : " + etc
+            
+            return false;
+        }
+
+    </script>
+</body>
+</html>

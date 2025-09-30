@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>practice1</title>
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous">
+    </script>
+    <style>
+        #colorDiv {
+            width: 100px;
+            height: 100px;
+            background: black;
+        }
+        #sizeDiv{
+            width: 200px;
+            height: 200px;
+            background: black;
+        }
+    </style>
+</head>
+<body>
+    <h2>문제1. 색상 선택후 변경 버튼을 클릭하면 색상이 변경되도록 만들어라</h2>
+    <div id="colorDiv"></div>
+    <input type="color" id="colBtn">
+    <input type="button" value="변경" id="chgColBtn">
+
+    <br>
+    <br>
+
+    <h2>문제2. 버튼에 따른 크기조절이 가능하게 만들어라</h2>
+    <div id="sizeDiv"></div>
+    
+    <button value='{"width" : "50px", "height" : "50px"}' class="chgSizeBtn">50x50</button>
+    <button value='{"width" : "100px", "height" : "100px"}' class="chgSizeBtn">100x100</button>
+    <button value='{"width" : "200px", "height" : "200px"}' class="chgSizeBtn">200x200</button>
+
+    <script>
+        $(function() {
+           //function changeColDiv(color) {
+            $('#chgColBtn').click(function(){
+                let color = $('#colBtn').val();
+                
+                $('#colorDiv').css("background-color" ,color);
+            })
+            
+                //let colDiv = document.getElementById('colorDiv');
+                //colDiv.style.background = color;
+            //} 
+
+            //function chageSizeDiv(width,height) {
+            $('.chgSizeBtn').click(function() {
+                
+                let obj = JSON.parse(this.value);
+                
+                let width = obj.width;
+                let height = obj.height;
+                $('#sizeDiv').css({'width' : width , 'height' : height});
+
+            });
+
+                //let sizeDiv = document.getElementById('sizeDiv');
+
+                // sizeDiv.style.width = width+"px";
+                // sizeDiv.style.height = height+"px";
+            //}
+        })
+
+
+
+    </script>
+</body>
+</html>
