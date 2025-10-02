@@ -1,4 +1,4 @@
-package com.kh.jsp.controller.member;
+package com.kh.jsp.controller.board;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,17 +9,20 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import com.kh.jsp.model.vo.Board;
+import com.kh.jsp.service.BoardService;
+
 /**
- * Servlet implementation class LogoutController
+ * Servlet implementation class BoardDetail
  */
-@WebServlet("/logout.me")
-public class LogoutController extends HttpServlet {
+@WebServlet("/detail.bo")
+public class BoardDetailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogoutController() {
+    public BoardDetailController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,16 +30,28 @@ public class LogoutController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    /**
+     * 상세 페이지로 이동
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//로그아웃 -> session에서 loginMember삭제, session만료
-		HttpSession session = request.getSession();
-		session.setAttribute("loginMember", null);
-		session.setAttribute("alertMsg", "로그아웃 성공");
 		
-
-		response.sendRedirect(request.getContextPath());
-	}
+		HttpSession session = request.getSession();
+		
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		
+		Board b = new BoardService().boardDetail(boardNo);
+		
+		if (b == null) {
+			request.setAttribute("errorMsg", "알수 없는 오류가 발생하였습니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+		} else {
+			session.setAttribute("boardDetail", b);
+			
+			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
+		}
+		
+		
+	} 
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

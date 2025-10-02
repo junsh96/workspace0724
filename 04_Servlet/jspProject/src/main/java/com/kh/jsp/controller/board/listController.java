@@ -1,4 +1,4 @@
-package com.kh.jsp.controller.member;
+package com.kh.jsp.controller.board;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,18 +8,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.kh.jsp.model.vo.Board;
+import com.kh.jsp.service.BoardService;
 
 /**
- * Servlet implementation class LogoutController
+ * Servlet implementation class listController
  */
-@WebServlet("/logout.me")
-public class LogoutController extends HttpServlet {
+@WebServlet("/list.bo")
+public class listController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogoutController() {
+    public listController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,15 +31,29 @@ public class LogoutController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    /**
+     * listView
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//로그아웃 -> session에서 loginMember삭제, session만료
-		HttpSession session = request.getSession();
-		session.setAttribute("loginMember", null);
-		session.setAttribute("alertMsg", "로그아웃 성공");
+		//board목록을 가져와서 응답페이지로 전달.
 		
-
-		response.sendRedirect(request.getContextPath());
+		List<Board> result = new BoardService().boardList();
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("loginMember") == null) {
+			request.setAttribute("errorMsg", "잘못된 접근입니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+			return;
+		}
+		
+		if (result.size() > 0) {
+			session.setAttribute("boardList", result);
+		} else {
+			session.setAttribute("alertMsg", "데이터가 없습니다.");
+		}
+		
+		request.getRequestDispatcher("views/board/listView.jsp").forward(request, response);
+		
 	}
 
 	/**
