@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+<entry key="uploadFile">
+	INSERT INTO ATTACHMENT (
+		FILE_NO,
+		REF_BNO,
+		ORIGIN_NAME,
+		CHANGE_NAME,
+		FILE_PATH,
+		UPLOAD_DATE,
+		FILE_LEVEL
+	) VALUES (
+		SEQ_FNO.NEXTVAL,
+		(SELECT MAX(BOARD_NO) FROM BOARD),
+		?,
+		?,
+		?,
+		SYSDATE,
+		1
+	)
+	
+</entry>
+
+
+</properties>

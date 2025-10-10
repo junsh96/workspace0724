@@ -23,6 +23,14 @@
     ON A.BOARD_WRITER = C.MEMBER_NO
     WHERE A.STATUS = 'Y'
     AND A.BOARD_TYPE = ?
+    ORDER BY A.BOARD_NO DESC
+    OFFSET (?-1)*5 ROWS FETCH NEXT 5 ROWS ONLY
+</entry>
+
+<entry key="selectBoardCnt">
+	SELECT COUNT(*) AS CNT FROM BOARD
+	WHERE STATUS = 'Y'
+    AND BOARD_TYPE = ?
 </entry>
 
 <entry key="selectCategoryList">
@@ -94,4 +102,12 @@
 		BOARD_CONTENT = ?
 	WHERE BOARD_NO = ?
 </entry>
+
+<entry key="deleteBoard">
+	UPDATE BOARD
+	SET
+		STATUS = 'N'
+	WHERE BOARD_NO = ?
+</entry>
+
 </properties>

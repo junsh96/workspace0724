@@ -33,7 +33,7 @@ public class BoardDao {
 	 * @param conn
 	 * @return
 	 */
-	public List<Board> boardList(Connection conn) {
+	public List<Board> boardList(int pageNo,Connection conn) {
 		
 		List<Board> result = new ArrayList<>();
 		ResultSet rset = null;
@@ -44,6 +44,7 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, 1);
+			pstmt.setInt(2, pageNo);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				Board b = new Board();
@@ -70,6 +71,32 @@ public class BoardDao {
 			close(pstmt);
 			close(rset);
 		}
+		
+		return result;
+	}
+	
+	public int boardCnt(Connection conn) {
+		int result = 0;
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("selectBoardCnt");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, 1);
+			rset = pstmt.executeQuery();
+			rset.next();
+			
+			result = rset.getInt("CNT");
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
 		
 		return result;
 	}
@@ -214,10 +241,33 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
+		} finally {
+			close(pstmt);
 		}
 		
 		return result;
 		
 		
+	}
+	
+	public int deleteBoard(Board b, Connection conn) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("deleteBoard");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, b.getBoardNo());
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 }

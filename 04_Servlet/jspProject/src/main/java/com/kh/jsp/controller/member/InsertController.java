@@ -47,7 +47,7 @@ public class InsertController extends HttpServlet {
 		}
 
 		
-		Member m = Member.insertCreateMembetr(userId, userPwd, userName, phone, email, address, interset);
+		Member m = Member.insertCreateMember(userId, userPwd, userName, phone, email, address, interset);
 
 		int result = new MemberService().insertMember(m);
 

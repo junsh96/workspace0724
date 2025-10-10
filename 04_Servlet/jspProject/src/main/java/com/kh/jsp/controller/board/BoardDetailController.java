@@ -39,6 +39,12 @@ public class BoardDetailController extends HttpServlet {
 		
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		
+		if (session.getAttribute("loginMember") == null) {
+			request.setAttribute("errorMsg", "잘못된 접근입니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+			return;
+		}
+		
 		Board b = new BoardService().boardDetail(boardNo);
 		
 		if (b == null) {

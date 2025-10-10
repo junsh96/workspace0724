@@ -8,22 +8,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.kh.jsp.model.vo.Board;
+import com.kh.jsp.model.vo.Member;
 import com.kh.jsp.service.BoardService;
 
 /**
- * Servlet implementation class listController
+ * Servlet implementation class DeleteBoardController
  */
-@WebServlet("/list.bo")
-public class listController extends HttpServlet {
+@WebServlet("/deleteBoard.bo")
+public class DeleteBoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public listController() {
+    public DeleteBoardController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,19 +31,16 @@ public class listController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /**
-     * listView
-     */
+    //게시글 삭제
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//board목록을 가져와서 응답페이지로 전달.
-		int pageNo = 1;
-		if (request.getParameter("pageNo") != null) {
-			pageNo = Integer.parseInt(request.getParameter("pageNo"));
-		}
-		
-		
-		List<Board> result = new BoardService().boardList(pageNo);
 		HttpSession session = request.getSession();
+		Board currentBoard = (Board)session.getAttribute("boardDetail");
+		Member loginMember = (Member)session.getAttribute("loginMember");
+		
+		
+		
+		int loginUser = loginMember.getMemberNo();
+		int boardUser = currentBoard.getBoardWriter();
 		
 		if (session.getAttribute("loginMember") == null) {
 			request.setAttribute("errorMsg", "잘못된 접근입니다.");
@@ -51,27 +48,23 @@ public class listController extends HttpServlet {
 			return;
 		}
 		
-		//게시글 갯수
-		int listCnt = new BoardService().boardCnt();
-		int boardCnt = listCnt/5;
-
-		
-//		if ((result.size())/5 == 0) {
-//			
-//		} else {
-//			listCnt = ((result.size())/5)+1;
-//		}	
-
-		
-		if (result.size() > 0) {
-			session.setAttribute("boardList", result);
-			session.setAttribute("boardCnt", boardCnt);
-			session.setAttribute("pageNo", pageNo);
-		} else {
-			session.setAttribute("alertMsg", "데이터가 없습니다.");
+		if (loginUser != boardUser) {
+			request.setAttribute("errorMsg", "권한이 없습니다.");
+			response.sendRedirect(request.getContextPath() + "/list.bo");
+			return;
 		}
 		
-		request.getRequestDispatcher("views/board/listView.jsp").forward(request, response);
+		int result = new BoardService().deleteBoard(currentBoard);
+		
+		if (result > 0) {
+			session.setAttribute("alertMsg", "게시글 삭제 성공");
+			session.setAttribute("boardDetail", null);
+			
+			response.sendRedirect(request.getContextPath() + "/list.bo");
+		} else {
+			request.setAttribute("errorMsg", "게시글 삭제에 실패하였습니다. 관리자에게 문의 하세요.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+		}
 		
 	}
 

@@ -19,13 +19,13 @@ import com.kh.jsp.service.BoardService;
  * Servlet implementation class UpdateBoardController
  */
 @WebServlet("/update.bo")
-public class UpdateBoardController extends HttpServlet {
+public class UpdateFormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateBoardController() {
+    public UpdateFormController() {
         super();
         // TODO Auto-generated constructor stub
     }

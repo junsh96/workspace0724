@@ -160,7 +160,7 @@
 			<div class="button-group">
 				<a class="btn btn-primary" href="${pageContext.request.contextPath}/list.bo">목록가기</a>
 				<a class="btn btn-warning" href="${pageContext.request.contextPath}/update.bo">수정하기</a>
-				<a class="btn btn-danger">삭제하기</a>
+				<a class="btn btn-danger" href="${pageContext.request.contextPath}/deleteBoard.bo">삭제하기</a>
 			</div>
 		</div>
 

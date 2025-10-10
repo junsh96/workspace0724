@@ -120,19 +120,51 @@
             </table>
 
             <div class="pagination">
-                <button class="btn btn-primary">
-                &lt; 이전
-                </button>
-              	<button class="btn btn-outline-primary" >1</button>
-              	<button class="btn btn-outline-primary" >2</button>
-              	<button class="btn btn-outline-primary" >3</button>
-              	<button class="btn btn-outline-primary" >4</button>
-              	<button class="btn btn-outline-primary" >5</button>
-           	    <button class="btn btn-primary">
-                &lt; 다음
-                </button>
+            		<c:choose>
+            			<c:when test="${pageNo != 1}">
+            				<c:url var="bePage" value="list.bo">
+								<c:param name="pageNo" value="${pageNo - 1}"/>
+						    </c:url>
+						    <button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/${bePage}'">
+								&lt; 이전
+			                </button>
+            			</c:when>
+            			<c:otherwise>
+						    <button class="btn btn-secondary">
+								&lt; 이전
+			                </button>
+            			</c:otherwise>
+            		</c:choose>
+            		
+ 
+                
+                <c:forEach var="i" begin="0" end="${boardCnt}" step="1">
+               		<c:url var="pageUrl" value="list.bo">
+						<c:param name="pageNo" value="${i+1}"/>
+				    </c:url>
+		    		<button class="btn btn-outline-primary" onclick="location.href='${pageContext.request.contextPath}/${pageUrl}'">${i+1}</button>
+			    </c:forEach>
+
+			    <c:choose>
+			    	<c:when test="${ boardCnt+1 != pageNo}">
+			    		<c:url var="nextPage" value="list.bo">
+							<c:param name="pageNo" value="${pageNo + 1}"/>
+					    </c:url>
+			    	
+		           	    <button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/${nextPage}'">
+		                &lt; 다음
+		                </button>			    	
+			    	</c:when>
+			    	<c:otherwise>
+		           	    <button class="btn btn-secondary">
+		                &lt; 다음
+		                </button>				    	
+			    	</c:otherwise>
+			    </c:choose>
+
             </div>
         </div>
     </div>
+
 </body>
 </html>

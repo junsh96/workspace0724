@@ -36,7 +36,7 @@ public class Member {
 	
 	
 	
-	public static Member insertCreateMembetr(String userId,String userPwd,String userName, 
+	public static Member insertCreateMember(String userId,String userPwd,String userName, 
 									String phone, String email,String address,
 									String interest) {
 		Member m = new Member();
@@ -52,7 +52,7 @@ public class Member {
 		return m;
 	}
 	
-	public static Member updateCreateMembetr(String userId,String userName, 
+	public static Member updateCreateMember(String userId,String userName, 
 								String phone, String email,String address,
 								String interest) {
 		Member m = new Member();

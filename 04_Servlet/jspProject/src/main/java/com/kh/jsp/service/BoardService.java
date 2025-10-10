@@ -17,14 +17,25 @@ public class BoardService {
 	 * 추후 페이징
 	 * @return
 	 */
-	public List<Board> boardList() {
+	public List<Board> boardList(int pageNo) {
 		Connection conn =  getConnecntion();
 		
-		List<Board> result = new BoardDao().boardList(conn);
+		List<Board> result = new BoardDao().boardList(pageNo,conn);
 		
 		
 		close(conn);
 		return result;
+	}
+	
+	public int boardCnt() {
+		Connection conn = getConnecntion();
+		
+		int result = new BoardDao().boardCnt(conn);
+		
+		close(conn);
+		
+		return result;
+		
 	}
 	
 	public List<Category> categoryList () {
@@ -90,4 +101,21 @@ public class BoardService {
 		return updateBoard;
 	}
 	
+	
+	public int deleteBoard(Board b) {
+		Connection conn = getConnecntion();
+		
+		int result = new BoardDao().deleteBoard(b, conn);
+		
+		if (result > 0 ) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+		
+	}
 }

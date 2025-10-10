@@ -45,7 +45,7 @@ public class UpdateController extends HttpServlet {
 		}
 		
 
-		Member m = new Member().updateCreateMembetr(userId, userName, phone, email, address, interset);
+		Member m = new Member().updateCreateMember(userId, userName, phone, email, address, interset);
 		
 
 		Member result = new MemberService().updateMember(m);

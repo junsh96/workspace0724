@@ -46,8 +46,14 @@ public class UpdateDetailController extends HttpServlet {
 			return;
 		}
 		
-		int boardWriter = currentBoard.getBoardWriter();
-		int loginMem = loginMember.getMemberNo();
+		int boardUser = currentBoard.getBoardWriter();
+		int loginUser = loginMember.getMemberNo();
+		
+		if (loginUser != boardUser) {
+			request.setAttribute("errorMsg", "권한이 없습니다.");
+			response.sendRedirect(request.getContextPath() + "/list.bo");
+			return;
+		}
 		
 		String newTitle = request.getParameter("title");
 		String newContent = request.getParameter("content");
