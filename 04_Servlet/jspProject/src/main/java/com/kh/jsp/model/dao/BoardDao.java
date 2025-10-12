@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.kh.jsp.common.JdbcTemplate;
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
 
@@ -201,6 +202,7 @@ public class BoardDao {
 	
 		return b;
 	}
+
 	
 	public int boardCount(int boardNo, Connection conn) {
 		int result = 0;

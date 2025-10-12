@@ -82,7 +82,7 @@
 		<div class="board-card">
 			<h2>일반게시글 작성하기</h2>
 
-			<form action="${pageContext.request.contextPath}/insertBoard.bo" method="POST" >
+			<form action="${pageContext.request.contextPath}/insertBoard.bo" method="POST" enctype="multipart/form-data">
 				<table class="form-table">
 					<tr>
 						<th>카테고리</th>

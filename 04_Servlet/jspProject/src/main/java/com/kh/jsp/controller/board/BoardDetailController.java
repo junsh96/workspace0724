@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
+import com.kh.jsp.service.AttachmentService;
 import com.kh.jsp.service.BoardService;
 
 /**
@@ -46,13 +48,14 @@ public class BoardDetailController extends HttpServlet {
 		}
 		
 		Board b = new BoardService().boardDetail(boardNo);
+		Attachment a = new AttachmentService().selectBoardFile(boardNo);
 		
 		if (b == null) {
 			request.setAttribute("errorMsg", "알수 없는 오류가 발생하였습니다.");
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
 		} else {
 			session.setAttribute("boardDetail", b);
-			
+			session.setAttribute("boardFile", a);
 			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
 		}
 		

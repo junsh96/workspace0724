@@ -1,11 +1,13 @@
 package com.kh.jsp.controller.board;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import com.kh.jsp.service.BoardService;
 /**
  * Servlet implementation class InsertBoardController
  */
+@MultipartConfig
 @WebServlet("/insertBoard.bo")
 public class InsertBoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -41,7 +44,7 @@ public class InsertBoardController extends HttpServlet {
 		String boardTitle = request.getParameter("title");
 		String boardContent = request.getParameter("content");
 		
-		File newFile = new File(request.getParameter("upfile"));
+		Part newFile = request.getPart("upfile");
 	
 		
 
@@ -63,22 +66,30 @@ public class InsertBoardController extends HttpServlet {
 		
 		int result = new BoardService().insertBoard(b);
 		int fileResult = 0;
-//		if (newFile != null) {
-//			String filePath = request.getContextPath()+"/WEB-INF/file/";
-//			
-//			File file = new File(filePath+newFile);
-//			
-//			System.out.println(file);
-//			
-//			Attachment a = new Attachment().insertFileAttachment(newFile.getName() ,file.getPath(), file.getName());
-//			
-//			fileResult = new AttachmentService().uploadFile(a);
-//			
-//			
-//			
-//		} else {
-//			fileResult = 1;
-//		}
+		if (newFile != null && newFile.getSize() > 0) {
+			String filePath = request.getServletContext().getRealPath("/resources/file/");
+			
+			
+			File saveDir = new File(filePath);
+			if (!saveDir.exists()) saveDir.mkdirs();
+			
+			System.out.println(filePath);
+			System.out.println(newFile.getSubmittedFileName());
+			
+			String originName = newFile.getSubmittedFileName();
+			String changeName = System.currentTimeMillis() + "_" + originName;
+			
+			newFile.write(filePath + changeName);
+			
+			Attachment a = new Attachment().insertFileAttachment(originName,filePath, changeName);
+			
+			fileResult = new AttachmentService().uploadFile(a);
+			
+			
+			
+		} else {
+			fileResult = 1;
+		}
 		
 		if (result > 0) {
 			session.setAttribute("alertMsg", "게시글 등록 성공");

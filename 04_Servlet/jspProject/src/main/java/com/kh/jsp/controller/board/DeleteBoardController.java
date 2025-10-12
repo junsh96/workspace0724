@@ -7,10 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.File;
 import java.io.IOException;
 
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Member;
+import com.kh.jsp.service.AttachmentService;
 import com.kh.jsp.service.BoardService;
 
 /**
@@ -41,6 +44,9 @@ public class DeleteBoardController extends HttpServlet {
 		
 		int loginUser = loginMember.getMemberNo();
 		int boardUser = currentBoard.getBoardWriter();
+		int boardNo = currentBoard.getBoardNo();
+		
+		Attachment a = new AttachmentService().selectBoardFile(boardNo);
 		
 		if (session.getAttribute("loginMember") == null) {
 			request.setAttribute("errorMsg", "잘못된 접근입니다.");
@@ -55,8 +61,30 @@ public class DeleteBoardController extends HttpServlet {
 		}
 		
 		int result = new BoardService().deleteBoard(currentBoard);
+		int fileResult = 1;
+		System.out.println("??"+a);
+		if (a.getFileNo() != 0) {
+			fileResult = new AttachmentService().deleteFile(a);
+			
+			String filePath = a.getFilePath();
+			String fileName = a.getOriginName();
+			String changeName = a.getChangeName();
+			File deleteFile = new File(filePath+changeName);
+			
+			if (deleteFile.exists()) {
+			    if (deleteFile.delete()) {
+			        System.out.println("파일 삭제 완료: " + filePath);
+			    } else {
+			        System.out.println("파일 삭제 실패 (권한 또는 접근 문제): " + filePath);
+			    }
+			} else {
+			    System.out.println("파일이 존재하지 않습니다: " + filePath);
+			}
+		}
+
 		
-		if (result > 0) {
+		
+		if (result > 0 && fileResult > 0) {
 			session.setAttribute("alertMsg", "게시글 삭제 성공");
 			session.setAttribute("boardDetail", null);
 			

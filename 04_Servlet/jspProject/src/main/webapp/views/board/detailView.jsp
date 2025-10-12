@@ -152,7 +152,15 @@
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="3">
-						첨부파일이 없습니다.
+						<c:url var="fileDown" value="download.at">
+							<c:param name="filePath" value="${boardFile.filePath}"/>
+							<c:param name="fileName" value="${boardFile.originName}"/>
+							<c:param name="changeName" value="${boardFile.changeName}"/>
+					    </c:url>
+					
+						<a href="${pageContext.request.contextPath}/${fileDown}">
+							${boardFile.originName}
+						</a>
 					</td>
 				</tr>
 			</table>

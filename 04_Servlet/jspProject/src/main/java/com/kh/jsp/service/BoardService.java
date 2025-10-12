@@ -1,6 +1,7 @@
 package com.kh.jsp.service;
 
 import com.kh.jsp.model.dao.BoardDao;
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
 
@@ -83,6 +84,7 @@ public class BoardService {
 		return b;
 		
 	}
+	
 	
 	public Board updateBoardDetail(Board b) {
 		Connection conn =  getConnecntion();
