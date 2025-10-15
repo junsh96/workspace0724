@@ -65,6 +65,25 @@
 	
 </entry>
 
+<entry key="insertAttachment">
+	INSERT INTO ATTACHMENT (
+		FILE_NO,
+		REF_BNO,
+		ORIGIN_NAME,
+		CHANGE_NAME,
+		FILE_PATH,
+		UPLOAD_DATE
+	) VALUES (
+		SEQ_FNO.NEXTVAL,
+		SEQ_BNO.CURRVAL,
+		?,
+		?,
+		?,
+		SYSDATE
+	)
+	
+</entry>
+
 <entry	key="selectBoardDetail">
 		SELECT A.BOARD_NO,
 			A.BOARD_TYPE,
@@ -108,6 +127,42 @@
 	SET
 		STATUS = 'N'
 	WHERE BOARD_NO = ?
+</entry>
+
+<entry key="insertReply">
+	INSERT INTO REPLY (
+		REPLY_NO,
+		REPLY_CONTENT,
+		REF_BNO,
+		REPLY_WRITER,
+		CREATE_DATE
+	) VALUES (
+		SEQ_RNO.NEXTVAL,
+		?,
+		?,
+		?,
+		SYSDATE
+	)
+	
+</entry>
+
+<entry key="selectReplyByBoardNo">
+	SELECT REPLY_NO,
+			REPLY_CONTENT,
+			MEMBER_ID,
+			TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH:MI') AS CREATE_DATE
+	FROM REPLY R
+	JOIN MEMBER M ON(REPLY_WRITER = MEMBER_NO)
+	WHERE REF_BNO = ?
+	AND R.STATUS = 'Y'
+	ORDER BY REPLY_NO DESC
+</entry>
+
+<entry key="deleteReply">
+	UPDATE REPLY
+	SET
+		STATUS = 'N'
+	WHERE REPLY_NO = ?
 </entry>
 
 </properties>

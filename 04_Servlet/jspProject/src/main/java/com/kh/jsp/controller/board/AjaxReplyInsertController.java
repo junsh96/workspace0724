@@ -8,22 +8,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.kh.jsp.model.vo.Category;
+import com.kh.jsp.model.vo.Member;
+import com.kh.jsp.model.vo.Reply;
 import com.kh.jsp.service.BoardService;
+import com.kh.jsp.service.ReplyService;
 
 /**
- * Servlet implementation class EnrollFormBoController
+ * Servlet implementation class AjaxReplyInsertController
  */
-@WebServlet("/enrollForm.bo")
-public class EnrollFormBoController extends HttpServlet {
+@WebServlet("/rinsert.bo")
+public class AjaxReplyInsertController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EnrollFormBoController() {
+    public AjaxReplyInsertController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,24 +32,22 @@ public class EnrollFormBoController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /**
-     * 게시글 등록 폼 이동
-     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//보내준 정보를 받아서 저장
+		HttpSession session = request.getSession();
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		String content = request.getParameter("content");
+		Member loginMember = (Member)session.getAttribute("loginMember");
 		
-		List<Category> result = new BoardService().categoryList();
-		HttpSession session =  request.getSession();
+		int writerMember = loginMember.getMemberNo();
 		
-		if (session.getAttribute("loginMember") == null) {
-			request.setAttribute("errorMsg", "잘못된 접근입니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-			return;
-		}
+		Reply r = new Reply().insertReply(content, boardNo, writerMember);
 		
+		int result = new BoardService().insertReply(r);
 		
-		session.setAttribute("categoryList", result);
+		response.getWriter().print(result);
+	
 		
-		request.getRequestDispatcher("views/board/enrollForm.jsp").forward(request, response);
 	}
 
 	/**

@@ -1,29 +1,25 @@
-package com.kh.jsp.controller.board;
+package com.kh.jsp.controller.member;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
-import java.util.List;
 
-import com.kh.jsp.model.vo.Category;
-import com.kh.jsp.service.BoardService;
+import com.kh.jsp.service.MemberService;
 
 /**
- * Servlet implementation class EnrollFormBoController
+ * Servlet implementation class AjaxidCheckController
  */
-@WebServlet("/enrollForm.bo")
-public class EnrollFormBoController extends HttpServlet {
+@WebServlet("/idDulpicateCheck.me")
+public class AjaxidCheckController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EnrollFormBoController() {
+    public AjaxidCheckController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,24 +27,16 @@ public class EnrollFormBoController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /**
-     * 게시글 등록 폼 이동
-     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String checkId = request.getParameter("checkId");
 		
-		List<Category> result = new BoardService().categoryList();
-		HttpSession session =  request.getSession();
-		
-		if (session.getAttribute("loginMember") == null) {
-			request.setAttribute("errorMsg", "잘못된 접근입니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-			return;
+		int count = new MemberService().idCheck(checkId);
+			
+		if (count > 0) { // 회원이 존재
+			response.getWriter().print("NNNNN");
+		} else { // 회원이 존재하지 않음
+			response.getWriter().print("NNNNY");
 		}
-		
-		
-		session.setAttribute("categoryList", result);
-		
-		request.getRequestDispatcher("views/board/enrollForm.jsp").forward(request, response);
 	}
 
 	/**

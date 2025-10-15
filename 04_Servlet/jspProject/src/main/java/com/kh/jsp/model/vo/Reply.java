@@ -22,5 +22,15 @@ public class Reply {
 	private Date createDate;
 	private String status;
 	
+	private String memberId;
+	
+	public static Reply insertReply(String replyContent,int refBno,int replyWriter) {
+		Reply r = new Reply();	
+		r.setReplyContent(replyContent);
+		r.setRefBno(refBno);
+		r.setReplyWriter(replyWriter);
+				
+		return r;
+	}
 	
 }

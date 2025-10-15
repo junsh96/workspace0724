@@ -34,12 +34,17 @@ public class BoardFileDownloadController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    /**
+     * 게시글 파일 다운로드
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String filePath = request.getParameter("filePath");
 		String fileName = request.getParameter("fileName");
 		String changeName = request.getParameter("changeName");
-		File downloadFile = new File(filePath+changeName);
+		String savePath = request.getServletContext().getRealPath(filePath);
+		
+		File downloadFile = new File(savePath+changeName);
 
         if (!downloadFile.exists()) {
             response.getWriter().print("파일이 존재하지 않습니다.");

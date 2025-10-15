@@ -8,22 +8,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.kh.jsp.model.vo.Category;
+import com.kh.jsp.model.vo.Member;
 import com.kh.jsp.service.BoardService;
 
 /**
- * Servlet implementation class EnrollFormBoController
+ * Servlet implementation class AjaxReplyDeleteController
  */
-@WebServlet("/enrollForm.bo")
-public class EnrollFormBoController extends HttpServlet {
+@WebServlet("/rdelete.bo")
+public class AjaxReplyDeleteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EnrollFormBoController() {
+    public AjaxReplyDeleteController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,24 +30,17 @@ public class EnrollFormBoController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /**
-     * 게시글 등록 폼 이동
-     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Member loginMember = (Member)session.getAttribute("loginMember");
 		
-		List<Category> result = new BoardService().categoryList();
-		HttpSession session =  request.getSession();
+		int replyNo = Integer.parseInt(request.getParameter("replyNo"));
 		
-		if (session.getAttribute("loginMember") == null) {
-			request.setAttribute("errorMsg", "잘못된 접근입니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-			return;
-		}
+		int result = new BoardService().deleteReply(replyNo);
+		
+		response.getWriter().print(result);
 		
 		
-		session.setAttribute("categoryList", result);
-		
-		request.getRequestDispatcher("views/board/enrollForm.jsp").forward(request, response);
 	}
 
 	/**

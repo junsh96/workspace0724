@@ -220,4 +220,31 @@ public class MemberDao {
 		
 	}
 	
+	public int idCheck(Connection conn , String checkId) {
+		int count = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("idCheck");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, checkId);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				count = rset.getInt("COUNT");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		
+		return count;
+	}
+	
 }

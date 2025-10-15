@@ -5,25 +5,24 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
-import com.kh.jsp.model.vo.Category;
+import com.google.gson.Gson;
+import com.kh.jsp.model.vo.Reply;
 import com.kh.jsp.service.BoardService;
 
 /**
- * Servlet implementation class EnrollFormBoController
+ * Servlet implementation class AjaxReplyListController
  */
-@WebServlet("/enrollForm.bo")
-public class EnrollFormBoController extends HttpServlet {
+@WebServlet("/rlist.bo")
+public class AjaxReplyListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EnrollFormBoController() {
+    public AjaxReplyListController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,24 +30,24 @@ public class EnrollFormBoController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /**
-     * 게시글 등록 폼 이동
-     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		
-		List<Category> result = new BoardService().categoryList();
-		HttpSession session =  request.getSession();
+		ArrayList<Reply> list =  new BoardService().selectReplyByBoardNo(boardNo);
+//		String res = "[";
+//		for (Reply r : list) {
+//			res += ("{" + "replyNo :" + r.getReplyNo()+ ","
+//					+"replyContent: \""+ r.getReplyContent()+"\""
+//					+"}");
+//		}
+//		
+//		res += "]";
+//		
+//		response.setContentType("application/json; charset=UTF-8");
+//		response.getWriter().print(res);
 		
-		if (session.getAttribute("loginMember") == null) {
-			request.setAttribute("errorMsg", "잘못된 접근입니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-			return;
-		}
+		new Gson().toJson(list,response.getWriter());
 		
-		
-		session.setAttribute("categoryList", result);
-		
-		request.getRequestDispatcher("views/board/enrollForm.jsp").forward(request, response);
 	}
 
 	/**

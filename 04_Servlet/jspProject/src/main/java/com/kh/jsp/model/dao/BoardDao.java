@@ -12,6 +12,7 @@ import com.kh.jsp.common.JdbcTemplate;
 import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
+import com.kh.jsp.model.vo.Reply;
 
 import static com.kh.jsp.common.JdbcTemplate.*;
 
@@ -76,6 +77,11 @@ public class BoardDao {
 		return result;
 	}
 	
+	/**
+	 * 게시글 페이징용 갯수 조회
+	 * @param conn
+	 * @return
+	 */
 	public int boardCnt(Connection conn) {
 		int result = 0;
 		ResultSet rset = null;
@@ -102,7 +108,11 @@ public class BoardDao {
 		return result;
 	}
 	
-	
+	/**
+	 * 게시글 등록폼 카테고리 조회
+	 * @param conn
+	 * @return
+	 */
 	public List<Category> categoryList(Connection conn) {
 		
 		List<Category> result = new ArrayList<>();
@@ -137,6 +147,12 @@ public class BoardDao {
 		return result;
 	}
 	
+	/**
+	 * 게시글 등록
+	 * @param b
+	 * @param conn
+	 * @return
+	 */
 	public int insertBoard(Board b, Connection conn) {
 		
 		int result = 0;
@@ -164,6 +180,36 @@ public class BoardDao {
 		return result;
 	}
 	
+	public int insertAttachment(Attachment at, Connection conn) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("insertAttachment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, at.getOriginName());
+			pstmt.setString(2, at.getChangeName());
+			pstmt.setString(3, at.getFilePath());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 게시글 상세보기
+	 * @param boardNo
+	 * @param conn
+	 * @return
+	 */
 	public Board boardDetail(int boardNo, Connection conn) {
 		
 		ResultSet rset = null;
@@ -203,7 +249,12 @@ public class BoardDao {
 		return b;
 	}
 
-	
+	/**
+	 * 게시글 조회수 증가
+	 * @param boardNo
+	 * @param conn
+	 * @return
+	 */
 	public int boardCount(int boardNo, Connection conn) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -226,7 +277,12 @@ public class BoardDao {
 		return result;
 	}
 
-	
+	/**
+	 * 게시글 수정
+	 * @param b
+	 * @param conn
+	 * @return
+	 */
 	public int updateBoardDetail(Board b, Connection conn) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -252,6 +308,12 @@ public class BoardDao {
 		
 	}
 	
+	/**
+	 * 게시글 삭제
+	 * @param b
+	 * @param conn
+	 * @return
+	 */
 	public int deleteBoard(Board b, Connection conn) {
 		int result = 0;
 		
@@ -261,6 +323,98 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, b.getBoardNo());
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 댓글 등록
+	 * @param r
+	 * @param conn
+	 * @return
+	 */
+	public int insertReply(Reply r, Connection conn) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		
+		String sql = prop.getProperty("insertReply");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, r.getReplyContent());
+			pstmt.setInt(2, r.getRefBno());
+			pstmt.setInt(3, r.getReplyWriter());
+			
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 댓글 조회
+	 * @param conn
+	 * @param boardNo
+	 * @return
+	 */
+	public ArrayList<Reply> selectReplyByBoardNo(Connection conn, int boardNo) {
+		ArrayList<Reply> result = new ArrayList<>();
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("selectReplyByBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Reply r = new Reply();
+				r.setReplyNo(rset.getInt("REPLY_NO"));
+				r.setReplyContent(rset.getString("REPLY_CONTENT"));
+				r.setMemberId(rset.getString("MEMBER_ID"));
+				r.setCreateDate(rset.getDate("CREATE_DATE"));
+				
+				
+				result.add(r);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return result;
+	}
+	
+	public int deleteReply(Connection conn, int replyNo) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("deleteReply");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, replyNo);
 			
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {

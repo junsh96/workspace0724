@@ -158,7 +158,8 @@
 							<c:param name="changeName" value="${boardFile.changeName}"/>
 					    </c:url>
 					
-						<a href="${pageContext.request.contextPath}/${fileDown}">
+						<a download="${boardFile.originName}" 
+						href="${pageContext.request.contextPath}/${boardFile.filePath}${boardFile.changeName}">
 							${boardFile.originName}
 						</a>
 					</td>
@@ -177,19 +178,127 @@
 				<thead>
 					<tr>
 						<th width="120">댓글작성</th>
-						<td>
-							<textarea id="reply-content" cols="50" rows="3"></textarea>
-						</td>
-						<td width="100">
-							<button class="btn btn-primary reply-btn" onclick="">댓글등록</button>
-						</td>
+						<c:choose>
+							<c:when test="${loginMember != null}">
+								<td>
+									<textarea id="reply-content" cols="50" rows="3" name="reply"></textarea>
+								</td>
+								<td width="100">
+								<%-- <c:url var="replyUrl" value="insertReply.re">
+									<c:param name="boardNo" value="${boardDetail.boardNo}"/>
+									<c:param name="reply" value="${document.getElementById('reply-content').value}"/>
+							    </c:url --%>>
+								
+									<%-- <button class="btn btn-primary reply-btn" onclick="location.href='${pageContext.request.contextPath}/${replyUrl}'">댓글등록</button>--%>
+									<button class="btn btn-primary reply-btn" onclick="insertReply(${boardDetail.boardNo})">댓글등록</button>
+								</td>							
+							</c:when>
+							<c:otherwise>
+								<textarea  cols="50" rows="3" name="reply" readonly></textarea>
+							</c:otherwise>
+						</c:choose>
+
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="reply-content">
 					<!-- 댓글 목록이 여기에 동적으로 추가됩니다 -->
 				</tbody>
 			</table>
 		</div>
 	</div>
+	<script>
+		//콜백 함수
+		// - 다른 함수의 인자로 전달되어 나중에 호출되는 함수
+		// - 내가 직접 실행하지 않고 특정 시점에 다른 함수가 실행해주는 함수를 콜백함수
+		// - 비동기 코드에서 많이 사용한다. 예를들면 $.ajax에 전달하는 success / error에 대한 함수도 콜백 함수.
+		// - 함수의 동작을 외부에서 결정할 수 있어서 코드를 깔끔하게 분리할 수 있다.
+		function init(bno) {
+			getReplyList(bno,drawReplyList);
+			
+		}
+		//서버로부터 댓글 목록을 가져오기. + 
+		function getReplyList(bno,drawReplyList) {
+			$.ajax ({
+				url: "rlist.bo",
+				dataType: "json", //응답 데이터 타입
+				type: "get",
+				data: {
+					boardNo : bno
+				},
+				success : function(result) {
+					drawReplyList(result);
+				},
+				error : function(err){
+
+				}
+			})
+		}
+	
+		function insertReply(bno) {
+			const contentInput = document.querySelector("#reply-content");
+
+			$.ajax ({
+				url: "rinsert.bo",
+				type: "post",
+				data: {
+					boardNo : bno,
+					content : contentInput.value
+				},
+				success : function(result) {
+					if (result == 1) {
+						getReplyList(bno,drawReplyList)						
+					}
+				},
+				error : function(err){
+
+				}
+			})
+		}
+		
+		function drawReplyList(replyList) {
+			const replyContent = document.querySelector("#reply-content");
+			
+			//내부에 이미 그려진 dom을 제거
+			replyContent.innerHTML = "";
+
+			for (let r of replyList) {
+				const replyRow = document.createElement("tr");
+				replyRow.innerHTML = "<td>"+ r.memberId +"</td>" +
+									"<td class='text-start'>" + 
+										r.replyContent + 
+										"<div class='small text-secondary mt-1'>" + r.createDate + "</div>"	+
+									"</td>" + 
+									"<td><button class = 'btn btn-outline-dnager btn-sm'>삭제</button></td>";
+
+
+				let deleteBtn = replyRow.querySelector("button");
+				deleteBtn.addEventListener("click",function() {
+					deleteReply(r.replyNo, function() {
+
+					});
+				})					
+				replyContent.appendChild(replyRow);			
+			}
+
+
+		}
+		
+		function deleteReply(replyNo, callback) {
+			$.ajax ({
+				url: "rdelete.bo",
+				data: {
+					replyNo : replyNo
+				},
+				success : function(result) {
+					if (result > 0) {
+						callback();					
+					}
+				},
+				error : function(err){
+
+				}
+			})
+		}
+	</script>
 </body>
 </html>

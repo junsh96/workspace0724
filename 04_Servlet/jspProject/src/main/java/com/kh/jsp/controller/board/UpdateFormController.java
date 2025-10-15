@@ -10,9 +10,11 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
 import com.kh.jsp.model.vo.Member;
+import com.kh.jsp.service.AttachmentService;
 import com.kh.jsp.service.BoardService;
 
 /**
@@ -42,11 +44,14 @@ public class UpdateFormController extends HttpServlet {
 		Board currentBoard = (Board)session.getAttribute("boardDetail");
 		Member loginMember = (Member)session.getAttribute("loginMember");
 
+		Attachment at = new AttachmentService().selectBoardFile(currentBoard.getBoardNo());
+		
 		int boardWriter = currentBoard.getBoardWriter();
 		int loginMem = loginMember.getMemberNo();
 		
 		List<Category> categoryList = new BoardService().categoryList();
 		session.setAttribute("categoryList", categoryList);
+		session.setAttribute("boardFile", at);
 		
 		if (boardWriter != loginMem || session.getAttribute("loginMember") == null) {
 			request.setAttribute("errorMsg", "잘못된 접근입니다.");

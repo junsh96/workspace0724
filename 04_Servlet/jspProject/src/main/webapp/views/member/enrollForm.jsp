@@ -39,13 +39,13 @@
     <div class="container">
         <div class="form-container">
             <h2 class="text-center mb-4">회원가입</h2>
-            <form action="${pageContext.request.contextPath}/insert.me" method="post">
+            <form id="enroll-form" action="${pageContext.request.contextPath}/insert.me" method="post">
                 <div class="row form-row">
                     <div class="col-md-8">
                         <input type="text" class="form-control" name="userId" required placeholder="아이디 입력...">
                     </div>
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-outline-primary w-100" onclick="">중복확인</button>
+                        <button type="button" class="btn btn-outline-primary w-100" onclick="idDulpicateCheck()">중복확인</button>
                     </div>
                 </div>
 
@@ -108,11 +108,91 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg me-3">회원가입</button>
+                    <button disabled type="submit" class="btn btn-primary btn-lg me-3" onclick="return validationCheck()">회원가입</button>
                     <button type="reset" class="btn btn-outline-secondary btn-lg">다시입력</button>
                 </div>
             </form>
         </div>
     </div>
+    <script>
+    function validationCheck() {
+    	const pwdInputList = document.querySelectorAll("#enroll-form input[type='password']");
+    	
+    	if(pwdInputList[0].value !== pwdInputList[1].value) {
+    		alert("비밀번호가 일치하지 않습니다.");
+    		return false;
+    	}
+    	
+    }
+    
+    
+	//중복 확인 버튼 -> 사용자가 입력한 아이디기 이미 존재하는지 체크
+	//존재한다면 -> 사용불가 -> akert메시지 출력
+	//존재하지 않는다면 -> 사용가능 -> 사용할지? -> yes -> 더이상 변경 불가
+	//                                     no -> 다시 입력
+	
+	
+	//Ajax?
+	//웹페이지를 새로고침하지 않고 서버와 데이터를 주고 받을수 있게 해주는 기능
+	//댓글을 달았을때 페이지가 새로고침되지 않고 댓글목록이 수정
+	//기존 웹 개발 방식
+	// -> 버튼을 클릭할때마다 페이지 전체가 서버에 전송되며, 응답을 받기 전 잠시 화면 전체를 흰 화면에서 대기
+	// 서버에서 새로운 html을 만들어서 리턴해준다면 이때 화먄을 그려줌 -> 매번 화면이 깜빡임
+	
+	//js를 사용해서 Ajax를 구현할때는 기본적으로 제공해주는 XMLHttpRequest를 사용
+	//기본적으로  xml의 데이터 형식을 사용했지만 최근에는 json형식을 많이 사용.
+	
+	//ajax란
+	//jQuery에서 Ajax기능을 쉽게 사용할 수 있도록 만든 함수다.
+	
+	/* $.ajax({
+		url: "요청을 보낼 주소",
+		type : "요청방식",
+		data : {},
+		success : function() {
+			성공시 실행
+		},
+		error : function () {
+			실패시 실행
+		}
+	}) */
+	function idDulpicateCheck() {
+		const idInput = document.querySelector("#enroll-form input[name='userId']");
+		
+		if(idInput.value.length < 5 ) {
+			return;
+		}
+		
+		$.ajax({
+			url: "idDulpicateCheck.me",
+			type : "get",
+			data : {
+				checkId : idInput.value
+			},
+			success : function(result) {
+				if (result == "NNNNN") { // 존재한다면
+					alert("이미 존재하는 아이디 입니다.");
+					idInput.focus();
+				} else { //존재하지 않는다면
+					if(confirm("사용가능한 아이디 입니다. 사용하시겠습니까?")) {
+						idInput.setAttribute("readonly",true);
+						
+						const submitBtn = document.querySelector("#enroll-form button[type='submit']");
+						submitBtn.removeAttribute("disabled");
+					} else {
+						idInput.focus();
+					}
+				}
+				console.log(result)
+			},
+			error : function (error) {
+				console.log(error);
+			}
+		})
+		
+		
+		
+	}
+    </script>
 </body>
 </html>
