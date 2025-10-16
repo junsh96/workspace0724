@@ -162,7 +162,12 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, b.getBoardType());
-			pstmt.setInt(2, b.getCategoryNo());
+			if (b.getBoardType() == 1) {
+				pstmt.setInt(2,b.getCategoryNo());
+			} else {
+				pstmt.setNull(2, java.sql.Types.NUMERIC);
+			}
+			
 			pstmt.setString(3, b.getBoardTitle());
 			pstmt.setString(4, b.getBoardContent());
 			pstmt.setInt(5, b.getBoardWriter());
@@ -426,4 +431,104 @@ public class BoardDao {
 		
 		return result;
 	}
+	
+	public ArrayList<Board> selectThumnailList(Connection conn) {
+		
+		ArrayList<Board> result = new ArrayList<>();
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("selectThumnailList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Board b = new Board();
+				b.setBoardNo(rset.getInt("BOARD_NO"));
+				b.setBoardTitle(rset.getString("BOARD_TITLE"));
+				b.setCount(rset.getInt("COUNT"));
+				b.setThumbnailImg(rset.getString("THUMBNAIL_IMG"));
+				result.add(b);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return result;
+	}
+	
+	public int insertThumbBoard(Connection conn,ArrayList<Attachment> list) {
+		int result = 1;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("insertAttachmentList");
+		
+		try {
+			for (Attachment at : list) {
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, at.getOriginName());
+				pstmt.setString(2, at.getChangeName());
+				pstmt.setString(3, at.getFilePath());
+				pstmt.setInt(4, at.getFileLevel());
+				
+				result *= pstmt.executeUpdate();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	
+	public ArrayList<Attachment> selectThumbnailFile(Connection conn, int boardNo) {
+		ArrayList<Attachment> list = null;
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("selectBoardFile");
+		Attachment a = new Attachment();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				a.setFileNo(rset.getInt("FILE_NO"));
+				a.setRefBno(rset.getInt("REF_BNO"));
+				a.setOriginName(rset.getString("ORIGIN_NAME"));
+				a.setChangeName(rset.getString("CHANGE_NAME"));
+				a.setFilePath(rset.getString("FILE_PATH"));
+				a.setUploadDate(rset.getDate("UPLOAD_DATE"));
+				a.setFileLevel(rset.getInt("FILE_LEVEL"));
+				a.setStatus(rset.getString("STATUS"));
+				list.add(a);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return list;
+	}
+	
+	
 }

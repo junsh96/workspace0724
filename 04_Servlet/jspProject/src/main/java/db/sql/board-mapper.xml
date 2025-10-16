@@ -165,4 +165,54 @@
 	WHERE REPLY_NO = ?
 </entry>
 
+<entry key="selectThumnailList">
+	SELECT BOARD_NO,
+			BOARD_TITLE,
+			COUNT,
+			FILE_PATH || CHANGE_NAME AS "THUMBNAIL_IMG"
+	FROM BOARD B
+	JOIN ATTACHMENT A ON(BOARD_NO = REF_BNO)
+	WHERE B.STATUS = 'Y'
+	AND B.BOARD_TYPE = 2
+	AND FILE_LEVEL = 1
+	ORDER BY B.BOARD_NO DESC
+
+</entry>
+
+<entry key="insertAttachmentList">
+	INSERT INTO ATTACHMENT (
+		FILE_NO,
+		REF_BNO,
+		ORIGIN_NAME,
+		CHANGE_NAME,
+		FILE_PATH,
+		UPLOAD_DATE,
+		FILE_LEVEL
+	) VALUES (
+		SEQ_FNO.NEXTVAL,
+		SEQ_BNO.CURRVAL,
+		?,
+		?,
+		?,
+		SYSDATE,
+		?
+	)
+	
+</entry>
+
+<entry key="selectBoardFile">
+	SELECT FILE_NO,
+			REF_BNO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH || CHANGE_NAME AS "FILE_IMG",
+			UPLOAD_DATE,
+			FILE_LEVEL,
+			STATUS
+	FROM ATTACHMENT
+	WHERE REF_BNO = ?
+	AND STATUS = 'Y'
+</entry>
+
+
 </properties>

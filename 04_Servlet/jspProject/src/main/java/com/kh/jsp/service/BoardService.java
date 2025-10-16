@@ -203,5 +203,40 @@ public class BoardService {
 		return result;
 		
 	}
+	
+	public ArrayList<Board> selectThumnailList() {
+		Connection conn = getConnecntion();
+		
+		ArrayList<Board> result = new BoardDao().selectThumnailList(conn);
+		
+		close(conn);
+		return result;
+	}
 
+	
+	public int insertThumbBoard(Board b, ArrayList<Attachment> list) {
+		Connection conn = getConnecntion();
+		
+		int result = new BoardDao().insertBoard(b, conn);
+		result *= new BoardDao().insertThumbBoard(conn,list);
+		
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+	
+	public ArrayList<Attachment> selectThumbnailFile(int boardNo) {
+		Connection conn = getConnecntion();
+		
+		ArrayList<Attachment> list = new BoardDao().selectThumbnailFile(conn,boardNo);
+		
+		close(conn);
+		
+		return list;
+		
+	}
 }

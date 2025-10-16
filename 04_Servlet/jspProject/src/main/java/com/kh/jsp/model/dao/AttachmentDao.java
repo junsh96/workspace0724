@@ -24,6 +24,12 @@ public class AttachmentDao {
 		}
 	}
 	
+	/**
+	 * 파일 업로드
+	 * @param a
+	 * @param conn
+	 * @return
+	 */
 	public int uploadFile(Attachment a, Connection conn) {
 		int result = 0;
 		
@@ -48,7 +54,12 @@ public class AttachmentDao {
 		return result;
 	}
 	
-	
+	/**
+	 * 게시글 조회시 파일 조회
+	 * @param boardNo
+	 * @param conn
+	 * @return
+	 */
 	public Attachment selectBoardFile(int boardNo, Connection conn) {
 		ResultSet rset = null;
 		PreparedStatement pstmt = null;
@@ -83,6 +94,12 @@ public class AttachmentDao {
 		return a;
 	}
 	
+	/**
+	 * 게시글 삭제시 파일 삭제
+	 * @param a
+	 * @param conn
+	 * @return
+	 */
 	public int deleteFile(Attachment a , Connection conn) {
 		int result = 0;
 		

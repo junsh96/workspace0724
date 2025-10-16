@@ -9,7 +9,11 @@ import com.kh.jsp.model.vo.Attachment;
 
 public class AttachmentService {
 
-	
+	/**
+	 * 파일 업로드
+	 * @param a
+	 * @return
+	 */
 	public int uploadFile(Attachment a) {
 		Connection conn = getConnecntion();
 		
@@ -26,6 +30,11 @@ public class AttachmentService {
 		return result;
 	}
 	
+	/**
+	 * 게시글 조회시 파일 조회
+	 * @param boardNo
+	 * @return
+	 */
 	public Attachment selectBoardFile(int boardNo) {
 		Connection conn = getConnecntion();
 		
@@ -37,6 +46,11 @@ public class AttachmentService {
 		
 	}
 	
+	/**
+	 * 파일 삭제
+	 * @param a
+	 * @return
+	 */
 	public int deleteFile(Attachment a) {
 		Connection conn = getConnecntion();
 		
