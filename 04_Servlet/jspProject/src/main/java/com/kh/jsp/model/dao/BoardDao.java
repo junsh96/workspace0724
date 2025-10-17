@@ -531,4 +531,73 @@ public class BoardDao {
 	}
 	
 	
+	/**
+	 * 게시글 조회시 파일 조회
+	 * @param boardNo
+	 * @param conn
+	 * @return
+	 */
+	public Attachment selectBoardFile(int boardNo, Connection conn) {
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("selectBoardFile");
+		Attachment a = new Attachment();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				a.setFileNo(rset.getInt("FILE_NO"));
+				a.setRefBno(rset.getInt("REF_BNO"));
+				a.setOriginName(rset.getString("ORIGIN_NAME"));
+				a.setChangeName(rset.getString("CHANGE_NAME"));
+				a.setFilePath(rset.getString("FILE_PATH"));
+				a.setUploadDate(rset.getDate("UPLOAD_DATE"));
+				a.setFileLevel(rset.getInt("FILE_LEVEL"));
+				a.setStatus(rset.getString("STATUS"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return a;
+	}
+	
+	/**
+	 * 게시글 삭제시 파일 삭제
+	 * @param a
+	 * @param conn
+	 * @return
+	 */
+	public int deleteFile(Attachment a , Connection conn) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("deleteFile");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, a.getFileNo());
+
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	
 }

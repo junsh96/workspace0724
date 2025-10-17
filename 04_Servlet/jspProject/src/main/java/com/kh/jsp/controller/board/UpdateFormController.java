@@ -14,7 +14,6 @@ import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
 import com.kh.jsp.model.vo.Member;
-import com.kh.jsp.service.AttachmentService;
 import com.kh.jsp.service.BoardService;
 
 /**
@@ -44,7 +43,7 @@ public class UpdateFormController extends HttpServlet {
 		Board currentBoard = (Board)session.getAttribute("boardDetail");
 		Member loginMember = (Member)session.getAttribute("loginMember");
 
-		Attachment at = new AttachmentService().selectBoardFile(currentBoard.getBoardNo());
+		Attachment at = new BoardService().selectBoardFile(currentBoard.getBoardNo());
 		
 		int boardWriter = currentBoard.getBoardWriter();
 		int loginMem = loginMember.getMemberNo();

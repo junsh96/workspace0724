@@ -213,6 +213,30 @@
 	WHERE REF_BNO = ?
 	AND STATUS = 'Y'
 </entry>
+<entry key="selectBoardFile">
+	SELECT FILE_NO,
+			REF_BNO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			UPLOAD_DATE,
+			FILE_LEVEL,
+			STATUS
+	FROM ATTACHMENT
+	WHERE REF_BNO = ?
+	AND STATUS = 'Y'
+</entry>
+
+<entry key="deleteFile">
+	UPDATE ATTACHMENT
+	SET
+		STATUS = 'N'
+	WHERE FILE_NO = ?
+	AND STATUS = 'Y'
+</entry>
+
+
+
 
 
 </properties>

@@ -1,5 +1,6 @@
 package com.kh.jsp.service;
 
+import com.kh.jsp.model.dao.AttachmentDao;
 import com.kh.jsp.model.dao.BoardDao;
 import com.kh.jsp.model.dao.ReplyDao;
 import com.kh.jsp.model.vo.Attachment;
@@ -239,4 +240,45 @@ public class BoardService {
 		return list;
 		
 	}
+	
+	/**
+	 * 게시글 조회시 파일 조회
+	 * @param boardNo
+	 * @return
+	 */
+	public Attachment selectBoardFile(int boardNo) {
+		Connection conn = getConnecntion();
+		
+		Attachment a = new BoardDao().selectBoardFile(boardNo,conn);
+		
+		close(conn);
+		
+		return a;
+		
+	}
+	
+	/**
+	 * 파일 삭제
+	 * @param a
+	 * @return
+	 */
+	public int deleteFile(Attachment a) {
+		Connection conn = getConnecntion();
+		
+		int result = new BoardDao().deleteFile(a,conn);
+		
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+		
+		
+	}
+	
+	
 }

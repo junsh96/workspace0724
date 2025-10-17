@@ -1,4 +1,4 @@
-package com.kh.jsp.controller.board;
+package com.kh.mybatis.controller.member;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,21 +9,17 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import com.kh.jsp.model.vo.Attachment;
-import com.kh.jsp.model.vo.Board;
-import com.kh.jsp.service.BoardService;
-
 /**
- * Servlet implementation class BoardDetail
+ * Servlet implementation class MyPageController
  */
-@WebServlet("/detail.bo")
-public class BoardDetailController extends HttpServlet {
+@WebServlet("/myPage.me")
+public class MyPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardDetailController() {
+    public MyPageController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,35 +27,18 @@ public class BoardDetailController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /**
-     * 상세 페이지로 이동
-     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		
-		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-		
 		if (session.getAttribute("loginMember") == null) {
-			request.setAttribute("errorMsg", "잘못된 접근입니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-			return;
-		}
-		
-		Board b = new BoardService().boardDetail(boardNo);
-		Attachment a = new BoardService().selectBoardFile(boardNo);
-		
-		if (b == null) {
-			request.setAttribute("errorMsg", "알수 없는 오류가 발생하였습니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+			session.setAttribute("alertMsg", "잘못된 접근입니다.");
+			response.sendRedirect(request.getContextPath());
+			
 		} else {
-			session.setAttribute("boardDetail", b);
-			session.setAttribute("boardFile", a);
-			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
+			request.getRequestDispatcher("views/member/myPage.jsp").forward(request, response);
 		}
-		
-		
-	} 
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

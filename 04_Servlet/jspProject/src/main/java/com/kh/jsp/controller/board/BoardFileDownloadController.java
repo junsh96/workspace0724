@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 import com.kh.jsp.model.vo.Attachment;
-import com.kh.jsp.service.AttachmentService;
+
 
 /**
  * Servlet implementation class BoardFileDownloadController

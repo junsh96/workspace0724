@@ -21,7 +21,6 @@ import org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload;
 import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Member;
-import com.kh.jsp.service.AttachmentService;
 import com.kh.jsp.service.BoardService;
 
 /**
@@ -65,7 +64,7 @@ public class UpdateDetailController extends HttpServlet {
 			int boardUser = currentBoard.getBoardWriter();
 			int boardNo = currentBoard.getBoardNo();
 			int loginUser = loginMember.getMemberNo();
-			Attachment oldAt = new AttachmentService().selectBoardFile(boardNo);
+			Attachment oldAt = new BoardService().selectBoardFile(boardNo);
 			
 			if (loginUser != boardUser) {
 				request.setAttribute("errorMsg", "권한이 없습니다.");

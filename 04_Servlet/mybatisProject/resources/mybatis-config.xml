@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- mybatis에 대한 설정 -->
+<configuration>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	<!-- 자주 사용하는 vo클래스들의 풀 클래스명을 단순한 별칭으로 사용하기 위한 목록 -->
+	<typeAliases>
+		<typeAlias type="com.kh.mybatis.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.mybatis.model.vo.Board" alias="Board"/>
+	</typeAliases>
+
+<!-- environments : mybatis실행시 연결할 디비 정보 -->
+	<environments default="development">
+		<environment id="development">
+		<!-- transactionManager : JDBC 수동 커밋 | MANAGED(자동커밋) -->
+		<transactionManager type="JDBC"/>
+		<!--dataSource : DB 연결 정보 -->
+		<!-- type : POOLED(커넥션풀 사용) | UNPOOLED(커넥션 풀 사용 안함) -->
+		<!-- connectionPool : Coonnection객체를 담아둘수있는 영역 -->
+		<!-- 한번 담아두면 재사용 가능 -->
+		<dataSource type="POOLED">
+			<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+			<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+			<property name="username" value="C##jsp"/>
+			<property name="password" value="jsp"/>
+		</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+	  <mapper resource="/mappers/member-mapper.xml"/>
+	  <mapper resource="/mappers/board-mapper.xml"/>
+	</mappers>
+</configuration>

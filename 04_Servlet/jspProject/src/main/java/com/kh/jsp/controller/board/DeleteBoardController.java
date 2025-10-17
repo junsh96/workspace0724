@@ -13,7 +13,6 @@ import java.io.IOException;
 import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Member;
-import com.kh.jsp.service.AttachmentService;
 import com.kh.jsp.service.BoardService;
 
 /**
@@ -46,7 +45,7 @@ public class DeleteBoardController extends HttpServlet {
 		int boardUser = currentBoard.getBoardWriter();
 		int boardNo = currentBoard.getBoardNo();
 		
-		Attachment a = new AttachmentService().selectBoardFile(boardNo);
+		Attachment a = new BoardService().selectBoardFile(boardNo);
 		
 		if (session.getAttribute("loginMember") == null) {
 			request.setAttribute("errorMsg", "잘못된 접근입니다.");
@@ -64,7 +63,7 @@ public class DeleteBoardController extends HttpServlet {
 		int fileResult = 1;
 		System.out.println("??"+a);
 		if (a.getFileNo() != 0) {
-			fileResult = new AttachmentService().deleteFile(a);
+			fileResult = new BoardService().deleteFile(a);
 			
 			String filePath = a.getFilePath();
 			String fileName = a.getOriginName();
