@@ -1,0 +1,74 @@
+package com.kh.mybatis.controller.board;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+
+import com.kh.mybatis.model.vo.Attachment;
+import com.kh.mybatis.model.vo.Board;
+import com.mybatis.jsp.service.BoardService;
+
+
+
+/**
+ * Servlet implementation class BoardDetail
+ */
+@WebServlet("/detail.bo")
+public class BoardDetailController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public BoardDetailController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+    /**
+     * 상세 페이지로 이동
+     */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		
+		if (session.getAttribute("loginMember") == null) {
+			request.setAttribute("errorMsg", "잘못된 접근입니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+			return;
+		}
+		
+		Board b = new BoardService().boardDetail(boardNo);
+		Attachment a = new BoardService().selectBoardFile(boardNo);
+		
+		if (b == null) {
+			request.setAttribute("errorMsg", "알수 없는 오류가 발생하였습니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+		} else {
+			session.setAttribute("boardDetail", b);
+			session.setAttribute("boardFile", a);
+			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
+		}
+		
+		
+	} 
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

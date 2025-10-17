@@ -100,5 +100,20 @@
 	WHERE MEMBER_ID = #{memberId}
 	</select>
 	
+	<update id="updatePwd" parameterType="hashmap">
+		UPDATE MEMBER
+		SET
+			MEMBER_PWD = #{newPwd},
+			MODIFY_DATE = SYSDATE
+		WHERE MEMBER_ID = #{userId}
+		AND MEMBER_PWD = #{currentPwd}
+	</update>
 	
+	<update id="deleteMember" parameterType="String">
+		UPDATE MEMBER
+		SET 
+			STATUS = 'N',
+			MODIFY_DATE = SYSDATE
+		WHERE MEMBER_ID = #{userId}
+	</update>
 </mapper>

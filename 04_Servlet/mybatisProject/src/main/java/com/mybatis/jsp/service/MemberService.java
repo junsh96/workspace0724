@@ -94,5 +94,46 @@ public class MemberService {
 		return updateMember;
 	}
 	
+	/**
+	 * 비밀번호 수정
+	 * @param currentPwd
+	 * @param newPwd
+	 * @param userId
+	 * @return
+	 */
+	public Member updatePwd(String currentPwd, String newPwd, String userId) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = memberDao.updatePwd(sqlSession,currentPwd, newPwd, userId);
+		
+		Member updateMember = null; 
+		if(result > 0) {
+			updateMember = memberDao.selectMemberByUserId(sqlSession, userId);
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
+		sqlSession.close();
+		
+		return updateMember;
+		
+	}
+	
+	public int deleteMember(String userId) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = memberDao.deleteMember(sqlSession,userId);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
+		sqlSession.close();
+		
+		return result;
+	}
 	
 }

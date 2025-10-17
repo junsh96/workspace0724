@@ -67,7 +67,7 @@ public class MemberDao {
 	}
 	
 	/**
-	 * 
+	 * 수정된 회원 정보 조회
 	 * @param sqlSession
 	 * @param memberId
 	 * @return
@@ -79,4 +79,34 @@ public class MemberDao {
 		return updateMemberId;
 	}
 	
+	/**
+	 * 비밀번호 수정
+	 * @param sqlSession
+	 * @param currentPwd
+	 * @param newPwd
+	 * @param userId
+	 * @return
+	 */
+	public int updatePwd(SqlSession sqlSession, String currentPwd, String newPwd, String userId) {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("currentPwd", currentPwd);
+		map.put("newPwd", newPwd);
+		map.put("userId", userId);
+		
+		int result = sqlSession.update("MemberMapper.updatePwd",map);
+		
+		return result;
+	}
+	
+	/**
+	 * 회원 탈퇴
+	 * @param sqlSession
+	 * @param userId
+	 * @return
+	 */
+	public int deleteMember(SqlSession sqlSession, String userId) {
+		int result = sqlSession.update("MemberMapper.deleteMember",userId);
+		
+		return result;
+	}
 }
