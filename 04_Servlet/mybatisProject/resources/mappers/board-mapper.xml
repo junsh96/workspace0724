@@ -32,6 +32,15 @@
 		<result column="FILE_LEVEL" property="fileLevel" />
 		<result column="STATUS" property="status" />
 	</resultMap>
+	<!-- reply -->
+	<resultMap type="replyResultMap" id="Reply">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REF_BNO" property="refBno"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
 	
 <!-- 
 	select문 사용시
@@ -39,12 +48,15 @@
 		select * from Blog where id = #{id}
 	</select>
  -->
+ 	
+ 	<!-- 게시물 갯수 조회 -->
  	<select id="selectAllBoardCount" resultType="int">
  		SELECT COUNT(*)
  		FROM BOARD
  		WHERE STATUS = 'Y'
  	</select>
  
+ 	<!-- 게시물 조회 -->
  	<select id="selectAllBoard" resultMap="boardResultMap">
 	 	SELECT BOARD_NO,
 				CATEGORY_NAME,
@@ -61,13 +73,15 @@
 	    ORDER BY A.BOARD_NO DESC
  	</select>
  	
- 	<select id="categoryList" resultMap="Caregory">
+ 	<!-- 게시물 카테고리 조회 -->
+ 	<select id="categoryList" resultMap="cateResultMap">
  		SELECT CATEGORY_NO,
 				CATEGORY_NAME
 		FROM CATEGORY
  	</select>
  	
- 	<insert id="insertBoard" parameterType="Board">
+ 	<!-- 게시물 등록 -->
+ 	<insert id="insertBoard" parameterType="boardResultMap">
 		INSERT INTO BOARD(
 			BOARD_NO,
 			BOARD_TYPE,
@@ -91,7 +105,8 @@
 		)
  	</insert>
  	
- 	<insert id="insertAttachment" parameterType="Attachment">
+ 	<!-- 파일 첨부 -->
+ 	<insert id="insertAttachment" parameterType="attaResultMap">
  		INSERT INTO ATTACHMENT (
 			FILE_NO,
 			REF_BNO,
@@ -109,7 +124,9 @@
 		)
  	</insert>
 
-	<select id="selectBoardFile" parameterType="int" resultMap="Attachment">
+
+	<!-- 첨부 파일 조회 -->
+	<select id="selectBoardFile" parameterType="int" resultMap="attaResultMap">
 		SELECT FILE_NO,
 				REF_BNO,
 				ORIGIN_NAME,
@@ -123,7 +140,8 @@
 		AND STATUS = 'Y'
 	</select>
 	
-	<update id="updateBoardDetail" parameterType="Board">
+	<!-- 게시물 수정 -->
+	<update id="updateBoardDetail" parameterType="boardResultMap">
 		UPDATE BOARD
 		SET
 			CATEGORY_NO = #{categoryNo},
@@ -132,7 +150,8 @@
 		WHERE BOARD_NO = ${boardNo}
 	</update>
 	
-	<select id="boardDetail" parameterType="int" resultType="Board">
+	<!-- 게시물 상세 조회 -->
+	<select id="boardDetail" parameterType="int" resultMap="boardResultMap">
 		SELECT BOARD_NO,
 				CATEGORY_NAME,
 				CATEGORY_NO,
@@ -147,15 +166,26 @@
 		AND BOARD_NO = ${boardNo}
 	</select>
 	
-	<update id="updateAttachment" parameterType="Attachment">
+	<!-- 게시물 조회수 증가 -->
+	<update id="increaseCount" parameterType="int">
+		UPDATE BOARD
+		SET
+			COUNT = COUNT + 1
+		WHERE BOARD_NO = ${boardNo}
+	</update>
+	
+	<!-- 첨부 파일 수정 -->
+	<update id="updateAttachment" parameterType="attaResultMap">
 		UPDATE ATTACHMENT
-		   SET 	ORIGIN_NAME = #{originName},
+		   SET 	
+		   		ORIGIN_NAME = #{originName},
 				CHANGE_NAME = #{changeName},
 				FILE_PATH = #{filePath}
 		 WHERE FILE_NO = ${fileNo}
 	</update>
 	
-	<insert id="insertNewAttachment" parameterType="Attachment">
+	<!-- 사진 게시물 파일 첨부 -->
+	<insert id="insertNewAttachment" parameterType="attaResultMap">
 		INSERT INTO ATTACHMENT(
 			FILE_NO,
 			REF_BNO,
@@ -171,6 +201,7 @@
 		)
 	</insert>
 	
+	<!-- 게시물 삭제 -->
 	<update id="deleteBoard" parameterType="int">
 		UPDATE BOARD
 		SET
@@ -178,6 +209,7 @@
 		WHERE BOARD_NO = #{boardNo}
 	</update>
 	
+	<!-- 파일 삭제 -->
 	<update id="deleteFile" parameterType="int">
 		UPDATE ATTACHMENT
 		SET
@@ -186,4 +218,49 @@
 		AND STATUS = 'Y'
 	</update>
 	
+	<!-- 게시물 댓글 조회 -->
+	<select id="selectReplyByBoardNo" parameterType="int" resultMap="replyResultMap">
+		SELECT REPLY_NO,
+				REPLY_CONTENT,
+				MEMBER_ID,
+				TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH:MI') AS CREATE_DATE
+		  FROM REPLY R
+		  JOIN MEMBER M ON(REPLY_WRITER = MEMBER_NO)
+		 WHERE R.STATUS = 'Y'
+		   AND REF_BNO = ${boardNo}
+		 ORDER BY REPLY_NO DESC
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertReply" parameterType="replyResultMap">
+		INSERT INTO REPLY(
+			REPLY_NO,
+			REPLY_CONTENT,
+			REF_BNO,
+			REPLY_WRITER
+		) VALUES(
+			SEQ_RNO.NEXTVAL,
+			#{replyContent},
+			${refBno},
+			#{replyWriter}
+		)
+	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReply" parameterType="int">
+		DELETE 
+		FROM REPLY
+		WHERE REPLY_NO = ${replyNo}
+	</delete>
+	
+	<!-- 사진 게시물 첨부 파일 조회 -->
+	<select id="selectAttachmentList" parameterType="int" resultMap="attaResultMap">
+		SELECT FILE_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL
+	 	FROM ATTACHMENT
+		WHERE REF_BNO = ${boardNo}
+	</select>
 </mapper>

@@ -9,6 +9,7 @@ import com.kh.mybatis.common.vo.PageInfo;
 import com.kh.mybatis.model.vo.Attachment;
 import com.kh.mybatis.model.vo.Board;
 import com.kh.mybatis.model.vo.Category;
+import com.kh.mybatis.model.vo.Reply;
 
 public class BoardDao {
 
@@ -126,6 +127,18 @@ public class BoardDao {
 	}
 	
 	/**
+	 * 게시글 조회수 증가
+	 * @param sqlSession
+	 * @param boardNo
+	 * @return
+	 */
+	public int increaseCount(SqlSession sqlSession, int boardNo) {
+		int result = sqlSession.update("increaseCount", boardNo);
+		
+		return result;
+	}
+	
+	/**
 	 * 첨부 파일 변경
 	 * @param sqlSession
 	 * @param at
@@ -175,4 +188,66 @@ public class BoardDao {
 		return result;
 	}
 	
+	/**
+	 * 댓글 조회
+	 * @param sqlSession
+	 * @param boardNo
+	 * @return
+	 */
+	public ArrayList<Reply> selectReplyByBoardNo(SqlSession sqlSession, int boardNo) {
+		
+		ArrayList<Reply> result = (ArrayList)sqlSession.selectList("selectReplyByBoardNo",boardNo);
+		
+		return result;
+		
+	}
+	
+	/**
+	 * 댓글 등록
+	 * @param sqlSession
+	 * @param r
+	 * @return
+	 */
+	public int inertReply(SqlSession sqlSession, Reply r) {
+		int result = sqlSession.insert("insertReply",r);
+		
+		return result;
+	}
+	
+	/**
+	 * 댓글 삭제
+	 * @param sqlSession
+	 * @param replyNo
+	 * @return
+	 */
+	public int deleteReply(SqlSession sqlSession, int replyNo) {
+		int result = sqlSession.delete("deleteReply",replyNo);
+		
+		return result;
+	}
+	
+	/**
+	 * 사진 게시물 조회
+	 * @param sqlSession
+	 * @return
+	 */
+	public ArrayList<Board> selectThumnailList(SqlSession sqlSession) {
+		
+		ArrayList<Board> result = (ArrayList)sqlSession.selectList("selectThumnailList");
+		
+		return result;
+	}
+	
+	/**
+	 * 사진 게시물 첨부 파일 조회
+	 * @param sqlSession
+	 * @param boardNo
+	 * @return
+	 */
+	public ArrayList<Attachment> selectAttachmentList(SqlSession sqlSession, int boardNo) {
+		
+		ArrayList<Attachment> result = (ArrayList)sqlSession.selectList("selectAttachmentList",boardNo);
+		
+		return result;
+	}
 }

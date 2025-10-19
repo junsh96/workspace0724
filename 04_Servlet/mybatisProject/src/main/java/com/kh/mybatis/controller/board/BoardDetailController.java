@@ -47,11 +47,11 @@ public class BoardDetailController extends HttpServlet {
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
 			return;
 		}
-		
+		int result = new BoardService().increaseCount(boardNo);
 		Board b = new BoardService().boardDetail(boardNo);
 		Attachment a = new BoardService().selectBoardFile(boardNo);
 		
-		if (b == null) {
+		if (result > 0 && b == null) {
 			request.setAttribute("errorMsg", "알수 없는 오류가 발생하였습니다.");
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
 		} else {

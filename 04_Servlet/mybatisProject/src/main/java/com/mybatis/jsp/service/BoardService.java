@@ -10,6 +10,7 @@ import com.kh.mybatis.model.dao.BoardDao;
 import com.kh.mybatis.model.vo.Attachment;
 import com.kh.mybatis.model.vo.Board;
 import com.kh.mybatis.model.vo.Category;
+import com.kh.mybatis.model.vo.Reply;
 
 public class BoardService {
 	private BoardDao boardDao = new BoardDao();
@@ -145,6 +146,28 @@ public class BoardService {
 	}
 	
 	/**
+	 * 게시글 조회수 증가
+	 * @param boardNo
+	 * @return
+	 */
+	public int increaseCount(int boardNo) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = boardDao.increaseCount(sqlSession, boardNo);
+		
+		if (result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+		
+		return result;
+		
+	}
+	
+	/**
 	 * 게시글 삭제
 	 * @param boardNo
 	 * @return
@@ -165,7 +188,11 @@ public class BoardService {
 		return result;
 		
 	}
-	
+	/**
+	 * 파일 삭제
+	 * @param fileNo
+	 * @return
+	 */
 	public int deleteFile(int fileNo) {
 		
 		SqlSession sqlSession = Template.getSqlSession();
@@ -181,5 +208,113 @@ public class BoardService {
 		
 		return result;
 		
+	}
+	/**
+	 * 댓글 조회
+	 * @param boardNo
+	 * @return
+	 */
+	public ArrayList<Reply> selectReplyByBoardNo(int boardNo) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		ArrayList<Reply> result = boardDao.selectReplyByBoardNo(sqlSession, boardNo);
+		
+		sqlSession.close();
+		
+		return result;
+	}
+	/**
+	 * 댓글 등록
+	 * @param r
+	 * @return
+	 */
+	public int insertReply(Reply r) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = boardDao.inertReply(sqlSession, r);
+		
+		if (result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+		
+		return result;
+		
+	}
+	/**
+	 * 댓글 삭제
+	 * @param replyNo
+	 * @return
+	 */
+	public int deleteReply(int replyNo) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = boardDao.deleteReply(sqlSession, replyNo);
+		
+		if (result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+		
+		return result;
+	}
+	
+	/**
+	 * 사진 게시물 조회
+	 * @return
+	 */
+	public ArrayList<Board> selectThumnailList() {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		ArrayList<Board> result = boardDao.selectThumnailList(sqlSession);
+		
+		sqlSession.close();
+		
+		return result;
+	}
+	
+	/**
+	 * 사진 게시물 등록
+	 * @param b
+	 * @param list
+	 * @return
+	 */
+	public int insertBoard(Board b, ArrayList<Attachment> list) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = boardDao.insertBoard(sqlSession, b);
+		if (list.size() > 0) {
+			for (Attachment at : list) {
+				result *= boardDao.insertAttachment(sqlSession, at);
+			}			
+		}
+		if (result > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+		
+		return result;
+	}
+	
+	/**
+	 * 사진 게시물 첨부 파일 조회
+	 * @param boardNo
+	 * @return
+	 */
+	public ArrayList<Attachment> selectAttachmentList(int boardNo) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		ArrayList<Attachment> result = boardDao.selectAttachmentList(sqlSession, boardNo);
+		
+		sqlSession.close();
+		
+		return result;
 	}
 }
