@@ -37,7 +37,7 @@ public class AjaxReplyInsertController extends HttpServlet {
 		int memberNo = ((Member)(request.getSession().getAttribute("loginMember"))).getMemberNo();
 		
 		Reply r = new Reply();
-		r.setRefBoardNo(boardNo);
+		r.setRefBno(boardNo);
 		r.setReplyContent(replyContent);
 		r.setReplyWriter(memberNo);
 		

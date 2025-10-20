@@ -15,14 +15,19 @@
 		<result column="COUNT" property="count"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="MEMBER_NAME" property="memberName"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="THUMBNAIL_IMG" property="thumbnailImg"/>
+		
 	</resultMap>
 	<!-- category -->
-	<resultMap type="cateResultMap" id="Caregory">
+	<resultMap id="cateResultMap" type="Category">
 		<result column="CATEGORY_NO" property="categoryNo" />
 		<result column="CATEGORY_NAME" property="categoryName" />
 	</resultMap>
 	<!-- attachment -->
-	<resultMap type="attaResultMap" id="Attachment">
+	<resultMap id="attaResultMap" type="Attachment">
 		<result column="FILE_NO" property="fileNo" />
 		<result column="REF_BNO" property="refBno" />
 		<result column="ORIGIN_NAME" property="originName" />
@@ -33,13 +38,15 @@
 		<result column="STATUS" property="status" />
 	</resultMap>
 	<!-- reply -->
-	<resultMap type="replyResultMap" id="Reply">
+	<resultMap id="replyResultMap" type="Reply">
 		<result column="REPLY_NO" property="replyNo"/>
 		<result column="REPLY_CONTENT" property="replyContent"/>
 		<result column="REF_BNO" property="refBno"/>
 		<result column="REPLY_WRITER" property="replyWriter"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		
 	</resultMap>
 	
 <!-- 
@@ -54,6 +61,27 @@
  		SELECT COUNT(*)
  		FROM BOARD
  		WHERE STATUS = 'Y'
+ 	</select>
+ 	
+ 	<!-- 게시물 갯수 조회 -->
+ 	<select id="selectSearchBoardCount" resultType="int">
+ 		SELECT COUNT(*)
+ 		FROM BOARD B
+ 		JOIN MEMBER ON (BOARD_WRITER = MEMBER_NO)
+ 		WHERE B.STATUS = 'Y'
+ 		<choose>
+ 			<when test="condition == 'writer'">
+ 				AND MEMBER_ID
+ 			</when>
+ 			<when test="condition == 'title'">
+ 				AND BOARD_TITLE
+ 			</when>
+ 			<otherwise>
+ 				AND BOARD_CONTENT 
+ 			</otherwise>
+ 		</choose>
+ 		LIKE '%${keyWord}%'
+ 		
  	</select>
  
  	<!-- 게시물 조회 -->
@@ -73,6 +101,33 @@
 	    ORDER BY A.BOARD_NO DESC
  	</select>
  	
+ 	<select id="selectSearchBoard" resultMap="boardResultMap">
+ 		SELECT BOARD_NO,
+				CATEGORY_NAME,
+				BOARD_TITLE,
+				MEMBER_ID,
+				COUNT,
+				TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+		FROM BOARD A
+	    JOIN CATEGORY USING(CATEGORY_NO)
+	    JOIN MEMBER C
+	    ON A.BOARD_WRITER = C.MEMBER_NO
+	    WHERE A.STATUS = 'Y'
+	    AND A.BOARD_TYPE = 1
+	    <choose>
+	    	<when test="condition == 'writer'">
+	    		AND C.MEMBER_ID
+	    	</when>
+	    	<when test="condition == 'title'">
+	    		AND BOARD_TITLE
+	    	</when>
+	    	<otherwise>
+	    		AND BOARD_CONTENT
+	    	</otherwise>
+	    </choose>
+	    LIKE '%${keyWord}%'
+	    ORDER BY A.BOARD_NO DESC
+ 	</select>
  	<!-- 게시물 카테고리 조회 -->
  	<select id="categoryList" resultMap="cateResultMap">
  		SELECT CATEGORY_NO,
@@ -81,7 +136,7 @@
  	</select>
  	
  	<!-- 게시물 등록 -->
- 	<insert id="insertBoard" parameterType="boardResultMap">
+ 	<insert id="insertBoard" parameterType="Board">
 		INSERT INTO BOARD(
 			BOARD_NO,
 			BOARD_TYPE,
@@ -105,14 +160,38 @@
 		)
  	</insert>
  	
+ 	 	<!-- 게시물 등록 -->
+ 	<insert id="insertThumBoard" parameterType="Board">
+		INSERT INTO BOARD(
+			BOARD_NO,
+			BOARD_TYPE,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			BOARD_WRITER,
+			COUNT,
+			CREATE_DATE,
+			STATUS
+		) VALUES (
+			SEQ_BNO.NEXTVAL,
+			#{boardType},
+			#{boardTitle},
+			#{boardContent},
+			#{boardWriter},
+			0,
+			SYSDATE,
+			'Y' 
+		)
+ 	</insert>
+ 	
  	<!-- 파일 첨부 -->
- 	<insert id="insertAttachment" parameterType="attaResultMap">
+ 	<insert id="insertAttachment" parameterType="Attachment">
  		INSERT INTO ATTACHMENT (
 			FILE_NO,
 			REF_BNO,
 			ORIGIN_NAME,
 			CHANGE_NAME,
 			FILE_PATH,
+			FILE_LEVEL,
 			UPLOAD_DATE
 		) VALUES (
 			SEQ_FNO.NEXTVAL,
@@ -120,6 +199,7 @@
 			#{originName},
 			#{changeName},
 			#{filePath},
+			#{fileLevel},
 			SYSDATE
 		)
  	</insert>
@@ -141,7 +221,7 @@
 	</select>
 	
 	<!-- 게시물 수정 -->
-	<update id="updateBoardDetail" parameterType="boardResultMap">
+	<update id="updateBoardDetail" parameterType="Board">
 		UPDATE BOARD
 		SET
 			CATEGORY_NO = #{categoryNo},
@@ -157,6 +237,8 @@
 				CATEGORY_NO,
 				BOARD_TITLE,
 				BOARD_CONTENT,
+				BOARD_WRITER,
+				MEMBER_NAME,
 				MEMBER_ID,
 				TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS "CREATE_DATE"
 		FROM BOARD B
@@ -175,7 +257,7 @@
 	</update>
 	
 	<!-- 첨부 파일 수정 -->
-	<update id="updateAttachment" parameterType="attaResultMap">
+	<update id="updateAttachment" parameterType="Attachment">
 		UPDATE ATTACHMENT
 		   SET 	
 		   		ORIGIN_NAME = #{originName},
@@ -185,7 +267,7 @@
 	</update>
 	
 	<!-- 사진 게시물 파일 첨부 -->
-	<insert id="insertNewAttachment" parameterType="attaResultMap">
+	<insert id="insertNewAttachment" parameterType="Attachment">
 		INSERT INTO ATTACHMENT(
 			FILE_NO,
 			REF_BNO,
@@ -232,7 +314,7 @@
 	</select>
 	
 	<!-- 댓글 등록 -->
-	<insert id="insertReply" parameterType="replyResultMap">
+	<insert id="insertReply" parameterType="Reply">
 		INSERT INTO REPLY(
 			REPLY_NO,
 			REPLY_CONTENT,
@@ -262,5 +344,18 @@
 			FILE_LEVEL
 	 	FROM ATTACHMENT
 		WHERE REF_BNO = ${boardNo}
+	</select>
+	
+	<select id="selectThumnailList" resultMap="boardResultMap">
+		SELECT BOARD_NO,
+				BOARD_TITLE,
+				COUNT,
+				FILE_PATH || CHANGE_NAME AS "THUMBNAIL_IMG"
+		FROM BOARD B
+		JOIN ATTACHMENT A ON(BOARD_NO = REF_BNO)
+		WHERE B.STATUS = 'Y'
+		AND B.BOARD_TYPE = 2
+		AND FILE_LEVEL = 1
+		ORDER BY B.BOARD_NO DESC
 	</select>
 </mapper>

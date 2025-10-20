@@ -39,8 +39,7 @@ public class ThumbnailDetailController extends HttpServlet {
 		int result = boardService.increaseCount(boardNo);
 		Board board = boardService.boardDetail(boardNo);
 		
-		System.out.println(boardNo);
-		System.out.println(board);
+		
 		if(result > 0 && board != null) {
 			//at조회 -> request담기
 			ArrayList<Attachment> list = boardService.selectAttachmentList(board.getBoardNo());

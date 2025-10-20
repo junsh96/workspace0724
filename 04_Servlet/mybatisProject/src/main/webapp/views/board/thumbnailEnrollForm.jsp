@@ -193,10 +193,10 @@
 				</table>
 
 				<div style="display: none;">
-					<input type="file" name="file1" id="file1" required onchange="loadImg(this,'#tumbnail-img','#thumbnail-placeholder' )">
-					<input type="file" name="file2" id="file2" onchange="loadImg(this,'#content-img1','#img1-placeholder' )">
-					<input type="file" name="file3" id="file3" onchange="loadImg(this,'#content-img2','#img2-placeholder' )">
-					<input type="file" name="file4" id="file4" onchange="loadImg(this,'#content-img3','#img3-placeholder' )">
+					<input type="file" name="file1" id="file1" required onchange="loadImg(this, '#tumbnail-img', '#thumbnail-placeholder')">
+					<input type="file" name="file2" id="file2" onchange="loadImg(this, '#content-img1', '#img1-placeholder')">
+					<input type="file" name="file3" id="file3" onchange="loadImg(this, '#content-img2', '#img2-placeholder')">
+					<input type="file" name="file4" id="file4" onchange="loadImg(this, '#content-img3', '#img3-placeholder')">
 				</div>
 
 				<div class="button-group">
@@ -206,21 +206,20 @@
 			</form>
 		</div>
 	</div>
-
 	<script>
-		//file input이 변경되었을 때 해당 이미지를 미리보기 img태그에 넣어준다.
-		function loadImg(changeInput, targetImgId, placeholderId) {
-			console.log("이미지 변경");
+		//file input이 변경되었을 때 해당 이미지를 미리보기 img태그에 넣어 보여주기
+		function loadImg(changeInput, targetImgId, placeholderId){
+			console.log("이미지 변경됨")
 			const img = document.querySelector(targetImgId);
 			const placeholder = document.querySelector(placeholderId);
 
-			if (changeInput.files.length > 0) { //선택된 파일이 있는 경우
+			if(changeInput.files.length > 0){ //선택된 파일이 있는 경우
 				const reader = new FileReader();
 				//파일을 읽어서 Base64 인코딩된 문자열(Data URL)로 변환
 				reader.readAsDataURL(changeInput.files[0]);
-				//변환이 완료되었을때 load 이벤트를 실행
-				reader.onload = function(ev) {
-					console.log( ev.target.result)
+
+				//변환이 완료되었을 때 load이벤트를 실행
+				reader.onload = function(ev){ 
 					img.src = ev.target.result;
 					img.style.display = 'block';
 					placeholder.style.display = 'none';
@@ -232,11 +231,10 @@
 			}
 		}
 
-		function chooseFile(selector) {
+		function chooseFile(selector){
 			const fileInput = document.querySelector(selector);
 			fileInput.click();
 		}
-
 	</script>
 </body>
 </html>

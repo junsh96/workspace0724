@@ -121,7 +121,7 @@
 		}
 	</style>
 </head>
-<body onload="init(${board.boardNo})">
+<body onload="init(${boardDetail.boardNo})">
 	<jsp:include page="/views/common/menubar.jsp" />
 
 	<div class="board-container">
@@ -168,8 +168,8 @@
 
 			<div class="button-group">
 				<a class="btn btn-primary" href="${pageContext.request.contextPath}/list.bo">목록가기</a>
-				<a class="btn btn-warning" href="${pageContext.request.contextPath}/update.bo">수정하기</a>
-				<a class="btn btn-danger" href="${pageContext.request.contextPath}/deleteBoard.bo">삭제하기</a>
+				<a class="btn btn-warning" href="${pageContext.request.contextPath}/update.bo?boardNo=${boardDetail.boardNo}">수정하기</a>
+				<a class="btn btn-danger" href="${pageContext.request.contextPath}/deleteBoard.bo?boardNo=${boardDetail.boardNo}">삭제하기</a>
 			</div>
 		</div>
 
@@ -200,7 +200,7 @@
 
 					</tr>
 				</thead>
-				<tbody id="reply-content">
+				<tbody id="reply-container">
 					<!-- 댓글 목록이 여기에 동적으로 추가됩니다 -->
 				</tbody>
 			</table>
@@ -212,93 +212,92 @@
 		// - 내가 직접 실행하지 않고 특정 시점에 다른 함수가 실행해주는 함수를 콜백함수
 		// - 비동기 코드에서 많이 사용한다. 예를들면 $.ajax에 전달하는 success / error에 대한 함수도 콜백 함수.
 		// - 함수의 동작을 외부에서 결정할 수 있어서 코드를 깔끔하게 분리할 수 있다.
-		function init(bno) {
-			getReplyList(bno,drawReplyList);
-			
-		}
-		//서버로부터 댓글 목록을 가져오기. + 
-		function getReplyList(bno,drawReplyList) {
-			$.ajax ({
-				url: "rlist.bo",
-				dataType: "json", //응답 데이터 타입
-				type: "get",
-				data: {
-					boardNo : bno
-				},
-				success : function(result) {
-					drawReplyList(result);
-				},
-				error : function(err){
+		function init(bno){
+		getReplyList(bno, drawReplyList);
+	}
+		
+	//서버로부터 댓글목록 가져와서 전달
+	 function getReplyList(bno, callback){
+		 $.ajax({
+			 url: "rlist.bo",
+			 //contextType: "application/json" //요청데이터 타입
+			 dataType: "json", //응답 데이터 타입(json, text, html, xml...)
+			 data: {
+				boardNo : bno
+			 },
+			 success: function(res){
+				 console.log(res)
+				 callback(res, bno);
+			 },
+			 error: function(err){
+				console.log("댓글 로드 ajax 실패");
+			 }
+		 })
+	 }
+	 
+	 function drawReplyList(replyList, bno){
+		const replyContainer = document.querySelector("#reply-container");
 
-				}
-			})
+		//내부에 이미 그려진 dom을 제거
+		replyContainer.innerHTML = "";
+		
+		for(let r of replyList){
+			const replyRow = document.createElement("tr");
+			replyRow.innerHTML = "<td>" + r.memberId + "</td>" +
+								 "<td class='text-start'>" + 
+									r.replyContent +
+									"<div class='small text-secondary mt-1'>" + r.createDate + "</div>" +
+								 "</td>" + 
+								 "<td><button class='btn btn-outline-danger btn-sm'>삭제</button></td>";
+			
+			let deleteBtn = replyRow.querySelector("button");
+			deleteBtn.addEventListener("click", function(){
+				deleteReply(r.replyNo, function(){
+					getReplyList(bno, drawReplyList);
+				});
+			});
+
+			replyContainer.appendChild(replyRow);
 		}
+	 }
+
+	 function deleteReply(replyNo, callback){
+		 $.ajax({
+			 url: "rdelete.bo",
+			 data: {
+				replyNo : replyNo, 
+			 },
+			 success: function(res){
+				 if(res === "1")
+				 	callback();
+			 },
+			 error: function(err){
+				console.log("댓글 삭제 ajax 실패");
+			 }
+		 })
+	 }
 	
-		function insertReply(bno) {
-			const contentInput = document.querySelector("#reply-content");
+	 function insertReply(bno){
+		const contentInput = document.querySelector("#reply-content");
 
-			$.ajax ({
-				url: "rinsert.bo",
-				type: "post",
-				data: {
-					boardNo : bno,
-					content : contentInput.value
-				},
-				success : function(result) {
-					if (result == 1) {
-						getReplyList(bno,drawReplyList)						
-					}
-				},
-				error : function(err){
-
-				}
-			})
-		}
-		
-		function drawReplyList(replyList) {
-			const replyContent = document.querySelector("#reply-content");
-			
-			//내부에 이미 그려진 dom을 제거
-			replyContent.innerHTML = "";
-
-			for (let r of replyList) {
-				const replyRow = document.createElement("tr");
-				replyRow.innerHTML = "<td>"+ r.memberId +"</td>" +
-									"<td class='text-start'>" + 
-										r.replyContent + 
-										"<div class='small text-secondary mt-1'>" + r.createDate + "</div>"	+
-									"</td>" + 
-									"<td><button class = 'btn btn-outline-dnager btn-sm'>삭제</button></td>";
-
-
-				let deleteBtn = replyRow.querySelector("button");
-				deleteBtn.addEventListener("click",function() {
-					deleteReply(r.replyNo, function() {
-
-					});
-				})					
-				replyContent.appendChild(replyRow);			
-			}
-
-
-		}
-		
-		function deleteReply(replyNo, callback) {
-			$.ajax ({
-				url: "rdelete.bo",
-				data: {
-					replyNo : replyNo
-				},
-				success : function(result) {
-					if (result > 0) {
-						callback();					
-					}
-				},
-				error : function(err){
-
-				}
-			})
-		}
+		 $.ajax({
+			 url: "rinsert.bo",
+			 type: "post",
+			 data: {
+				boardNo : bno, 
+				content: contentInput.value
+			 },
+			 success: function(res){
+				 if(res === "1") {
+					contentInput.value = "";
+				 	getReplyList(bno, drawReplyList);
+				 }
+			 },
+			 error: function(err){
+				console.log("댓글 작성 ajax 실패");
+			 }
+		 })
+	 }
 	</script>
 </body>
 </html>

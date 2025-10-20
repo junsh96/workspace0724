@@ -1,6 +1,7 @@
 package com.kh.mybatis.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -21,6 +22,19 @@ public class BoardDao {
 	public int selectAllBoardCount(SqlSession sqlSession) {
 		
 		int result = sqlSession.selectOne("BoardMapper.selectAllBoardCount");
+		
+		return result;
+	}
+	
+	/**
+	 * 게시물 갯수
+	 * @param sqlSession
+	 * @param searchMap
+	 * @return
+	 */
+	public int selectAllBoardCount(SqlSession sqlSession, HashMap<String, String> searchMap) {
+		
+		int result = sqlSession.selectOne("BoardMapper.selectSearchBoardCount", searchMap);
 		
 		return result;
 	}
@@ -47,6 +61,25 @@ public class BoardDao {
 	}
 	
 	/**
+	 * 검새조건 게시물 조회
+	 * @param sqlSession
+	 * @param pi
+	 * @param searchMap
+	 * @return
+	 */
+	public ArrayList<Board> selectAllBoard(SqlSession sqlSession, PageInfo pi, HashMap<String, String> searchMap) {
+		
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Board> list = (ArrayList)sqlSession.selectList("BoardMapper.selectSearchBoard",searchMap,rowBounds);
+		
+		
+		return list;
+	}
+	
+	/**
 	 * 게시글 카테고리 조회
 	 * @param sqlSession
 	 * @return
@@ -66,8 +99,14 @@ public class BoardDao {
 	 * @return
 	 */
 	public int insertBoard(SqlSession sqlSession, Board b) {
+		int result = 0;
+		if (b.getBoardType() !=1 ) {
+			result = sqlSession.insert("BoardMapper.insertThumBoard",b);
+		} else {
+			result = sqlSession.insert("BoardMapper.insertBoard",b);
+		}
 		
-		int result = sqlSession.insert("BoardMapper.insertBoard",b);
+		
 		
 		return result;
 		
@@ -95,7 +134,7 @@ public class BoardDao {
 	 */
 	public Attachment selectBoardFile(SqlSession sqlSession, int boardNo) {
 		
-		Attachment result = (Attachment)sqlSession.selectList("BoardMapper.selectBoardFile",boardNo);
+		Attachment result = (Attachment)sqlSession.selectOne("BoardMapper.selectBoardFile",boardNo);
 		
 		return result;
 		
@@ -108,6 +147,7 @@ public class BoardDao {
 	 * @return
 	 */
 	public int updateBoardDetail(SqlSession sqlSession, Board b) {
+		System.out.println("???"+b);
 		int result = sqlSession.update("BoardMapper.updateBoardDetail",b);
 		
 		return result;
@@ -121,7 +161,7 @@ public class BoardDao {
 	 */
 	public Board boardDetail(SqlSession sqlSession, int boardNo) {
 		
-		Board result = (Board)sqlSession.selectList("BoardMapper.boardDetail",boardNo);
+		Board result = (Board)sqlSession.selectOne("BoardMapper.boardDetail",boardNo);
 		
 		return result;
 	}

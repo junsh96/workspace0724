@@ -48,21 +48,14 @@ public class UpdateDetailController extends HttpServlet {
      * 게시글 수정
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
 		
-		Board currentBoard = (Board)session.getAttribute("boardDetail");
-		Member loginMember = (Member)session.getAttribute("loginMember");
 		
-		Part newFile = request.getPart("upfile");
-		
-		if (session.getAttribute("loginMember") == null) {
-			request.setAttribute("errorMsg", "잘못된 접근입니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-			return;
-		}
 		
 		if (JakartaServletFileUpload.isMultipartContent(request)) {
+			HttpSession session = request.getSession();
 			
+			Board currentBoard = (Board)session.getAttribute("boardDetail");
+			Member loginMember = (Member)session.getAttribute("loginMember");
 			int boardUser = currentBoard.getBoardWriter();
 			int boardNo = currentBoard.getBoardNo();
 			int loginUser = loginMember.getMemberNo();
@@ -87,12 +80,13 @@ public class UpdateDetailController extends HttpServlet {
 			upload.setFileSizeMax(fileMaxSize);
 			upload.setSizeMax(requestMaxSize);
 			List<FileItem> formItems = upload.parseRequest(request);
-			
+			System.out.println("formItems"+formItems);
 			Board b = new Board();
 			Attachment at = null;
 			Integer originFileNo = null;
 			
 			for (FileItem item : formItems) {
+				System.out.println(item);
 				if(item.isFormField()) {
 					switch(item.getFieldName()) {
 					case "category":
@@ -142,6 +136,7 @@ public class UpdateDetailController extends HttpServlet {
 					at.setRefBno(b.getBoardNo());
 				}
 			}
+			b.setBoardNo(boardNo);
 			int result = new BoardService().updateBoardDetail(b,at);
 
 			//새로운 첨부파일이 존재하지 않을 때  -> (b, null) -> board update

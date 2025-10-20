@@ -120,7 +120,7 @@
 	               <c:when test="${not empty list}">
 	              	<c:forEach var="b" items="${list}">
 	              		<div class = thumbnail onclick="location.href='${pageContext.request.contextPath}/detail.th?bno=${b.boardNo}'">
-	              			<img src="${pageContext.request.contextPath}/${b.thumnailImg}" alt="썸네일 이미지"/>
+	              			<img src="${pageContext.request.contextPath}/${b.thumbnailImg}" alt="썸네일 이미지"/>
 	              			<p>
 	              				<span>No. ${b.boardNo} ${board.boardTitle}</span>
 	              				<small>조회수 : ${b.count}</small>

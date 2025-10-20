@@ -125,6 +125,7 @@
 						<td>
 							<c:if test="${boardFile != null}">
 								기존 파일 : ${boardFile.originName}
+								<input type="hidden" name="originFileNo" value="${boardFile.fileNo}">
 							</c:if>
 							<input type="file" name="upfile">
 						</td>

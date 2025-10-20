@@ -41,8 +41,8 @@ public class UpdateFormController extends HttpServlet {
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
-		Board currentBoard = (Board)session.getAttribute("boardDetail");
+		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		Board currentBoard = new BoardService().boardDetail(boardNo);
 		Member loginMember = (Member)session.getAttribute("loginMember");
 
 		Attachment at = new BoardService().selectBoardFile(currentBoard.getBoardNo());

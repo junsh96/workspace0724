@@ -102,6 +102,7 @@ public class ThumbnailInsertController extends HttpServlet {
 					}
 				}
 			}
+			b.setBoardType(2);
 			
 			int result = new BoardService().insertBoard(b, list);
 			

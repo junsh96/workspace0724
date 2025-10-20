@@ -1,6 +1,7 @@
 package com.mybatis.jsp.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -30,6 +31,21 @@ public class BoardService {
 	}
 	
 	/**
+	 * 게시물 갯수
+	 * @param searchMap
+	 * @return
+	 */
+	public int selectAllBoardCount(HashMap<String, String> searchMap) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = boardDao.selectAllBoardCount(sqlSession,searchMap);
+		
+		sqlSession.close();
+		
+		return result;
+	}
+	
+	/**
 	 * 게시글 조회
 	 * @param pi
 	 * @return
@@ -44,6 +60,19 @@ public class BoardService {
 		return list;
 		
 	}
+	
+	public ArrayList<Board> selectAllBoard(PageInfo pi, HashMap<String, String> searchMap) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		ArrayList<Board> list = boardDao.selectAllBoard(sqlSession, pi, searchMap);
+		
+		sqlSession.close();
+		
+		return list;
+		
+	}
+	
+	
 	
 	/**
 	 * 게시글 카테고리 조회
@@ -108,7 +137,7 @@ public class BoardService {
 	 */
 	public int updateBoardDetail(Board b, Attachment at) {
 		SqlSession sqlSession = Template.getSqlSession();
-		
+
 		int result = boardDao.updateBoardDetail(sqlSession, b);
 		
 		if(at != null) {
@@ -125,7 +154,7 @@ public class BoardService {
 			sqlSession.rollback();
 		}
 		sqlSession.close();
-		
+		System.out.println("TEST"+result);
 		return result;
 	}
 	

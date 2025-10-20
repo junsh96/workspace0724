@@ -40,7 +40,7 @@ public class BoardDetailController extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		
-		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		int boardNo = Integer.parseInt(request.getParameter("bno"));
 		
 		if (session.getAttribute("loginMember") == null) {
 			request.setAttribute("errorMsg", "잘못된 접근입니다.");
