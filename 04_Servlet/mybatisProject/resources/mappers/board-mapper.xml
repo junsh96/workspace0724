@@ -80,7 +80,7 @@
  				AND BOARD_CONTENT 
  			</otherwise>
  		</choose>
- 		LIKE '%${keyWord}%'
+ 		LIKE '%${keyword}%'
  		
  	</select>
  
@@ -125,7 +125,7 @@
 	    		AND BOARD_CONTENT
 	    	</otherwise>
 	    </choose>
-	    LIKE '%${keyWord}%'
+	    LIKE '%${keyword}%'
 	    ORDER BY A.BOARD_NO DESC
  	</select>
  	<!-- 게시물 카테고리 조회 -->

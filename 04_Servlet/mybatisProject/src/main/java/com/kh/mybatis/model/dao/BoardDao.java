@@ -73,6 +73,7 @@ public class BoardDao {
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
+		System.out.println(searchMap);
 		ArrayList<Board> list = (ArrayList)sqlSession.selectList("BoardMapper.selectSearchBoard",searchMap,rowBounds);
 		
 		

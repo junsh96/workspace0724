@@ -112,7 +112,7 @@
             <div id="search-area">
                 <form action="${pageContext.request.contextPath}/search.bo">
                     <select name="condition">
-                        <option value="writer" ${condition == 'writer' ? 'selected' : ''}></option>}>작성자</option>
+                        <option value="writer" ${condition == 'writer' ? 'selected' : ''}>작성자</option>
                         <option value="title" ${condition == 'title' ? 'selected' : ''}>제목</option>
                         <option value="content" ${condition =='content' ? 'selected' : ''}>내용</option>
                     </select>
