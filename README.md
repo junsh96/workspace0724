@@ -36,21 +36,6 @@
 - 브라우저에서 접속
 http://localhost:8080/프로젝트명
 
-## 📂 프로젝트 구조 (Directory Structure)
-project/
- ├── src/
- │   ├── com/project/controller/     # Servlet 컨트롤러
- │   ├── com/project/model/dao/      # 데이터 접근 로직 (DAO)
- │   ├── com/project/model/vo/       # VO (Value Object)
- │   ├── com/project/service/        # 비즈니스 로직
- │   └── com/project/common/         # 공용 유틸 (JDBCTemplate 등)
- ├── webapp/
- │   ├── WEB-INF/
- │   │   ├── views/                  # JSP 뷰 페이지
- │   │   └── web.xml                 # 배포 서술자
- │   ├── resources/                  # CSS, JS, 이미지
- │   └── index.jsp                   # 메인 페이지
- └── README.md
 
 ## 🌟 주요 기능 (Key Features)
 ✅ 회원가입 / 로그인 / 로그아웃 기능
