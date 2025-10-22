@@ -19,12 +19,13 @@ public class ArrayBasic {
 		arr3 = new int[10];
 		
 		//값 할당
-		for (int i=0; i<arr3.length; i++) {
-			arr3[i] = i;
+		for(int i=0; i<arr3.length ; i++) {
+		    arr3[i] = (i + 1) * 10;
 		}
 		
-		for (int i=0; i<arr3.length; i++) {
-			System.out.println(arr3[i]);
+		for(int i=0; i<arr3.length ; i++) {
+		    int num = arr3[i];
+		    System.out.println(num);
 		}
 		
 		//for each문 : 배열을 전체적으로 탐색할때 쉽게 사용할수있는 문법

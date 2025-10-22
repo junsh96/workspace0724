@@ -13,7 +13,7 @@ public class ArrayMemory {
 		//기본적으로 자바는 메모리의 주소를 확인할수 없다.
 		//다만 객체 메모리 주소의 암호화된 해시값을 hashCode라는 함수로 가져올수있다.
 		
-		double [] dArr = new double[5];
+		double [] dArr = new double[3];
 		/*
 		 *	실제 리터럴값을 곧바로 담을수 있는 변수를 일반 변수
 		 *
@@ -49,7 +49,9 @@ public class ArrayMemory {
 		//System.out.println(arr[5]);
 		//ArrayIndexOutOfBoundsException -> 범위를 넘어서서 호출
 		
-		
+		System.out.println(arr.hashCode());
+		arr = new int[10];
+		System.out.println(arr.hashCode());
 		//배열의 가장 큰 단점 : 
 		//크기 변경이 불가능 하다.
 		// -> 수정시도시 새로운 메모리 공간을 할당한다
@@ -69,6 +71,7 @@ public class ArrayMemory {
 		
 		arr4 = arr5;
 		//-> true
+		System.out.println(arr4 == arr5);
 		
 		arr4[0] = 100;
 		arr5[1] = 200;

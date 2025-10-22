@@ -15,8 +15,19 @@ public class ArrayCopy {
 		}
 		
 		//origin을 copy에 단순 대입해서 생성
-		int [] copy = origin;
+		int[] copy = origin;
+		System.out.println("====복사본출력====");
+		for(int n : copy) {
+			System.out.print(n + " ");
+		}
 		
+		copy[2] = 99;
+		System.out.println("\n복사본 값 변경");
+		
+		System.out.println("====원본출력====");
+		for(int n : origin) {
+			System.out.print(n + " ");
+		}
 		
 		// copy배열의 값을 수정해도 원본의 값이 변경된
 		// 원본과 copy배열이 모두 같은 메모리를 참조중이기 때문
@@ -31,6 +42,27 @@ public class ArrayCopy {
 		 */
 
 		
+		int[] origin2 = {1,2,3,4,5};
+		int[] copy2 = new int[origin2.length];
+		
+		for(int i=0; i<copy2.length; i++) {
+			copy2[i] = origin2[i];
+		}
+		
+		copy2[2] = 99;
+		
+		System.out.println("====원본2 출력====");
+		for(int n : origin2) {
+			System.out.print(n + " ");
+		}
+		System.out.println();
+		
+		System.out.println("====복사본2 출력====");
+		for(int n : copy2) {
+			System.out.print(n + " ");
+		}
+		
+		
 		/*
 		 *	clone()
 		 *	java에서 제공하는 메서드.
@@ -40,6 +72,19 @@ public class ArrayCopy {
 		
 		int [] origin3 = {1,2,3,4,5};
 		int [] copy3 = origin3.clone();
+		
+		copy3[2] = 99;
+		System.out.println("====원본3 출력====");
+		for(int n : origin3) {
+			System.out.print(n + " ");
+		}
+		System.out.println();
+		
+		System.out.println("====복사본3 출력====");
+		for(int n : copy3) {
+			System.out.print(n + " ");
+		}
+		System.out.println();
 	}
 
 }

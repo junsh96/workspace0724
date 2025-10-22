@@ -29,6 +29,28 @@ public class Array2D {
 		// -> arr[0] = new int[5];
 		// -> arr[1] = new int[3];
 		
+		//2차원배열의 메모리 할당
+		//배열명 = new 자료형[n][m];
+		//배열명 = new 자료형[n][];
+		
+		arr = new int[2][3];
+		//arr라는 2차원배열에 2행3열의 메모리구조가 바로 할당됨
+		//3개짜리 1차원배열 2개가 생성.
+		arr[0][0] = 5;
+		arr[0][1] = 10;
+		arr[0][2] = 15;
+		arr[1][0] = 1;
+		arr[1][1] = 2;
+		arr[1][2] = 3;
+		
+		
+		for(int j=0; j<arr.length; j++) {
+			for(int i=0; i<arr[j].length; i++) {
+				System.out.print(arr[j][i] + " ");
+			}
+			System.out.println();
+		}
+		
 	}
 
 }
