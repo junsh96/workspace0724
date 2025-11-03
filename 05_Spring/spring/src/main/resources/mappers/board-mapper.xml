@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.spring.model.mapper.BoardMapper">
+    <resultMap id="boardResultMap" type="Board">
+        <result column="BOARD_NO" property="boardNo"/>
+        <result column="BOARD_TYPE" property="boardType"/>
+        <result column="CATEGORY_NO" property="categoryNo"/>
+        <result column="BOARD_TITLE" property="boardTitle"/>
+        <result column="BOARD_CONTENT" property="boardContent"/>
+        <result column="BOARD_WRITER" property="boardWriter"/>
+        <result column="COUNT" property="count"/>
+        <result column="CREATE_DATE" property="createDate"/>
+        <result column="STATUS" property="status"/>
+        <result column="CATEGORY_NAME" property="categoryName"/>
+        <result column="MEMBER_NAME" property="memberName"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="THUMBNAIL_IMG" property="thumbnailImg"/>
+
+    </resultMap>
+    <!-- category -->
+    <resultMap id="cateResultMap" type="Category">
+        <result column="CATEGORY_NO" property="categoryNo" />
+        <result column="CATEGORY_NAME" property="categoryName" />
+    </resultMap>
+
+
+    <!--  resultMap 조회된 resultMap의 결과를 특정 객체에 맵핑할 맵핑 정보를 기술하는 것 -->
+    <select id="selectBoardList" resultMap="boardResultMap">
+        SELECT BOARD_NO,
+            CATEGORY_NAME,
+            BOARD_TITLE,
+            MEMBER_ID,
+            COUNT,
+            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+        FROM BOARD A
+        JOIN CATEGORY B USING(CATEGORY_NO)
+        JOIN MEMBER C
+        ON A.BOARD_WRITER = C.MEMBER_NO
+        WHERE A.STATUS = 'Y'
+        AND A.BOARD_TYPE = 1
+        ORDER BY A.BOARD_NO DESC
+    </select>
+
+    <select id="selectBoardListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD
+        WHERE STATUS = 'Y'
+        AND BOARD_TYPE = 1
+    </select>
+    <!-- selectKey : insert 하기 전 또는 후에 어떤 sql을 실행해서 생성된 키값을 자바 객체에 담아주는 기능   -->
+    <insert id="insertBoard" parameterType="Board">
+        <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+            SELECT SEQ_BNO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO BOARD(
+            BOARD_NO,
+            BOARD_TYPE,
+            CATEGORY_NO,
+            BOARD_TITLE,
+            BOARD_CONTENT,
+            BOARD_WRITER,
+            COUNT,
+            CREATE_DATE,
+            STATUS
+        ) VALUES (
+            #{boardNo},
+            1,
+            #{categoryNo},
+            #{boardTitle},
+            #{boardContent},
+            #{boardWriter},
+            0,
+            SYSDATE,
+            'Y'
+        )
+    </insert>
+
+
+    <insert id="insertAttachment" parameterType="Attachment" >
+        INSERT INTO ATTACHMENT (
+            FILE_NO,
+            REF_BNO,
+            ORIGIN_NAME,
+            CHANGE_NAME,
+            FILE_PATH,
+            FILE_LEVEL
+        ) VALUES (
+            SEQ_FNO.NEXTVAL,
+            #{refBno},
+            #{originName},
+            #{changeName},
+            #{filePath},
+            #{fileLevel}
+        )
+    </insert>
+
+    <select id="selectCategories" resultMap="cateResultMap">
+        SELECT CATEGORY_NO,
+                CATEGORY_NAME
+        FROM CATEGORY
+        ORDER BY CATEGORY_NO
+    </select>
+</mapper>
