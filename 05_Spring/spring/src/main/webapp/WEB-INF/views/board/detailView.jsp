@@ -153,14 +153,14 @@
 					<th>첨부파일</th>
 					<td colspan="3">
 						<c:url var="fileDown" value="download.at">
-							<c:param name="filePath" value="${boardFile.filePath}"/>
-							<c:param name="fileName" value="${boardFile.originName}"/>
-							<c:param name="changeName" value="${boardFile.changeName}"/>
+							<c:param name="filePath" value="${at.filePath}"/>
+							<c:param name="fileName" value="${at.originName}"/>
+							<c:param name="changeName" value="${at.changeName}"/>
 					    </c:url>
 					
-						<a download="${boardFile.originName}" 
-						href="${pageContext.request.contextPath}/${boardFile.filePath}${boardFile.changeName}">
-							${boardFile.originName}
+						<a download="${at.originName}"
+						href="${pageContext.request.contextPath}/${at.filePath}${boardFile.changeName}">
+							${at.originName}
 						</a>
 					</td>
 				</tr>

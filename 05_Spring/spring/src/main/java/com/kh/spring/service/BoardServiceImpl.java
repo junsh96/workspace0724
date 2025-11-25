@@ -1,10 +1,7 @@
 package com.kh.spring.service;
 
 import com.kh.spring.model.mapper.BoardMapper;
-import com.kh.spring.model.vo.Attachment;
-import com.kh.spring.model.vo.Board;
-import com.kh.spring.model.vo.Category;
-import com.kh.spring.model.vo.PageInfo;
+import com.kh.spring.model.vo.*;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +44,7 @@ public class BoardServiceImpl implements BoardService {
         return map;
     }
 
-    //spring 에서 기본적으로 mnc패턴을 사용하고
+    //spring 에서 기본적으로 mvc패턴을 사용하고
     //servuce 계층에서는 하나의 기능을 정의하며, dao에서는 개별 sql단으로 처리 되므로
     //업무단위인 service계층에 트랜잭션을 걸어준다.
     @Override
@@ -66,6 +63,56 @@ public class BoardServiceImpl implements BoardService {
 
             result = boardMapper.insertAttachment(at);
         }
+
+        return result;
+    }
+
+    @Override
+    public Map<String,Object> getBoardByIdWithCount(int boardNo) {
+        int result = boardMapper.increaseCount(boardNo);
+        Map<String,Object> map = new HashMap<>();
+        if (result > 0) {
+            Board board = boardMapper.selectBoardByNo(boardNo);
+            Attachment at = boardMapper.selectAttachmentByBoardNo(boardNo);
+            map.put("board",board);
+            map.put("at",at);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<String,Object> getBoardById(int boardNo) {
+        Board board = boardMapper.selectBoardByNo(boardNo);
+        Attachment at = boardMapper.selectAttachmentByBoardNo(boardNo);
+        Map<String,Object> map = new HashMap<>();
+        map.put("board",board);
+        map.put("at",at);
+        return map;
+    }
+
+    @Override
+    public int updateBoard(Board board, int originFileNo, MultipartFile file) {
+        int result = boardMapper.updateBoard(board);
+        Attachment oldFile = boardMapper.selectAttachmentByBoardNo(board.getBoardNo());
+
+
+        if(result > 0 && file != null && !file.isEmpty()) {
+            if (oldFile != null) {
+                File oldFileDir = new File(oldFile.getFilePath()+oldFile.getChangeName());
+                oldFileDir.delete();
+            }
+            Attachment at = new Attachment();
+            String filePath = "C:/workspace/05_Spring/spring/src/main/webapp/resources/uploadFiles/";
+            at.setRefBno(board.getBoardNo());
+            at.setOriginName(file.getOriginalFilename());
+            at.setFilePath(filePath);
+            at.setFileLevel(1);
+            at.setChangeName(saveFile(file, filePath));
+
+            result = boardMapper.updateAttachment(at);
+        }
+
 
         return result;
     }
@@ -97,5 +144,17 @@ public class BoardServiceImpl implements BoardService {
     public List<Category> selectCategories() {
 
         return boardMapper.selectCategories();
+    }
+
+    @Override
+    public int insertReply(Reply reply) {
+        int result = boardMapper.insertReply(reply);
+        return result;
+    }
+
+    @Override
+    public List<Reply> getReplyListByBoardNo(int boardNo) {
+
+        return boardMapper.getReplyListByBoardNo(boardNo);
     }
 }

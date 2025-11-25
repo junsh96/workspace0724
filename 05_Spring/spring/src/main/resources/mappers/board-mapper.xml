@@ -25,6 +25,26 @@
         <result column="CATEGORY_NAME" property="categoryName" />
     </resultMap>
 
+    <resultMap id="attaResultMap" type="Attachment">
+        <result column="FILE_NO" property="fileNo" />
+        <result column="REF_BNO" property="refBno" />
+        <result column="ORIGIN_NAME" property="originName" />
+        <result column="CHANGE_NAME" property="changeName" />
+        <result column="FILE_PATH" property="filePath" />
+        <result column="UPLOAD_DATE" property="uploadDate" />
+        <result column="FILE_LEVEL" property="fileLevel" />
+        <result column="STATUS" property="status" />
+    </resultMap>
+
+    <resultMap id="replyResultMap" type="Reply">
+        <result column="REPLY_NO" property="replyNo" />
+        <result column="REPLY_CONTENT" property="replyContent" />
+        <result column="REF_BNO" property="refBNo" />
+        <result column="REPLY_WRITER" property="replyWriter" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="STATUS" property="status" />
+        <result column="MEMBER_ID" property="memberId" />
+    </resultMap>
 
     <!--  resultMap 조회된 resultMap의 결과를 특정 객체에 맵핑할 맵핑 정보를 기술하는 것 -->
     <select id="selectBoardList" resultMap="boardResultMap">
@@ -101,5 +121,85 @@
                 CATEGORY_NAME
         FROM CATEGORY
         ORDER BY CATEGORY_NO
+    </select>
+
+
+    <update id="increaseCount" parameterType="int">
+        UPDATE BOARD
+        SET
+            COUNT = COUNT + 1;
+        WHERE BOARD_NO = #{boardNo}
+    </update>
+
+    <select id="selectBoardByNo" parameterType="int" resultMap="boardResultMap">
+        SELECT B.BOARD_NO,
+                B.CATEGORY_NO,
+                B.BOARD_TITLE,
+                B.BOARD_CONTENT,
+                B.BOARD_WRITER,
+                B.COUNT,
+                TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE,
+                A.MEMBER_NAME,
+                C.CATEGORY_NAME
+        FROM BOARD B
+        JOIN CATEGORY C
+        ON B.CATEGORY_NO = C.CATEGORY_NO
+        JOIN MEMBER A
+        ON BOARD_WRITER = A.MEMBER_NO
+        WHERE BOARD_NO = #{boardNo}
+        AND STATUS = 'Y'
+
+    </select>
+
+    <select id="selectAttachmentByBoardNo" parameterType="int" resultMap="attaResultMap">
+        SELECT FILE_NO,
+                REF_BNO,
+                ORIGIN_NAME,
+                CHANGE_NAME,
+                FILE_PATH
+        FROM ATTACHMENT
+        WHERE REF_BNO = #{boardNo}
+        AND STATUS = 'Y'
+
+    </select>
+
+    <update id="updateBoard" parameterType="Board">
+        UPDATE BOARD
+        SET
+
+    </update>
+
+    <update id="updateAttachment" parameterType="Attachment">
+        UPDATE ATTACHMENT
+        SET
+
+    </update>
+
+    <insert id="insertReply" parameterType="Reply">
+        INSERT INTO REPLY(
+            REPLY_NO,
+            REPLY_CONTENT,
+            REF_BNO,
+            REPLY_WRITER
+        ) VALUES (
+            SEQ_RNO.NEXTVAL,
+            #{replyContent},
+            #{refBno},
+            #{replyWriter}
+        )
+    </insert>
+
+    <select id="getReplyListByBoardNo" parameterType="int" resultMap="replyResultMap">
+        SELECT R.REPLY_NO
+                R.REPLY_CONTENT,
+                R.REF_BNO,
+                R.REPLY_WRITER,
+                R.CREATE_DATE,
+                R.STATUS,
+                M.MEMBER_ID
+        FROM REPLY R
+        JOIN MEMBER M ON (MEMBER_NO = REPLY_WRITER)
+        WHERE REF_BNO = #{boardNo}
+        AND R.STATUS = 'Y'
     </select>
 </mapper>

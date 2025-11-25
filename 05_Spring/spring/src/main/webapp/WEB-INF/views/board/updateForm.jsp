@@ -93,10 +93,10 @@
 					<tr>
 						<th>카테고리</th>
 						<td>
-							<select name="category" value="${boardDetail.categoryNo}">
-								<c:forEach var="cate" items="${categoryList}">
+							<select name="categoryNo" value="${board.categoryNo}">
+								<c:forEach var="cate" items="${categories}">
 									<c:choose>
-										<c:when test="${cate.categoryNo == boardDetail.categoryNo}">
+										<c:when test="${cate.categoryNo == board.categoryNo}">
 											<option value="${cate.categoryNo}" selected>${cate.categoryName}</option>
 										</c:when>
 										<c:otherwise>
@@ -111,21 +111,21 @@
 					<tr>
 						<th>제목</th>
 						<td>
-							<input type="text" name="title" required value="${boardDetail.boardTitle}">
+							<input type="text" name="boardTitle" required value="${board.boardTitle}">
 						</td>
 					</tr>
 					<tr>
 						<th>내용</th>
 						<td>
-							<textarea name="content" rows="10">${boardDetail.boardContent}</textarea>
+							<textarea name=boardContent" rows="10">${board.boardContent}</textarea>
 						</td>
 					</tr>
 					<tr>
 						<th>첨부파일</th>
 						<td>
-							<c:if test="${boardFile != null}">
-								기존 파일 : ${boardFile.originName}
-								<input type="hidden" name="originFileNo" value="${boardFile.fileNo}">
+							<c:if test="${at != null}">
+								기존 파일 : ${at.originName}
+								<input type="hidden" name="originFileNo" value="${at.fileNo}">
 							</c:if>
 							<input type="file" name="upfile">
 						</td>
