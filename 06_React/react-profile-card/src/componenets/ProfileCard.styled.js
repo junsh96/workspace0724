@@ -17,32 +17,18 @@ export const Td = styled.td`
     border: 1px solid black;
     
 `
-export const OnlineTd = styled.td`
+export const OnOfTd = styled.td`
     border: 1px solid black;
-    color: green;
     display: flex;
     align-items: flex-start;
-`
-export const OflineTd = styled.td`
-    border: 1px solid black;
-    color : gray;
-    display: flex;
-    align-items: flex-start;
+    color : ${props => props.color || green};
 `
 
-export const Online = styled.span`
+export const Status = styled.td`
     margin-top: 7px;
     display: inline-block;
-    background-color: green;
     border-radius: 50%;
     width: 10px;
     height: 10px;
-`
-export const Ofline = styled.span`
-    margin-top: 7px;
-    display: inline-block;
-    background-color: red;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    background-color: ${props => props.background || green};
 `
