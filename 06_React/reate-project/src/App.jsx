@@ -8,6 +8,19 @@ import Product from './components/Product'
 import styled from 'styled-components'
 import LifecycleTest from './components/LifecycleTest'
 import CommentBox from './components/CommentBox'
+import UseStateTest from './components/useState/UseStateTest'
+import Signup from './components/useState/Signup'
+import LandingPage from './components/useState/LandingPage'
+import UseRefTest from './components/useRef/UseRefTest'
+import UseRefScroll from './components/useRef/UseRefScroll'
+import UseMemoTest from './components/useMemo/UseMemoTest'
+import UseCallbackTest from './components/useCallback/UseCallbackTest'
+import UseEffectView from './components/useEffect/UseEffectView'
+import UseContextTest from './components/useContext/UseContextTest'
+import MyInfo from './components/customHook/MyInfo'
+import ToggleBox from './components/customHook/ToggleBox'
+import { UserProVider } from './components/useContext/UserContext'
+import Header from './components/useContext/Header'
 
 
 function App() {
@@ -19,25 +32,21 @@ function App() {
 
   return (
     <>
-      {/* <JavaScript/> */}
-      {/* <Style/> */}
-      {/* <Table>
-        <thead>
-          <tr>
-            <Th>제품명</Th>
-            <Th>가격</Th>
-            <Th>색상</Th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map(p => <Product key={p.product_id} product={p}/>)}
-        </tbody>
-      </Table> */}
-      {/* {isView && <LifecycleTest/>}
-      <button onClick={toggleButton}>{isView ? "숨기기" : "보이기"}</button> */}
-      
-        <CommentBox/>
+      {/* <UseStateTest/> */}
+      {/* <Signup/> */}
+      {/* <LandingPage/> */}
+      {/* <UseRefTest/> */}
+      {/* <UseRefScroll/> */}
+      {/* <UseMemoTest/> */}
+      {/* <UseCallbackTest/> */}
+      {/* <UseEffectView/> 플러스 안됨*/}
+      {/* <UseContextTest/> 테마 변경 안됨 */}
+      {/* <MyInfo/> */}
+      {/* <ToggleBox/> 에러 발생 */}
 
+      <UserProVider>
+        <Header/>
+      </UserProVider>
     </>
   )
 }
