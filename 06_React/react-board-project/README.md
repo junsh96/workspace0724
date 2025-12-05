@@ -110,7 +110,7 @@ http://localhost:5173 접속
 
 다중 이미지 업로드 기능
 
-전체적인 디자인 변경
+전체적인 디자인 개선
 
-localstorage용량 문제 해결 필요.
+localstorage용량 문제 개선
 
