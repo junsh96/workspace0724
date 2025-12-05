@@ -17,10 +17,10 @@ const MyPage = () => {
   const allComments = JSON.parse(localStorage.getItem("comments") || "[]");
 
   // 내가 올린 게시글
-  const myProducts = value.filter(p => p.userId === users.id).slice(0, 5);
+  const myProducts = value.filter(p => p.userId === users.id).reverse().slice(0, 5);
 
   // 내가 작성한 댓글
-  const myComments = allComments.filter(c => c.userId === users.id).slice(0, 5);
+  const myComments = allComments.filter(c => c.userId === users.id).reverse().slice(0, 5);
 
   // 총 판매 금액
   const totalSell = users.amount || 0;

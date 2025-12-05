@@ -1,11 +1,17 @@
 import React from 'react'
 import { useUsers } from '../context/UserContext';
 import { HeaderBar, HeaderRight, Logo, MenuItem, MenuList, WelcomeText } from './Header.styled';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+    const navigate = useNavigate();
 
     const {users, setUsers} = useUsers();
+
+    const logOut = () => {
+        setUsers(null);
+        navigate("/")
+    }
     
     return (
         <>
@@ -17,6 +23,7 @@ const Header = () => {
                     <>
                     <WelcomeText><Link to={`/mypage/${users.id}`}>{users.name}</Link> 님 환영합니다.</WelcomeText>
                     <MenuList>
+                        <MenuItem><Link onClick={logOut}>로그아웃</Link></MenuItem>
                         <MenuItem><Link to="/productList">물품</Link></MenuItem>
                         <MenuItem><Link to="/productEnroll">판매</Link></MenuItem>
                     </MenuList>

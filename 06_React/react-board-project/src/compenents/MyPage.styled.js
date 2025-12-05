@@ -68,10 +68,15 @@ export const ListItem = styled.div`
 `;
 
 export const SellSpan = styled.span`
-    margin-left: "6px";
-    padding: "2px 6px";
-    background: "#ccc";
-    border-radius: "4px";
-    font-size: "12px";
-    color: "#555";
+    display: inline-block;
+    padding: 8px 14px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #c0392b;
+    border: 2px solid #c0392b;
+    border-radius: 4px;
+    transform: rotate(-8deg);
+    opacity: 0.85;
+    background: rgba(255, 230, 230, 0.4);
 `

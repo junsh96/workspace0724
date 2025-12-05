@@ -2,9 +2,10 @@ import React from 'react'
 import useInput from '../customHook/useInput';
 import { JoinCard, JoinContainer, JoinTitle, StyledInput, SubmitButton } from './Join.styled';
 import { InputGroup, Label } from './Login.styled';
+import { useNavigate } from 'react-router-dom';
 
 const Join = ({userList = [], userAdd}) => {
-
+    const navigate = useNavigate();
 
     const userJoin = (e) => {
         e.preventDefault();
@@ -33,6 +34,7 @@ const Join = ({userList = [], userAdd}) => {
             name.setValue("");
             password.setValue("");
             console.log(userList)
+            navigate("/")
 
         }
 
