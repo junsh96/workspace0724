@@ -12,7 +12,7 @@ const Signup = () => {
     }
 
     const handleChangeGender = (ev) => {
-        setGender(ev.target.value);
+        setGender(ev.target.value); 
     }
 
     const handleSubmit = (ev) => {

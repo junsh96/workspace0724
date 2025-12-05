@@ -21,6 +21,9 @@ import MyInfo from './components/customHook/MyInfo'
 import ToggleBox from './components/customHook/ToggleBox'
 import { UserProVider } from './components/useContext/UserContext'
 import Header from './components/useContext/Header'
+import { Route, Router, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import PostListPage from './pages/PostListPage'
 
 
 function App() {
@@ -39,14 +42,21 @@ function App() {
       {/* <UseRefScroll/> */}
       {/* <UseMemoTest/> */}
       {/* <UseCallbackTest/> */}
-      {/* <UseEffectView/> 플러스 안됨*/}
+      {/* <UseEffectView/> 플러스 안됨 -> 이벤트 잘못검 */}
       {/* <UseContextTest/> 테마 변경 안됨 */}
       {/* <MyInfo/> */}
       {/* <ToggleBox/> 에러 발생 */}
 
-      <UserProVider>
+      {/* <UserProVider>
         <Header/>
-      </UserProVider>
+      </UserProVider> 에러 발생*/}
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />}/>
+        <Route path="/posts" element={<PostListPage />} />
+      </Routes>
+    </Router>
+
     </>
   )
 }

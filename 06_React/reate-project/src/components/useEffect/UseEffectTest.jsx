@@ -56,7 +56,7 @@ const UseEffectTest = () => {
             버튼을 <strong>{num}</strong>번 입력하셧습니다.
 
         </p>
-        <button onChange={handleChangeNum}> + </button>
+        <button onClick={handleChangeNum}> + </button>
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import React, { useContext } from "react";
+
 const UserContext = React.createContext();
 
 export const UserProVider = ({chlidren}) => {
@@ -14,3 +16,7 @@ export const UserProVider = ({chlidren}) => {
         </UserContext.Provider>
     )
 }
+
+// export const useUser = () => {
+//     return useContext(UserContext);s
+// }

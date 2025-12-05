@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { useUser } from './UserContext'
+//import { useUser } from './UserContext'
 
 const Header = () => {
     // const {user} = useContext(User)
-    const user = useUser();
+    //const user = useUser();
   return (
     <div>
         <h2>안녕하세요 , {user.name}님</h2>
