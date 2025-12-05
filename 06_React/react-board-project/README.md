@@ -112,3 +112,5 @@ http://localhost:5173 접속
 
 전체적인 디자인 변경
 
+localstorage용량 문제 해결 필요.
+
