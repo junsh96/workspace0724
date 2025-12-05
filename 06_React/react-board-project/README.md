@@ -98,7 +98,6 @@ http://localhost:5173 접속
 | users | 전체 사용자 목록 |
 | products | 등록된 상품 목록 |
 | comments | 전체 댓글 목록  |
-| loggedUser | 현재 로그인한 사용자 정보 |
 
 
 
