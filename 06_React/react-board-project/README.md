@@ -17,7 +17,7 @@ React와 LocalStorage를 기반으로 한 **중고 거래 게시판 서비스**�
 <br>
 
 ## 📂 프로젝트 구조
-
+```
 src/
 ├── components/
 │ ├── Header.jsx
@@ -53,7 +53,7 @@ src/
 │ └── useCommentList.jsx
 │
 └── App.jsx
-
+```
 
 <br>
 
@@ -92,14 +92,13 @@ npm run dev
 
 http://localhost:5173 접속
 
-
-
 📦 로컬 스토리지 사용 데이터
-|Key	      |설명                      |
-|users	    |전체 사용자 목록          |
-|products	  |등록된 상품 목록          |
-|comments	  |전체 댓글 목록            |
-|loggedUser	|현재 로그인한 사용자 정보 |
+| Key | 설명 |
+|-----|------|
+| users | 전체 사용자 목록 |
+| products | 등록된 상품 목록 |
+| comments | 전체 댓글 목록  |
+| loggedUser | 현재 로그인한 사용자 정보 |
 
 
 
