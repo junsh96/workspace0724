@@ -27,12 +27,12 @@ src/
 │ │ ├── HomeAction.jsx
 │ │ ├── HomeBanner.jsx
 │ │ └── HomeRecentProducts.jsx
-│ ├── mypage
+│ ├── mypage/
 │ │ ├── MyCommentList.jsx
 │ │ ├── MyFavorite.jsx
 │ │ ├── MyInfo.jsx
 │ │ └── MyProductList.jsx
-│ ├── product
+│ ├── product/
 │ │ └── ProductBody.jsx
 │ ├── prodcutDetail
 │ │ ├── CommentList.jsx
