@@ -34,7 +34,7 @@ src/
 │ │ └── MyProductList.jsx
 │ ├── product/
 │ │ └── ProductBody.jsx
-│ ├── prodcutDetail
+│ ├── prodcutDetail/
 │ │ ├── CommentList.jsx
 │ │ ├── Comment.jsx
 │ │ ├── CommentWriter.jsx
