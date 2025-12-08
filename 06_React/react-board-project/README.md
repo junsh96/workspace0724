@@ -51,6 +51,14 @@ src/
 │ ├── useUserList.jsx
 │ ├── useFavoriteList.jsx
 │ └── useCommentList.jsx
+├── pages/
+│ ├── Home.jsx
+│ ├── Join.jsx
+│ ├── Login.jsx
+│ ├── MyPage.jsx
+│ ├── ProductDetail.jsx
+│ ├── ProductEnroll.jsx
+│ ├── ProductPage.jsx
 │
 └── App.jsx
 ```
