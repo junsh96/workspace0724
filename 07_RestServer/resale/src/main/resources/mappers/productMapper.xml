@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.resale.mapper.UserMapper">
+
+    <resultMap id="productResult" type="Product">
+        <result column="ID" property="id"/>
+        <result column="NO" property="no"/>
+        <result column="TITLE" property="title"/>
+        <result column="CONTENT" property="content"/>
+        <result column="IMAGE" property="image"/>
+        <result column="COUNT" property="count"/>
+        <result column="PRICE" property="price"/>
+        <result column="CREATE_DATE" property="createDate"/>
+        <result column="STATUS" property="status"/>
+        <result column="USER_ID" property="userId"/>
+    </resultMap>
+
+    <insert id="addProduct">
+        INSERT INTO PRODUCT(
+            ID,
+            NO,
+            TITLE,
+            CONTENT,
+            IMAGE,
+            STATUS,
+            USER_ID
+        ) VALUES (
+            #{id},
+            #{no},
+            #{title},
+            #{content},
+            #{image},
+            #{status},
+            #{userIds}
+        )
+    </insert>
+
+    <select id="findAll">
+        SELECT TITLE,
+                CONTENT,
+                IMAGE,
+                COUNT,
+                CREATE_DATE,
+                STATUS,
+                USER_ID
+        FROM PRODUCT
+
+    </select>
+
+    <select id="findOne">
+        SELECT TITLE,
+                CONTENT,
+                IMAGE,
+                COUNT,
+                CREATE_DATE,
+                STATUS,
+                USER_ID,
+                PRICE
+        FROM PRODUCT
+        WHERE ID = #{id}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM PRODUCT
+        WHERE ID = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE PRODUCT
+        SET
+            TITLE = #{title},
+            CONTENT = #{content},
+            IMAGE = #{image}
+        WHERE ID = #{id}
+    </update>
+
+    <update id="patchStatus">
+        UPDATE PRODUCT
+        SET
+            STATUS = #{status}
+        WHERE ID = #{id}
+    </update>
+
+    <update id="patchCount">
+        UPDATE PRODUCT
+        SET
+            COUNT = #{count}
+        WHERE ID = #{id}
+    </update>
+</mapper>

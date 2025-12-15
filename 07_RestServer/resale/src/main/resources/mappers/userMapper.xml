@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.resale.mapper.UserMapper">
+    <resultMap id="userResult" type="User">
+        <result column="USER_ID" property="userId"/>
+        <result column="USER_NAME" property="userName"/>
+        <result column="PASSWORD" property="password"/>
+        <result column="JOIN_DATE" property="joinDate"/>
+        <result column="AMOUNT" property="amounts"/>
+    </resultMap>
+    <insert id="addUser" parameterType="User">
+        INSERT INTO USER (
+            USER_ID,
+            USER_NAME,
+            PASSWORD
+        ) VALUES (
+            #{userId},
+            #{userName},
+            #{password}
+        )
+
+    </insert>
+
+    <select id="login" resultMap="userResult" parameterType="String">
+        SELECT USER_ID,
+                PASSWORD
+        FROM USER
+        WHERE USER_ID = #{userId}
+        AND PASSWORD = #{password}
+    </select>
+
+</mapper>

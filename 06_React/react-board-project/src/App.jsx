@@ -5,16 +5,17 @@ import './App.css'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
 import useUserList from './customHook/useUserList'
-import Login from './compenents/Login'
-import Product from './compenents/Product'
-import Join from './compenents/Join'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Join from './pages/Join'
+import MyPage from './pages/MyPage'
+import ProductPage from './pages/ProductPage'
+import ProductEnroll from './pages/ProductEnroll'
+import ProductDetail from './pages/ProductDetail'
+import NotFound from './compenents/common/NotFound'
 import { ProductProvider } from './context/ProductContext'
-import ProductEnroll from './compenents/ProductEnroll'
-import ProductDetail from './compenents/ProductDetail'
-import Home from './compenents/Home'
-import NotFound from './compenents/NotFound'
-import Header from './compenents/Header'
-import MyPage from './compenents/MyPage'
+import Header from './compenents/common/Header'
+
 
 function HeaderController() {
   const location = useLocation();
@@ -40,7 +41,7 @@ function App() {
               <Route path="/login" element={<Login userList={userList}/>} />
               <Route path="/join" element={<Join userList={userList} userAdd={userAdd}/>}/>
               <Route path="/myPage/:id" element={<MyPage />}/>
-              <Route path="/productList" element={<Product userRemove={userRemove}/>} />
+              <Route path="/productList" element={<ProductPage userRemove={userRemove}/>} />
               <Route path="/productEnroll" element={<ProductEnroll />} />
               <Route path="/productDetail/:productId" element={<ProductDetail userUpdate={userUpdate} />} />
               <Route path="/*" element={<NotFound />} />

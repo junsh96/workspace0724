@@ -1,0 +1,21 @@
+2025-12-09 11:19:43.423464+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "BOARD" not found; SQL statement:
+DROP TABLE BOARD [42102-240]
+2025-12-09 11:19:43.430448+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MEMBER" not found; SQL statement:
+DROP TABLE MEMBER [42102-240]
+2025-12-10 14:11:09.834103+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop [*]database BOARD"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, MATERIALIZED, VIEW, ROLE, ALIAS, SCHEMA, ALL OBJECTS, DOMAIN, TYPE, AGGREGATE, SYNONYM"; SQL statement:
+drop database BOARD [42001-240]
+2025-12-10 14:11:24.376411+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop [*]database BOARD"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, MATERIALIZED, VIEW, ROLE, ALIAS, SCHEMA, ALL OBJECTS, DOMAIN, TYPE, AGGREGATE, SYNONYM"; SQL statement:
+drop database BOARD [42001-240]
+2025-12-10 14:11:24.378416+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop [*]database MEMBER"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, MATERIALIZED, VIEW, ROLE, ALIAS, SCHEMA, ALL OBJECTS, DOMAIN, TYPE, AGGREGATE, SYNONYM"; SQL statement:
+drop database MEMBER [42001-240]
+2025-12-10 14:12:46.357226+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop [*]database MEMBER"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, MATERIALIZED, VIEW, ROLE, ALIAS, SCHEMA, ALL OBJECTS, DOMAIN, TYPE, AGGREGATE, SYNONYM"; SQL statement:
+drop database MEMBER [42001-240]
+2025-12-10 14:12:51.080426+09:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "BOARD" not found; SQL statement:
+drop table BOARD [42102-240]
