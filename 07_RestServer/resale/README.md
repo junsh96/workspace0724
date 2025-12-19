@@ -23,6 +23,7 @@ Lombok
 Jackson
 
 📁 프로젝트 구조 (요약)
+```
 com.kh.resale
  ├─ controller
  │   ├─ dto
@@ -59,7 +60,7 @@ com.kh.resale
  └─ controller/dto
      ├─ request
      └─ response
-
+```
 🌐 공통 API 규칙
 
 Base URL
