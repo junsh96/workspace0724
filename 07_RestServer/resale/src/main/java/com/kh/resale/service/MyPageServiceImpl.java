@@ -1,10 +1,13 @@
 package com.kh.resale.service;
 
+import com.kh.resale.controller.dto.request.FavoriteRequest;
 import com.kh.resale.controller.dto.response.ProductResponse;
 import com.kh.resale.controller.dto.response.UserResponse;
 import com.kh.resale.entity.Comment;
+import com.kh.resale.entity.Favorite;
 import com.kh.resale.entity.Product;
 import com.kh.resale.entity.User;
+import com.kh.resale.id.FavoriteId;
 import com.kh.resale.repository.CommentRepository;
 import com.kh.resale.repository.ProductRepository;
 import com.kh.resale.repository.UserRepository;

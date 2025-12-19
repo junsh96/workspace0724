@@ -1,5 +1,6 @@
 package com.kh.resale.controller;
 
+import com.kh.resale.controller.dto.request.FavoriteRequest;
 import com.kh.resale.controller.dto.response.CommentResponse;
 import com.kh.resale.controller.dto.response.ProductResponse;
 import com.kh.resale.controller.dto.response.UserResponse;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/myPage")
 public class MyPageController {
 
-    private final MyPageServiceImpl myPageServiceImpl;
+    private final MyPageServiceImpl myPageService;
 
     /**
      * 내정보
@@ -29,7 +30,7 @@ public class MyPageController {
      */
     @GetMapping("/myInfo")
     public ResponseEntity<UserResponse.SimpleDto> myInfo(@RequestParam String userId) {
-        UserResponse.SimpleDto result = myPageServiceImpl.getUserById(userId);
+        UserResponse.SimpleDto result = myPageService.getUserById(userId);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -41,7 +42,7 @@ public class MyPageController {
      */
     @GetMapping("/myProduct")
     public ResponseEntity<List<ProductResponse.SimpleDto>> myProduct(@RequestParam String userId) {
-        List<Product> products = myPageServiceImpl.getProductByUserId(userId);
+        List<Product> products = myPageService.getProductByUserId(userId);
 
         List<ProductResponse.SimpleDto> result = new ArrayList<>();
         for (Product product : products) {
@@ -57,7 +58,7 @@ public class MyPageController {
      */
     @GetMapping("/myComment")
     public ResponseEntity<List<CommentResponse.SimpleDto>> myComment(@RequestParam String userId) {
-        List<Comment> comments = myPageServiceImpl.getCommentByUserId(userId);
+        List<Comment> comments = myPageService.getCommentByUserId(userId);
 
         List<CommentResponse.SimpleDto> result = new ArrayList<>();
         for (Comment comment : comments) {
@@ -67,8 +68,7 @@ public class MyPageController {
     }
 
 
-    @PostMapping("/addFavorite")
-    public ResponseEntity<String> addFavorite(@RequestBody Favorite favorite) {}
+
 
 
 

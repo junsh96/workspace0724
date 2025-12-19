@@ -1,5 +1,6 @@
 package com.kh.resale.controller;
 
+import com.kh.resale.controller.dto.request.FavoriteRequest;
 import com.kh.resale.controller.dto.request.ProductRequest;
 import com.kh.resale.controller.dto.response.ProductResponse;
 import com.kh.resale.entity.Product;
@@ -123,6 +124,17 @@ public class ProductController {
         int result = productService.patchCount(productId);
 
         return new ResponseEntity<>("게시글 수정완료", HttpStatus.OK);
+    }
+
+    /**
+     * 찜 추가
+     * @param request
+     * @return
+     */
+    @PostMapping("/addFavorite")
+    public ResponseEntity<String> addFavorite(@RequestBody FavoriteRequest.createDto request) {
+        int result = productService.addFavorite(request);
+        return ResponseEntity.ok().build();
     }
 
 }

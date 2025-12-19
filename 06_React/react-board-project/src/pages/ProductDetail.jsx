@@ -8,7 +8,7 @@ import { CommentForm, DetailContainer, FavoriteWrapper } from "../styled/Product
 import CommentWriter from "../compenents/productDetail/CommentWriter";
 import useCommentList from "../customHook/useCommentList";
 import useFavoriteList from "../customHook/useFavoriteList";
-import { getProduct,getComment } from "../compenents/productDetail/api/ProductDetail.api";
+import { getProduct,getComment,addFavorite } from "../compenents/productDetail/api/ProductDetail.api";
 import { useEffect, useState } from "react";
 
 const ProductDetail = ({userUpdate}) => {
@@ -17,7 +17,21 @@ const ProductDetail = ({userUpdate}) => {
   const [selComment, setComment] = useState([]);
   const { users } = useUsers();
   const { productId } = useParams();
-  const { toggleFavorite, getUserFavorites } = useFavoriteList();
+  const { toggleFavorites, getUserFavorites } = useFavoriteList();
+
+  const toggleFavorite = async(e) => {
+    e.preventDefault();
+    const favoriteBody = {
+        user_id : users.user_id,
+        product_id : selProduct.id
+    }
+    try {
+        await addFavorite(favoriteBody);
+    } catch(e) {
+        console.log(e);
+    }
+    
+  }
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,7 +65,7 @@ const ProductDetail = ({userUpdate}) => {
   const { comments, commentAdd ,commentRemove } = useCommentList();
 
   if (!selProduct) return <div>존재하지 않는 상품입니다.</div>;
-  const isFavorite = getUserFavorites(users.id).includes(selProduct.id);
+  const isFavorite = getUserFavorites(users.user_id).includes(selProduct.id);
   const isOwner = users.user_id === selProduct.user_id;
   const isComplete = selProduct.status === "complete";
 
@@ -61,7 +75,7 @@ const ProductDetail = ({userUpdate}) => {
         
         <DetailContainer>
         <FavoriteWrapper>
-            <button onClick={() => toggleFavorite(users.id, selProduct.id)}>
+            <button onClick={toggleFavorite}>
                 {isFavorite ? "❤️ 찜" : "🤍 찜하기"}
             </button>
         </FavoriteWrapper>

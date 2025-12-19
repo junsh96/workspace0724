@@ -29,3 +29,7 @@ export const deleteComment = (commentId) => {
 export const getComment = (productId) => {
     return axios.get("/api/comment/getComment",{params: {productId}});
 }
+
+export const addFavorite = (favoriteBody) => {
+    return axios.post("/api/product/addFavorite",favoriteBody);
+}

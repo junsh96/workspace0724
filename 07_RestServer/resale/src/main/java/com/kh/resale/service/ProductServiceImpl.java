@@ -1,9 +1,12 @@
 package com.kh.resale.service;
 
+import com.kh.resale.controller.dto.request.FavoriteRequest;
 import com.kh.resale.controller.dto.request.ProductRequest;
 import com.kh.resale.controller.dto.response.ProductResponse;
+import com.kh.resale.entity.Favorite;
 import com.kh.resale.entity.Product;
 import com.kh.resale.entity.User;
+import com.kh.resale.id.FavoriteId;
 import com.kh.resale.mapper.ProductMapper;
 import com.kh.resale.repository.ProductRepository;
 import com.kh.resale.repository.UserRepository;
@@ -100,6 +103,19 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("상품 정보를 찾을수 없습니다."));
 
         selProduct.updateCount(selProduct.getCount() + 1);
+        return 1;
+    }
+
+    @Override
+    public int addFavorite(FavoriteRequest.createDto request) {
+        User user = userRepository.getReferenceById(request.getUser_id());
+        Product product = productRepository.getReferenceById(request.getProduct_id());
+        Favorite favorite = Favorite.builder()
+                .id(new FavoriteId(request.getUser_id(), request.getProduct_id()))
+                .user(user)
+                .product(product)
+                .build();
+
         return 1;
     }
 

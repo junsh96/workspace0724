@@ -2,15 +2,14 @@ package com.kh.resale.entity;
 
 import com.kh.resale.id.FavoriteId;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "favorite")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Favorite {
 
     @EmbeddedId

@@ -1,6 +1,7 @@
 package com.kh.resale.service;
 
 
+import com.kh.resale.controller.dto.request.FavoriteRequest;
 import com.kh.resale.controller.dto.request.ProductRequest;
 import com.kh.resale.controller.dto.response.ProductResponse;
 import com.kh.resale.entity.Product;
@@ -21,5 +22,7 @@ public interface ProductService {
     int patchStatus(String userId,Long id);
 
     int patchCount(Long id);
+
+    int addFavorite(FavoriteRequest.createDto request);
 
 }

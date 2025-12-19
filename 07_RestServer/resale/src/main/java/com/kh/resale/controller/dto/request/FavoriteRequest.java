@@ -15,9 +15,5 @@ public class FavoriteRequest {
     public static class createDto {
         private String user_id;
         private Long product_id;
-
-        public Favorite toEntity() {
-            return Favorite
-        }
     }
 }
