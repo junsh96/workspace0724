@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@Table(name = "USER")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -34,4 +34,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    public void updateAmount (Integer amount) {
+        this.amount = amount;
+    }
 }

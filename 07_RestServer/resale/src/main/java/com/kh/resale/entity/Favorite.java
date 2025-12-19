@@ -3,6 +3,7 @@ package com.kh.resale.entity;
 import com.kh.resale.id.FavoriteId;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,7 @@ public class Favorite {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("id")
+    @MapsId("productId")
     @JoinColumn(name="product_id")
     private Product product;
 

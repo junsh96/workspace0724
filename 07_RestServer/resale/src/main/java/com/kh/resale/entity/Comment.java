@@ -12,15 +12,19 @@ import lombok.*;
 @Table(name = "COMMENT")
 public class Comment {
     @Id
-    private int id;
+    private Long id;
     @Column(length = 200)
     private String comment;
     @Column(name="user_id",nullable = false)
     private String userId;
     @Column(name="product_id")
-    private long productId;
+    private Long productId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
 }

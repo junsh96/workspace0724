@@ -1,22 +1,24 @@
 package com.kh.resale.service;
 
 
+import com.kh.resale.controller.dto.request.ProductRequest;
+import com.kh.resale.controller.dto.response.ProductResponse;
 import com.kh.resale.entity.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    int addProduct(Product product);
+    int addProduct(ProductRequest.createDto request);
 
     List<Product> findAll();
 
-    Product findOne(Long id);
+    ProductResponse.DetailDto findOne(Long id);
 
     int delete(Long id);
 
-    int update(Product product);
+    int update(ProductRequest.UpdateDto request);
 
-    int patchStatus(Long id);
+    int patchStatus(String userId,Long id);
 
     int patchCount(Long id);
 

@@ -19,9 +19,9 @@ const Header = () => {
                 <Logo><Link to="/">Resale Market</Link></Logo>
 
                 <HeaderRight>
-                {users?.id ? (
+                {users?.user_id ? (
                     <>
-                    <WelcomeText><Link to={`/mypage/${users.id}`}>{users.name}</Link> 님 환영합니다.</WelcomeText>
+                    <WelcomeText><Link to={`/mypage/${users.user_id}`}>{users.user_name}</Link> 님 환영합니다.</WelcomeText>
                     <MenuList>
                         <MenuItem><Link onClick={logOut}>로그아웃</Link></MenuItem>
                         <MenuItem><Link to="/productList">물품</Link></MenuItem>

@@ -10,7 +10,7 @@ public interface ProductMapper {
 
     int  addProduct(Product product);
 
-    List<Product> findAll();
+    //List<Product> findAll();
 
     Product findOne(Long id);
 

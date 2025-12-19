@@ -1,43 +1,53 @@
 package com.kh.resale.controller.dto.request;
 
 import com.kh.resale.entity.Product;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 public class ProductRequest {
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class createDto {
         private Long id;
-        private Integer no;
-        private String userId;
+        private String user_id;
         private String title;
         private String content;
         private String image;
         private Integer price;
-        private LocalDateTime createdDate;
-        private String status;
+        private LocalDateTime created_date;
+        private Product.Status status;
+        private Integer count;
 
 
-        public Product toEntity() {
+        public Product toEntity(Long no) {
             return Product.builder()
                     .id(id)
-                    .no(no)
-                    .userId(userId)
+                    .no(no.intValue())
+                    .userId(user_id)
+                    .title(title)
                     .content(content)
                     .image(image)
                     .price(price)
-                    .createdDate(createdDate)
+                    .createdDate(created_date)
                     .status(status)
+                    .count(count)
                     .build();
         }
     }
 
+    @Getter
+    @Setter
     public static class UpdateDto {
         private Long id;
         private Integer no;
-        private String userId;
+        private String user_id;
         private String title;
         private String content;
         private String image;
@@ -47,7 +57,7 @@ public class ProductRequest {
             return Product.builder()
                     .id(id)
                     .no(no)
-                    .userId(userId)
+                    .userId(user_id)
                     .title(title)
                     .content(content)
                     .image(image)

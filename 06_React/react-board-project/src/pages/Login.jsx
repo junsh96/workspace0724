@@ -3,41 +3,36 @@ import useInput from '../customHook/useInput'
 import { useUsers } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom';
 import { InputGroup, Label, LoginCard, LoginContainer, LoginTitle, StyledInput, SubmitButton } from '../styled/Login.styled';
+import { loginUserById } from '../compenents/common/api/User.api';
 
 const Login = ({userList = []}) => {
     const navigate = useNavigate();
 
     const {users, setUsers} = useUsers();
-    const loginUser = (e) => {
+    const loginUser = async(e) => {
         e.preventDefault();
 
         if (!id.value.trim()) return alert("아이디를 입력해주세요.");
         if (!password.value.trim()) return alert("비밀번호를 입력해주세요.");
 
-        const foundUser = userList.find(u => u.id === id.value);
-
-        if (!foundUser) {
-            alert("아이디를 확인해주세요.");
-            return;
-        }
-        
-        if (foundUser.password !== password.value) {
-            alert("비밀번호를 확인해주세요.");
-            return;
-        }
-
 
         const loginUserInfo = {
-            id : id.value,
-            password : password.value,
-            name : foundUser.name,
-            joinDate : foundUser.joinDate,
-            amount : foundUser.amount
+            user_id : id.value,
+            password : password.value
 
         }
-        setUsers(loginUserInfo);
-        alert("로그인 성공")
-        navigate("/");
+
+        try {
+            const loginData = await loginUserById(loginUserInfo);
+            console.log("!@#!$",loginData.data);
+            setUsers(loginData.data);
+            alert("로그인 성공")
+            navigate("/");
+        } catch(e) {
+            alert("비밀번호와 아이디를 확인해주세요.")
+            console.log(e);
+        }
+
 
 
     }

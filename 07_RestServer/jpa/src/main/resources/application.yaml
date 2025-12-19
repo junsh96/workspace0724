@@ -7,7 +7,7 @@ spring:
       jdbc-url: jdbc:h2:tcp://localhost/C:\workspace\07_RestServer\jpa/tdb
       driver-class-name: org.h2.Driver
       username: sa
-      password:
+      password: 1234
   h2:
     console:
       enabled: true

@@ -24,14 +24,14 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PostMapping
-    public ResponseEntity<String> addProduct(ProductRequest.createDto request) {
+    @PostMapping("/addProduct")
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequest.createDto request) {
         if (request == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Product product = request.toEntity();
-        int result = productService.addProduct(product);
+
+        int result = productService.addProduct(request);
         if(result > 0){
             return new ResponseEntity<>("게시글 등록 성공", HttpStatus.OK);
         } else{
@@ -44,7 +44,7 @@ public class ProductController {
      *  게시글 조회
      * @return
      */
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<List<ProductResponse.SimpleDto>> findAll() {
 
         List<Product> products = productService.findAll();
@@ -59,13 +59,13 @@ public class ProductController {
 
     /**
      * 상세 조회
-     * @param id
+     * @param productId
      * @return
      */
-    @GetMapping
-    public ResponseEntity<ProductResponse.DetailDto> getProduct(@PathVariable Long id) {
-        Product product = productService.findOne(id);
-        ProductResponse.DetailDto result = ProductResponse.DetailDto.of(product);
+    @GetMapping("/getProduct")
+    public ResponseEntity<ProductResponse.DetailDto> getProduct(@RequestParam Long productId) {
+        System.out.println(productId);
+        ProductResponse.DetailDto result = productService.findOne(productId);
 
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -73,12 +73,12 @@ public class ProductController {
 
     /**
      * 삭제
-     * @param id
+     * @param productId
      * @return
      */
-    @DeleteMapping
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
-        int result = productService.delete(id);
+    @DeleteMapping("/deleteProduct")
+    public ResponseEntity<String> deleteProduct(@RequestParam Long productId) {
+        int result = productService.delete(productId);
 
 
         return new ResponseEntity<>(result + "개의 게시글 삭제완료", HttpStatus.OK);
@@ -89,11 +89,11 @@ public class ProductController {
      * @param request
      * @return
      */
-    @PutMapping
-    public ResponseEntity<String> updateProduct(ProductRequest.UpdateDto request) {
+    @PutMapping("/updateProduct")
+    public ResponseEntity<String> updateProduct(@RequestBody ProductRequest.UpdateDto request) {
 
-        Product product = request.toEntity();
-        int result = productService.update(product);
+
+        int result = productService.update(request);
 
         return new ResponseEntity<>("게시글 수정완료", HttpStatus.OK);
 
@@ -101,24 +101,26 @@ public class ProductController {
 
     /**
      * 판매 완료 처리
-     * @param request
+     * @param userId
+     * @param productId
      * @return
      */
-    @PatchMapping
-    public ResponseEntity<String> updateProduct(ProductRequest.PatchStatusDto request) {
-        int result = productService.patchStatus(request.getId());
+    @PatchMapping("/updateStatus")
+    public ResponseEntity<String> updateProduct(@RequestParam String userId, @RequestParam Long productId) {
+
+        int result = productService.patchStatus(userId,productId);
 
         return new ResponseEntity<>("게시글 수정완료", HttpStatus.OK);
     }
 
     /**
      * 조회수 증가
-     * @param request
+     * @param productId
      * @return
      */
-    @PatchMapping
-    public ResponseEntity<String> updateProduct(ProductRequest.PatchCountDto request) {
-        int result = productService.patchCount(request.getId());
+    @PatchMapping("/updateCount")
+    public ResponseEntity<String> updateProduct(@RequestParam Long productId) {
+        int result = productService.patchCount(productId);
 
         return new ResponseEntity<>("게시글 수정완료", HttpStatus.OK);
     }

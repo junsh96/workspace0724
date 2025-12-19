@@ -13,21 +13,23 @@ public class UserResponse {
     @Setter
     @Builder
     public static class SimpleDto {
-        private String userId;
-        private String userName;
+        private String user_id;
+        private String user_name;
         private String password;
-        private LocalDateTime joinDate;
+        private LocalDateTime join_date;
         private int amount;
+
+        public static SimpleDto of(User user) {
+
+            return SimpleDto.builder()
+                    .user_id(user.getUserId())
+                    .user_name(user.getUserName())
+                    .password(user.getPassword())
+                    .join_date(user.getJoinDate())
+                    .amount(user.getAmount())
+                    .build();
+        }
     }
 
-    public static SimpleDto of(User user) {
 
-        return SimpleDto.builder()
-                .userId(user.getUserId())
-                .userName(user.getUserName())
-                .password(user.getPassword())
-                .joinDate(user.getJoinDate())
-                .amount(user.getAmount())
-                .build();
-    }
 }

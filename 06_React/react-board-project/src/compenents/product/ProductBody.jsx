@@ -2,18 +2,22 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useProduct } from '../../context/ProductContext';
 import { SellSpan } from '../../styled/Product.styled';
+import { updateCount } from './api/Product.api';
 
 const ProductBody = ({productList}) => {
     const navigate = useNavigate();
-    const {productUpdate} = useProduct();
-    const productDetail = () => {
+    //const {productUpdate} = useProduct();
+    const productDetail = async() => {
 
-        const updateCount = {
-            ...productList,
-            count : productList.count + 1
-        };
-
-        productUpdate(updateCount);
+        
+        try {
+            await updateCount(productList.id)
+        } catch(e) {
+            alert("존재하지 않는 게시물 입니다.")
+            console.log(e);
+        }
+        
+        //productUpdate(updateCount);
 
 
         navigate(`/productDetail/${productList.id}`)

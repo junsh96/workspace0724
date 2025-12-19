@@ -3,6 +3,7 @@ package com.kh.jpa.entity;
 import com.kh.jpa.enums.CommonEnums;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +47,10 @@ public class Member extends BaseTimeEntity {
     public enum Gender {
         M, F
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 1, nullable = false)
+    private CommonEnums.Status status;
 
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)

@@ -1,23 +1,31 @@
 package com.kh.resale.controller.dto.request;
 
 import com.kh.resale.entity.Comment;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 public class CommentRequest {
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class createDto {
 
-        private Integer id;
+        private Long id;
         private String comment;
-        private String userId;
-        private Long productId;
+        private String user_id;
+        private Long product_id;
 
         public Comment toEntity() {
             return Comment.builder().
                     id(id)
                     .comment(comment)
-                    .userId(userId)
-                    .productId(productId)
+                    .userId(user_id)
+                    .productId(product_id)
                     .build();
         }
 

@@ -3,6 +3,8 @@ import { useProduct } from "../../context/ProductContext";
 import { useUsers } from "../../context/UserContext";
 import useBase64FileInput from "../../customHook/useBase64FileInput";
 import useInput from "../../customHook/useInput";
+import { update,deleteProduct,updateStatus } from "./api/ProductDetail.api"
+
 import {
   Btn,
   ButtonGroup,
@@ -30,38 +32,61 @@ const ProductEditor = ({ product,userUpdate }) => {
   const content = useInput(product.content);
 
   // 판매 완료
-  const onComplete = () => {
-    productUpdate({ ...product, status: "complete" });
+  const onComplete = async() => {
+    // productUpdate({ ...product, status: "complete" });
 
-    const newAmount = users.amount + Number(product.price);
-    userUpdate({ ...users, amount: newAmount });
+    // const newAmount = users.amount + Number(product.price);
+    // userUpdate({ ...users, amount: newAmount });
 
-    setUsers({ ...users, amount: newAmount });
+    // setUsers({ ...users, amount: newAmount });
 
-    alert("판매 처리가 완료되었습니다.");
-    navigate("/productList");
+    try {
+      await updateStatus(users.user_id, product.id);
+      alert("판매 처리가 완료되었습니다.");
+      navigate("/productList");
+    } catch(e) {
+      alert("오류가 발생하였습니다.")
+      console.log(e)
+    }
+
   };
 
   // 게시글 수정
-  const onSave = () => {
-    productUpdate({
-      ...product,
-      title: title.value,
-      price: price.value,
-      content: content.value,
-      image: base64 || product.image,
-    });
+  const onSave = async () => {
+    console.log("ASDASD",product);
+    try {
+      await update({
+        ...product,
+        title: title.value,
+        price: price.value,
+        content: content.value,
+        image: base64 || product.image,
+      });
+      // productUpdate({
+        
+      // });
 
-    alert("수정이 완료되었습니다.");
-    navigate("/productList");
+      alert("수정이 완료되었습니다.");
+      navigate("/productList");
+    } catch(e) {
+       alert("수정에 실패하였습니다.");
+      console.log(e)
+    }
+
   };
 
   // 삭제
-  const onDelete = () => {
+  const onDelete = async() => {
     if (confirm("정말 삭제하시겠습니까?")) {
-      productRemove(product);
-      alert("삭제되었습니다.");
-      navigate("/productList");
+      try {
+        await deleteProduct(product.id);
+        //productRemove(product);
+        alert("삭제되었습니다.");
+        navigate("/productList");
+      } catch(e) {
+        console.log(e)
+      }
+
     }
   };
 

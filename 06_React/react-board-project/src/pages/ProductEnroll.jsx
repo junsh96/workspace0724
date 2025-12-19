@@ -5,6 +5,7 @@ import { useUsers } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { useProduct } from '../context/ProductContext';
 import { EnrollContainer, EnrollTitle, FileInput, FormGroup, PreviewBox, SubmitBtn } from '../styled/ProductEnroll.styled'
+import { addProduct } from "../compenents/productEnroll/api/productEnroll.api"
 
 const ProductEnroll = () => {
 
@@ -14,7 +15,7 @@ const ProductEnroll = () => {
     const {users} = useUsers();
     const {value, productAdd} = useProduct();
 
-    const productEnroll = (e) => {
+    const productEnroll = async (e) => {
         e.preventDefault();
         if (!title.value.trim()) {
             alert("제목을 입력해주세요.")
@@ -29,28 +30,33 @@ const ProductEnroll = () => {
             alert("가격을 입력해주세요.")
             return
         }
-
+        console.log(users);
         const productBoard = {
             id : Date.now(),
-            no : value.length +1,
-            userId : users.id,
+            user_id : users.user_id,
             title : title.value,
             content : content.value,
             image : base64,
             count : 0,
             price : Number(price.value),
-            createDate : new Date().toLocaleString(),
             status : "progress"
         }
 
-        productAdd(productBoard);
-        alert("게시글 등록이 완료되었습니다.");
+        try {
 
-        title.setValue('');
-        content.setValue('');
-        reset(); // 파일 관련 초기화
+            await addProduct(productBoard);
+            alert("게시글 등록이 완료되었습니다.");
 
-        navigate("/productList");
+            title.setValue('');
+            content.setValue('');
+            reset(); // 파일 관련 초기화
+
+            navigate("/productList");
+        } catch(e) {
+            alert("게시글 등록에 실패하였습니다.")
+            console.log(e);
+        }
+
 
     }
 

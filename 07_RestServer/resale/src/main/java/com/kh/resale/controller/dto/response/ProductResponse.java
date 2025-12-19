@@ -22,7 +22,7 @@ public class ProductResponse {
         private Integer count;
         private Integer price;
         private LocalDateTime createDate;
-        private String status;
+        private Product.Status status;
 
         public static SimpleDto of(Product product) {
 
@@ -50,26 +50,26 @@ public class ProductResponse {
     public static class DetailDto {
         private Long id;
         private Integer no;
-        private String userId;
+        private String user_id;
         private String title;
         private String content;
         private String image;
         private Integer count;
         private Integer price;
-        private LocalDateTime createDate;
-        private String status;
+        private LocalDateTime create_date;
+        private Product.Status status;
 
         public static DetailDto of(Product product) {
             return DetailDto.builder()
                     .id(product.getId())
                     .no(product.getNo())
-                    .userId(product.getUserId())
+                    .user_id(product.getUserId())
                     .title(product.getTitle())
                     .content(product.getContent())
                     .image(product.getImage())
                     .count(product.getCount())
                     .price(product.getPrice())
-                    .createDate(product.getCreatedDate())
+                    .create_date(product.getCreatedDate())
                     .status(product.getStatus())
                     .build();
         }
