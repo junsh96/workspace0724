@@ -16,7 +16,7 @@ Spring Data JPA
 
 Hibernate
 
-H2 / MySQL
+H2
 
 Lombok
 
