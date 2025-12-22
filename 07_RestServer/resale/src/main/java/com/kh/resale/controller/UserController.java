@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping("/addUser")
     public ResponseEntity<String> addUser(@RequestBody UserRequest.createDto request){
 
-        if (request == null) {
+        if (request.getUser_id() == null || request.getUser_id().equals("")) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         int result = userService.addUser(request);
@@ -46,6 +46,10 @@ public class UserController {
      */
     @GetMapping("/idCheck")
     public ResponseEntity<Integer> idCheck(@RequestParam String userId){
+        if(userId == null || userId.equals("")){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         int result = userService.getUserByUserId(userId);
 
         return  ResponseEntity.ok(result);
@@ -54,7 +58,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserResponse.SimpleDto> login(@RequestBody LoginUserRequest request){
 
-        if (request == null) {
+        if (request.getUser_id() == null || request.getUser_id().equals("")) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         UserResponse.SimpleDto user = userService.login(request.getUser_id(), request.getPassword());

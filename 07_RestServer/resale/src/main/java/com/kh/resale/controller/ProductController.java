@@ -27,7 +27,7 @@ public class ProductController {
      */
     @PostMapping("/addProduct")
     public ResponseEntity<String> addProduct(@RequestBody ProductRequest.createDto request) {
-        if (request == null) {
+        if (request.getId() == null || request.getId().equals("")) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -65,7 +65,7 @@ public class ProductController {
      */
     @GetMapping("/getProduct")
     public ResponseEntity<ProductResponse.DetailDto> getProduct(@RequestParam Long productId) {
-        System.out.println(productId);
+
         ProductResponse.DetailDto result = productService.findOne(productId);
 
 
@@ -127,7 +127,7 @@ public class ProductController {
     }
 
     /**
-     * 찜 추가
+     * 찜 추가 -> 미구현
      * @param request
      * @return
      */

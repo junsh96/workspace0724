@@ -26,7 +26,9 @@ public class CommentController {
      */
     @PostMapping("/addComment")
     public ResponseEntity<String> addComment(@RequestBody CommentRequest.createDto request) {
-
+        if (request.getUser_id() == null || request.getUser_id().equals("")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         int result = commentService.addComment(request);
         if(result > 0){
             return new ResponseEntity<>("댓글 등록 성공", HttpStatus.OK);

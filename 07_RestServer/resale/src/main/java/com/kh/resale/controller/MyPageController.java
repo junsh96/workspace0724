@@ -30,6 +30,9 @@ public class MyPageController {
      */
     @GetMapping("/myInfo")
     public ResponseEntity<UserResponse.SimpleDto> myInfo(@RequestParam String userId) {
+        if (userId == null || userId.equals("")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         UserResponse.SimpleDto result = myPageService.getUserById(userId);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -42,6 +45,9 @@ public class MyPageController {
      */
     @GetMapping("/myProduct")
     public ResponseEntity<List<ProductResponse.SimpleDto>> myProduct(@RequestParam String userId) {
+        if (userId == null || userId.equals("")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         List<Product> products = myPageService.getProductByUserId(userId);
 
         List<ProductResponse.SimpleDto> result = new ArrayList<>();
@@ -58,6 +64,9 @@ public class MyPageController {
      */
     @GetMapping("/myComment")
     public ResponseEntity<List<CommentResponse.SimpleDto>> myComment(@RequestParam String userId) {
+        if  (userId == null || userId.equals("")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         List<Comment> comments = myPageService.getCommentByUserId(userId);
 
         List<CommentResponse.SimpleDto> result = new ArrayList<>();
